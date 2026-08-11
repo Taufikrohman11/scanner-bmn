@@ -114,7 +114,8 @@
 <script>
 
 let scanner;
-
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwtH3S8GNBUfV6iWSNdvnVmlR_7_c9bTbhQS_xxEuVzoVD1wgsdV7-z9uorvL1DT4V5fA/exec";
 
 /* QR BERHASIL DIBACA */
 
@@ -147,6 +148,14 @@ function qrBerhasil(
 
   }
 
+function cariBarang(kodeQR) {
+
+  console.log(
+    "Mengirim kode:",
+    kodeQR
+  );
+
+function tampilBarang(data) {
 
   const hasil =
     document.getElementById(
@@ -159,9 +168,224 @@ function qrBerhasil(
 
 
   hasil.innerHTML =
-    "<strong>✅ QR BERHASIL DIBACA</strong>" +
+
+    "<strong>📦 BARANG DITEMUKAN</strong>" +
+
     "<br><br>" +
-    decodedText;
+
+    "<b>Nama Barang:</b><br>" +
+    (data.namaBarang || "-") +
+
+    "<br><br>" +
+
+    "<b>Merk / Tipe:</b><br>" +
+    (data.merkTipe || "-") +
+
+    "<br><br>" +
+
+    "<b>Kode Register:</b><br>" +
+    (data.kodeRegister || "-") +
+
+    "<br><br>" +
+
+    "<b>NUP:</b><br>" +
+    (data.nup || "-") +
+
+    "<br><br>" +
+
+    "<b>Ruangan:</b><br>" +
+    (data.ruangan || "-") +
+
+    "<br><br>" +
+
+    "<b>Kondisi:</b><br>" +
+    (data.kondisi || "-") +
+
+    "<br><br>" +
+
+    "<button onclick='location.reload()'>" +
+    "📷 SCAN BARANG LAIN" +
+    "</button>";
+
+}
+
+
+function tampilError(pesan) {
+
+  const error =
+    document.getElementById(
+      "error"
+    );
+
+
+  error.style.display =
+    "block";
+
+
+  error.innerHTML =
+    "❌ " + pesan;
+
+}
+  /*
+   * Buat nama callback unik
+   */
+
+  const callbackName =
+    "hasilScan_" +
+    Date.now();
+
+
+  /*
+   * Buat fungsi callback
+   */
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "Response Apps Script:",
+        response
+      );
+
+
+      /*
+       * Hapus script JSONP
+       */
+
+      if (script.parentNode) {
+
+        script.parentNode
+          .removeChild(script);
+
+      }
+
+
+      /*
+       * Hapus callback
+       */
+
+      delete window[
+        callbackName
+      ];
+
+
+      /*
+       * Barang tidak ditemukan
+       */
+
+      if (!response.success) {
+
+        tampilError(
+
+          response.message ||
+          "Barang tidak ditemukan."
+
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Barang ditemukan
+       */
+
+      tampilBarang(
+        response.data
+      );
+
+    };
+
+
+  /*
+   * Buat URL JSONP
+   */
+
+  const url =
+    API_URL +
+    "?kodeQR=" +
+    encodeURIComponent(kodeQR) +
+    "&callback=" +
+    callbackName;
+
+
+  console.log(
+    "URL JSONP:",
+    url
+  );
+
+
+  /*
+   * Buat element script
+   */
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
+
+  /*
+   * Kalau gagal
+   */
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "Gagal menghubungi Apps Script"
+      );
+
+
+      delete window[
+        callbackName
+      ];
+
+
+      tampilError(
+        "❌ Gagal menghubungi server Apps Script."
+      );
+
+    };
+
+
+  /*
+   * Masukkan ke halaman
+   */
+
+  document.body.appendChild(
+    script
+  );
+
+}
+  /*
+   * Tampilkan proses pencarian
+   */
+
+  const hasil =
+    document.getElementById(
+      "hasil"
+    );
+
+  hasil.style.display =
+    "block";
+
+  hasil.innerHTML =
+    "🔄 Mencari data barang...";
+
+
+  /*
+   * Kirim QR ke Apps Script
+   */
+
+  cariBarang(
+    decodedText
+  );
 
 }
 
