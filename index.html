@@ -64,10 +64,9 @@
 
     #hasil {
       margin-top: 20px;
-      padding: 15px;
-      background: #dcfce7;
-      border-radius: 10px;
-      word-break: break-all;
+      padding: 18px;
+      background: white;
+      border-radius: 14px;
       display: none;
     }
 
@@ -78,6 +77,81 @@
       color: #991b1b;
       border-radius: 10px;
       display: none;
+    }
+
+    .status {
+      padding: 14px;
+      border-radius: 10px;
+      margin: 15px 0;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .tersedia {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .dipinjam {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .info {
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-pinjam {
+      background: #16a34a;
+      color: white;
+    }
+
+    .btn-kembali {
+      background: #dc2626;
+      color: white;
+    }
+
+    .btn-scan {
+      background: #111827;
+      color: white;
+    }
+
+    .form-group {
+      margin-top: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
     }
 
   </style>
@@ -113,16 +187,26 @@
 
 <script>
 
-let scanner;
+let scanner = null;
+
+
+/*
+ * ==========================================
+ * URL APPS SCRIPT
+ * ==========================================
+ */
+
 const API_URL =
 "https://script.google.com/macros/s/AKfycbwtH3S8GNBUfV6iWSNdvnVmlR_7_c9bTbhQS_xxEuVzoVD1wgsdV7-z9uorvL1DT4V5fA/exec";
 
-/* QR BERHASIL DIBACA */
 
-function qrBerhasil(
-  decodedText,
-  decodedResult
-) {
+/*
+ * ==========================================
+ * QR BERHASIL DIBACA
+ * ==========================================
+ */
+
+function qrBerhasil(decodedText, decodedResult) {
 
   console.log(
     "QR:",
@@ -130,48 +214,212 @@ function qrBerhasil(
   );
 
 
+  /*
+   * Hentikan scanner
+   */
+
   if (scanner) {
 
     scanner.stop()
-      .then(function() {
-
-        console.log(
-          "Scanner dihentikan"
-        );
-
-      })
       .catch(function(error) {
 
-        console.log(error);
+        console.log(
+          "Scanner stop:",
+          error
+        );
 
       });
 
   }
 
-function cariBarang(kodeQR) {
+
+  /*
+   * Tampilkan loading
+   */
+
+  const hasil =
+    document.getElementById("hasil");
+
+  hasil.style.display = "block";
+
+  hasil.innerHTML =
+    '<div class="loading">' +
+    '🔄 Mengambil data barang...' +
+    '</div>';
+
+
+  /*
+   * Kirim ke Apps Script
+   */
+
+  getStatusBarang(decodedText);
+
+}
+
+
+/*
+ * ==========================================
+ * AMBIL DATA DARI APPS SCRIPT
+ * ==========================================
+ */
+
+function getStatusBarang(kodeQR) {
 
   console.log(
     "Mengirim kode:",
     kodeQR
   );
 
-function tampilBarang(data) {
+
+  /*
+   * Callback JSONP unik
+   */
+
+  const callbackName =
+    "hasilScan_" +
+    Date.now();
+
+
+  /*
+   * Buat callback
+   */
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "Response Apps Script:",
+        response
+      );
+
+
+      /*
+       * Hapus callback
+       */
+
+      delete window[callbackName];
+
+
+      /*
+       * Cek hasil
+       */
+
+      if (!response.success) {
+
+        tampilError(
+          response.message ||
+          "Barang tidak ditemukan."
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Tampilkan barang
+       */
+
+      tampilBarang(
+        response
+      );
+
+    };
+
+
+  /*
+   * URL JSONP
+   */
+
+  const url =
+    API_URL +
+    "?kodeQR=" +
+    encodeURIComponent(kodeQR) +
+    "&callback=" +
+    callbackName;
+
+
+  console.log(
+    "URL JSONP:",
+    url
+  );
+
+
+  /*
+   * Buat script
+   */
+
+  const script =
+    document.createElement("script");
+
+
+  script.src = url;
+
+
+  /*
+   * Error koneksi
+   */
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "Gagal menghubungi Apps Script"
+      );
+
+
+      delete window[callbackName];
+
+
+      tampilError(
+        "Gagal menghubungi server Apps Script."
+      );
+
+    };
+
+
+  /*
+   * Jalankan JSONP
+   */
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+/*
+ * ==========================================
+ * TAMPILKAN BARANG
+ * ==========================================
+ */
+
+function tampilBarang(response) {
 
   const hasil =
-    document.getElementById(
-      "hasil"
-    );
+    document.getElementById("hasil");
 
 
-  hasil.style.display =
-    "block";
+  const data =
+    response.barang;
 
 
-  hasil.innerHTML =
+  const status =
+    response.status;
 
-    "<strong>📦 BARANG DITEMUKAN</strong>" +
 
-    "<br><br>" +
+  let html = "";
+
+
+  /*
+   * DATA BARANG
+   */
+
+  html +=
+    "<strong>📦 DATA BARANG</strong>" +
+
+    "<div class='info'>" +
 
     "<b>Nama Barang:</b><br>" +
     (data.namaBarang || "-") +
@@ -201,14 +449,749 @@ function tampilBarang(data) {
     "<b>Kondisi:</b><br>" +
     (data.kondisi || "-") +
 
+    "</div>";
+
+
+  /*
+   * ==========================================
+   * STATUS TERSEDIA
+   * ==========================================
+   */
+
+  if (status === "TERSEDIA") {
+
+    html +=
+
+      "<div class='status tersedia'>" +
+
+      "🟢 BARANG TERSEDIA" +
+
+      "</div>" +
+
+      "<button " +
+
+      "class='btn-pinjam' " +
+
+      "onclick='formPeminjaman(" +
+
+      JSON.stringify(data) +
+
+      ")'>" +
+
+      "📤 PINJAM BARANG" +
+
+      "</button>";
+
+  }
+
+
+  /*
+   * ==========================================
+   * STATUS DIPINJAM
+   * ==========================================
+   */
+
+  else if (status === "DIPINJAM") {
+
+    const pinjam =
+      response.peminjaman;
+
+
+    html +=
+
+      "<div class='status dipinjam'>" +
+
+      "🔴 SEDANG DIPINJAM" +
+
+      "</div>";
+
+
+    if (pinjam) {
+
+      html +=
+
+        "<div class='info'>" +
+
+        "<b>Peminjam:</b><br>" +
+        (pinjam.namaPeminjam || "-") +
+
+        "<br><br>" +
+
+        "<b>NIP / NIK:</b><br>" +
+        (pinjam.nipNik || "-") +
+
+        "<br><br>" +
+
+        "<b>Unit:</b><br>" +
+        (pinjam.unit || "-") +
+
+        "<br><br>" +
+
+        "<b>Keperluan:</b><br>" +
+        (pinjam.keperluan || "-") +
+
+        "<br><br>" +
+
+        "<b>Rencana Kembali:</b><br>" +
+        formatTanggal(
+          pinjam.tanggalRencanaKembali
+        ) +
+
+        "<br><br>" +
+
+        "<b>Kondisi Saat Pinjam:</b><br>" +
+        (pinjam.kondisiSaatPinjam || "-") +
+
+        "</div>";
+
+
+      html +=
+
+        "<button " +
+
+        "class='btn-kembali' " +
+
+        "onclick='formPengembalian(" +
+
+        JSON.stringify(data) +
+
+        ")'>" +
+
+        "↩️ KEMBALIKAN BARANG" +
+
+        "</button>";
+
+    }
+
+  }
+
+
+  /*
+   * TOMBOL SCAN ULANG
+   */
+
+  html +=
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='location.reload()'>" +
+
+    "📷 SCAN BARANG LAIN" +
+
+    "</button>";
+
+
+  hasil.innerHTML =
+    html;
+
+
+  hasil.style.display =
+    "block";
+
+}
+
+
+/*
+ * ==========================================
+ * FORM PEMINJAMAN
+ * ==========================================
+ */
+
+function formPeminjaman(data) {
+
+  const hasil =
+    document.getElementById("hasil");
+
+
+  hasil.innerHTML =
+
+    "<strong>📤 FORM PEMINJAMAN</strong>" +
+
     "<br><br>" +
 
-    "<button onclick='location.reload()'>" +
-    "📷 SCAN BARANG LAIN" +
+    "<b>" +
+    (data.namaBarang || "-") +
+    "</b>" +
+
+    "<br>" +
+
+    (data.merkTipe || "-") +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Nama Peminjam</label>" +
+
+    "<input id='namaPeminjam' " +
+    "placeholder='Nama lengkap'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>NIP / NIK</label>" +
+
+    "<input id='nipNik' " +
+    "placeholder='NIP / NIK'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Unit</label>" +
+
+    "<input id='unit' " +
+    "value='BPVP Lombok Timur'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Keperluan</label>" +
+
+    "<textarea id='keperluan' " +
+    "placeholder='Keperluan peminjaman'></textarea>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Rencana Tanggal Kembali</label>" +
+
+    "<input id='tanggalKembali' " +
+    "type='date'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Kondisi Barang</label>" +
+
+    "<input id='kondisi' " +
+    "value='Baik'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Catatan</label>" +
+
+    "<textarea id='catatan'></textarea>" +
+
+    "</div>" +
+
+
+    "<button " +
+
+    "class='btn-pinjam' " +
+
+    "onclick='simpanPeminjaman(" +
+
+    JSON.stringify(data) +
+
+    ")'>" +
+
+    "💾 SIMPAN PEMINJAMAN" +
+
+    "</button>" +
+
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='location.reload()'>" +
+
+    "❌ BATAL" +
+
     "</button>";
 
 }
 
+
+/*
+ * ==========================================
+ * SIMPAN PEMINJAMAN
+ * ==========================================
+ */
+
+function simpanPeminjaman(data) {
+
+  const nama =
+    document.getElementById(
+      "namaPeminjam"
+    ).value.trim();
+
+
+  const nip =
+    document.getElementById(
+      "nipNik"
+    ).value.trim();
+
+
+  const unit =
+    document.getElementById(
+      "unit"
+    ).value.trim();
+
+
+  const keperluan =
+    document.getElementById(
+      "keperluan"
+    ).value.trim();
+
+
+  const tanggal =
+    document.getElementById(
+      "tanggalKembali"
+    ).value;
+
+
+  const kondisi =
+    document.getElementById(
+      "kondisi"
+    ).value.trim();
+
+
+  const catatan =
+    document.getElementById(
+      "catatan"
+    ).value.trim();
+
+
+  /*
+   * Validasi
+   */
+
+  if (!nama) {
+
+    alert(
+      "Nama peminjam wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if (!nip) {
+
+    alert(
+      "NIP / NIK wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if (!keperluan) {
+
+    alert(
+      "Keperluan wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if (!tanggal) {
+
+    alert(
+      "Tanggal rencana kembali wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Tampilkan loading
+   */
+
+  document.getElementById(
+    "hasil"
+  ).innerHTML =
+
+    "<div class='loading'>" +
+
+    "💾 Menyimpan peminjaman..." +
+
+    "</div>";
+
+
+  /*
+   * Data transaksi
+   */
+
+  const transaksi = {
+
+    kodeRegister:
+      data.kodeRegister,
+
+    nup:
+      data.nup,
+
+    namaBarang:
+      data.namaBarang,
+
+    merkTipe:
+      data.merkTipe,
+
+    ruangan:
+      data.ruangan,
+
+    namaPeminjam:
+      nama,
+
+    nipNik:
+      nip,
+
+    unit:
+      unit,
+
+    keperluan:
+      keperluan,
+
+    tanggalRencanaKembali:
+      tanggal,
+
+    kondisiSaatPinjam:
+      kondisi,
+
+    catatan:
+      catatan,
+
+    petugas:
+      "ADMIN"
+
+  };
+
+
+  /*
+   * Panggil Apps Script
+   */
+
+  panggilJSONP(
+    "simpanPeminjaman",
+    transaksi,
+    function(response) {
+
+      if (!response.success) {
+
+        tampilError(
+          response.message
+        );
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "hasil"
+      ).innerHTML =
+
+        "<div class='status tersedia'>" +
+
+        "✅ PEMINJAMAN BERHASIL" +
+
+        "</div>" +
+
+        "<div class='info'>" +
+
+        "<b>ID Transaksi:</b><br>" +
+
+        response.data.idTransaksi +
+
+        "<br><br>" +
+
+        "<b>Peminjam:</b><br>" +
+
+        response.data.namaPeminjam +
+
+        "<br><br>" +
+
+        "<b>Status:</b><br>" +
+
+        "DIPINJAM" +
+
+        "</div>" +
+
+
+        "<button " +
+
+        "class='btn-scan' " +
+
+        "onclick='location.reload()'>" +
+
+        "📷 SCAN BARANG LAIN" +
+
+        "</button>";
+
+    }
+
+  );
+
+}
+
+
+/*
+ * ==========================================
+ * FORM PENGEMBALIAN
+ * ==========================================
+ */
+
+function formPengembalian(data) {
+
+  const hasil =
+    document.getElementById("hasil");
+
+
+  hasil.innerHTML =
+
+    "<strong>↩️ FORM PENGEMBALIAN</strong>" +
+
+    "<br><br>" +
+
+    "<b>" +
+    (data.namaBarang || "-") +
+    "</b>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Kondisi Saat Kembali</label>" +
+
+    "<input id='kondisiKembali' " +
+    "value='Baik'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Catatan</label>" +
+
+    "<textarea id='catatanKembali'></textarea>" +
+
+    "</div>" +
+
+
+    "<button " +
+
+    "class='btn-kembali' " +
+
+    "onclick='simpanPengembalian(" +
+
+    JSON.stringify(data) +
+
+    ")'>" +
+
+    "✅ KONFIRMASI PENGEMBALIAN" +
+
+    "</button>" +
+
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='location.reload()'>" +
+
+    "❌ BATAL" +
+
+    "</button>";
+
+}
+
+
+/*
+ * ==========================================
+ * SIMPAN PENGEMBALIAN
+ * ==========================================
+ */
+
+function simpanPengembalian(data) {
+
+  const kondisi =
+    document.getElementById(
+      "kondisiKembali"
+    ).value.trim();
+
+
+  const catatan =
+    document.getElementById(
+      "catatanKembali"
+    ).value.trim();
+
+
+  document.getElementById(
+    "hasil"
+  ).innerHTML =
+
+    "<div class='loading'>" +
+
+    "↩️ Memproses pengembalian..." +
+
+    "</div>";
+
+
+  const transaksi = {
+
+    kodeRegister:
+      data.kodeRegister,
+
+    kondisiSaatKembali:
+      kondisi,
+
+    catatan:
+      catatan
+
+  };
+
+
+  panggilJSONP(
+    "kembalikanBarang",
+    transaksi,
+    function(response) {
+
+      if (!response.success) {
+
+        tampilError(
+          response.message
+        );
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "hasil"
+      ).innerHTML =
+
+        "<div class='status tersedia'>" +
+
+        "✅ BARANG BERHASIL DIKEMBALIKAN" +
+
+        "</div>" +
+
+        "<div class='info'>" +
+
+        "<b>Peminjam:</b><br>" +
+
+        response.data.namaPeminjam +
+
+        "<br><br>" +
+
+        "<b>Status:</b><br>" +
+
+        "DIKEMBALIKAN" +
+
+        "</div>" +
+
+
+        "<button " +
+
+        "class='btn-scan' " +
+
+        "onclick='location.reload()'>" +
+
+        "📷 SCAN BARANG LAIN" +
+
+        "</button>";
+
+    }
+
+  );
+
+}
+
+
+/*
+ * ==========================================
+ * JSONP UMUM
+ * ==========================================
+ */
+
+function panggilJSONP(
+  fungsi,
+  data,
+  callback
+) {
+
+  /*
+   * Untuk tahap awal,
+   * kita akan menggunakan parameter
+   * action pada Apps Script.
+   */
+
+  const callbackName =
+    "callback_" +
+    Date.now();
+
+
+  window[callbackName] =
+    callback;
+
+
+  const url =
+    API_URL +
+    "?action=" +
+    encodeURIComponent(fungsi) +
+    "&data=" +
+    encodeURIComponent(
+      JSON.stringify(data)
+    ) +
+    "&callback=" +
+    callbackName;
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
+
+  script.onerror =
+    function() {
+
+      delete window[callbackName];
+
+      tampilError(
+        "Gagal menghubungi server Apps Script."
+      );
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+/*
+ * ==========================================
+ * ERROR
+ * ==========================================
+ */
 
 function tampilError(pesan) {
 
@@ -226,181 +1209,64 @@ function tampilError(pesan) {
     "❌ " + pesan;
 
 }
-  /*
-   * Buat nama callback unik
-   */
-
-  const callbackName =
-    "hasilScan_" +
-    Date.now();
 
 
-  /*
-   * Buat fungsi callback
-   */
+/*
+ * ==========================================
+ * FORMAT TANGGAL
+ * ==========================================
+ */
 
-  window[callbackName] =
-    function(response) {
+function formatTanggal(tanggal) {
 
-      console.log(
-        "Response Apps Script:",
-        response
-      );
+  if (!tanggal) {
 
+    return "-";
 
-      /*
-       * Hapus script JSONP
-       */
-
-      if (script.parentNode) {
-
-        script.parentNode
-          .removeChild(script);
-
-      }
+  }
 
 
-      /*
-       * Hapus callback
-       */
-
-      delete window[
-        callbackName
-      ];
+  const d =
+    new Date(tanggal);
 
 
-      /*
-       * Barang tidak ditemukan
-       */
+  if (isNaN(d)) {
 
-      if (!response.success) {
+    return tanggal;
 
-        tampilError(
-
-          response.message ||
-          "Barang tidak ditemukan."
-
-        );
-
-        return;
-
-      }
+  }
 
 
-      /*
-       * Barang ditemukan
-       */
-
-      tampilBarang(
-        response.data
-      );
-
-    };
-
-
-  /*
-   * Buat URL JSONP
-   */
-
-  const url =
-    API_URL +
-    "?kodeQR=" +
-    encodeURIComponent(kodeQR) +
-    "&callback=" +
-    callbackName;
-
-
-  console.log(
-    "URL JSONP:",
-    url
-  );
-
-
-  /*
-   * Buat element script
-   */
-
-  const script =
-    document.createElement(
-      "script"
-    );
-
-
-  script.src =
-    url;
-
-
-  /*
-   * Kalau gagal
-   */
-
-  script.onerror =
-    function() {
-
-      console.error(
-        "Gagal menghubungi Apps Script"
-      );
-
-
-      delete window[
-        callbackName
-      ];
-
-
-      tampilError(
-        "❌ Gagal menghubungi server Apps Script."
-      );
-
-    };
-
-
-  /*
-   * Masukkan ke halaman
-   */
-
-  document.body.appendChild(
-    script
-  );
-
-}
-  /*
-   * Tampilkan proses pencarian
-   */
-
-  const hasil =
-    document.getElementById(
-      "hasil"
-    );
-
-  hasil.style.display =
-    "block";
-
-  hasil.innerHTML =
-    "🔄 Mencari data barang...";
-
-
-  /*
-   * Kirim QR ke Apps Script
-   */
-
-  cariBarang(
-    decodedText
+  return d.toLocaleDateString(
+    "id-ID",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }
   );
 
 }
 
 
-/* ERROR SCAN */
+/*
+ * ==========================================
+ * ERROR SCAN
+ * ==========================================
+ */
 
 function qrError(errorMessage) {
 
 }
 
 
-/* MULAI SCANNER */
+/*
+ * ==========================================
+ * MULAI SCANNER
+ * ==========================================
+ */
 
 function mulaiScanner() {
-
 
   scanner =
     new Html5Qrcode(
@@ -437,8 +1303,9 @@ function mulaiScanner() {
 
   .catch(function(error) {
 
-
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     const errorBox =
@@ -452,7 +1319,11 @@ function mulaiScanner() {
 
 
     errorBox.innerHTML =
-      "❌ Kamera tidak dapat digunakan.<br><br>" +
+
+      "❌ Kamera tidak dapat digunakan." +
+
+      "<br><br>" +
+
       error;
 
   });
@@ -460,7 +1331,11 @@ function mulaiScanner() {
 }
 
 
-/* JALANKAN */
+/*
+ * ==========================================
+ * JALANKAN
+ * ==========================================
+ */
 
 window.onload =
   function() {
