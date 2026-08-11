@@ -2,16 +2,18 @@
 <html lang="id">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta name="viewport"
         content="width=device-width, initial-scale=1">
 
-  <title>Scanner BMN</title>
+  <title>Peminjaman BMN</title>
 
   <script src="https://unpkg.com/html5-qrcode"
           type="text/javascript">
   </script>
+
 
   <style>
 
@@ -19,65 +21,189 @@
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
+
       font-family: Arial, sans-serif;
+
       background: #f3f4f6;
+
       color: #111827;
+
     }
+
 
     .container {
+
       max-width: 600px;
+
       margin: auto;
-      padding: 20px;
+
+      padding: 15px;
+
     }
+
 
     .header {
+
       background: #111827;
+
       color: white;
+
       padding: 20px;
+
       border-radius: 16px;
+
       text-align: center;
-      margin-bottom: 20px;
+
+      margin-bottom: 15px;
+
     }
+
 
     .header h1 {
+
       margin: 0;
-      font-size: 23px;
+
+      font-size: 22px;
+
     }
+
 
     .header p {
-      margin: 8px 0 0;
+
+      margin: 7px 0 0;
+
+      font-size: 13px;
+
       opacity: .8;
+
     }
+
 
     .card {
+
       background: white;
+
       padding: 20px;
+
       border-radius: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+
+      margin-bottom: 15px;
+
+      box-shadow: 0 3px 10px rgba(0,0,0,.08);
+
     }
+
 
     #reader {
+
       width: 100%;
+
+      overflow: hidden;
+
+      border-radius: 12px;
+
     }
 
-    #hasil {
-      margin-top: 20px;
-      padding: 15px;
+
+    .loading {
+
+      text-align: center;
+
+      padding: 20px;
+
+    }
+
+
+    .hidden {
+
+      display: none;
+
+    }
+
+
+    .row {
+
+      padding: 12px 0;
+
+      border-bottom: 1px solid #e5e7eb;
+
+    }
+
+
+    .label {
+
+      font-size: 12px;
+
+      color: #6b7280;
+
+      margin-bottom: 4px;
+
+    }
+
+
+    .value {
+
+      font-weight: 600;
+
+      word-break: break-word;
+
+    }
+
+
+    .success {
+
       background: #dcfce7;
+
+      color: #166534;
+
+      padding: 15px;
+
       border-radius: 10px;
-      word-break: break-all;
-      display: none;
+
+      margin-top: 15px;
+
     }
 
-    #error {
-      margin-top: 20px;
-      padding: 15px;
+
+    .error {
+
       background: #fee2e2;
+
       color: #991b1b;
+
+      padding: 15px;
+
       border-radius: 10px;
-      display: none;
+
+      margin-top: 15px;
+
+    }
+
+
+    button {
+
+      width: 100%;
+
+      padding: 14px;
+
+      border: none;
+
+      border-radius: 10px;
+
+      background: #111827;
+
+      color: white;
+
+      font-size: 15px;
+
+      font-weight: bold;
+
+      margin-top: 15px;
+
     }
 
   </style>
@@ -87,45 +213,224 @@
 
 <body>
 
+
 <div class="container">
+
 
   <div class="header">
 
-    <h1>📷 SCANNER BMN</h1>
+    <h1>
+      PEMINJAMAN BMN
+    </h1>
 
-    <p>BPVP Lombok Timur</p>
+    <p>
+      BPVP LOMBOK TIMUR
+    </p>
 
   </div>
 
 
-  <div class="card">
+
+  <!-- SCANNER -->
+
+  <div
+    class="card"
+    id="scannerCard">
+
+    <h3>
+      📷 Scan QR Barang
+    </h3>
 
     <div id="reader"></div>
 
-    <div id="hasil"></div>
+  </div>
 
-    <div id="error"></div>
+
+
+  <!-- LOADING -->
+
+  <div
+    id="loading"
+    class="card hidden">
+
+    <div class="loading">
+
+      🔄 Mencari data barang...
+
+    </div>
 
   </div>
+
+
+
+  <!-- HASIL -->
+
+  <div
+    id="hasil"
+    class="card hidden">
+
+    <h3>
+      📦 Detail Barang
+    </h3>
+
+
+    <div class="row">
+
+      <div class="label">
+        Nama Barang
+      </div>
+
+      <div
+        class="value"
+        id="namaBarang">
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div class="label">
+        Merk / Tipe
+      </div>
+
+      <div
+        class="value"
+        id="merkTipe">
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div class="label">
+        Kode Register
+      </div>
+
+      <div
+        class="value"
+        id="kodeRegister">
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div class="label">
+        NUP
+      </div>
+
+      <div
+        class="value"
+        id="nup">
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div class="label">
+        Ruangan
+      </div>
+
+      <div
+        class="value"
+        id="ruangan">
+      </div>
+
+    </div>
+
+
+    <div class="row">
+
+      <div class="label">
+        Kondisi
+      </div>
+
+      <div
+        class="value"
+        id="kondisi">
+      </div>
+
+    </div>
+
+
+    <div
+      id="pesan"
+      class="success">
+
+      ✅ Barang ditemukan.
+
+    </div>
+
+
+    <button onclick="scanLagi()">
+
+      📷 SCAN BARANG LAIN
+
+    </button>
+
+
+  </div>
+
+
+
+  <!-- ERROR -->
+
+  <div
+    id="error"
+    class="hidden">
+  </div>
+
 
 </div>
 
 
-<script>
 
-let scanner;
+<script>
 
 
 /*
-========================================
+================================================
+URL APPS SCRIPT
+================================================
+*/
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwtH3S8GNBUfV6iWSNdvnVmlR_7_c9bTbhQS_xxEuVzoVD1wgsdV7-z9uorvL1DT4V5fA/exec";
+
+
+
+let scanner = null;
+
+let sudahScan = false;
+
+
+
+/*
+================================================
 QR BERHASIL DIBACA
-========================================
+================================================
 */
 
 function qrBerhasil(
   decodedText,
   decodedResult
 ) {
+
+
+  if (sudahScan) {
+
+    return;
+
+  }
+
+
+  sudahScan = true;
+
 
   console.log(
     "QR:",
@@ -134,70 +439,338 @@ function qrBerhasil(
 
 
   /*
-  Hentikan scanner
-  */
+   * Hentikan kamera
+   */
 
   if (scanner) {
 
-    scanner.stop()
-      .then(function() {
+    scanner
+      .stop()
+      .catch(
+        function(error) {
 
-        console.log(
-          "Scanner dihentikan"
-        );
+          console.log(error);
 
-      })
-      .catch(function(error) {
-
-        console.log(error);
-
-      });
+        }
+      );
 
   }
 
 
   /*
-  Tampilkan hasil
-  */
+   * Sembunyikan scanner
+   */
 
-  const hasil =
-    document.getElementById(
-      "hasil"
+  document
+    .getElementById(
+      "scannerCard"
+    )
+    .classList
+    .add("hidden");
+
+
+  /*
+   * Cari barang
+   */
+
+  cariBarang(
+    decodedText
+  );
+
+}
+
+
+
+/*
+================================================
+CARI BARANG
+================================================
+*/
+
+async function cariBarang(
+  kodeQR
+) {
+
+
+  /*
+   * Tampilkan loading
+   */
+
+  document
+    .getElementById(
+      "loading"
+    )
+    .classList
+    .remove("hidden");
+
+
+  try {
+
+
+    /*
+     * Buat URL
+     *
+     * encodeURIComponent()
+     * otomatis mengubah # menjadi %23
+     */
+
+    const url =
+      API_URL +
+      "?kodeQR=" +
+      encodeURIComponent(
+        kodeQR
+      );
+
+
+    console.log(
+      "REQUEST:",
+      url
     );
 
 
-  hasil.style.display =
-    "block";
+    /*
+     * Kirim ke Apps Script
+     */
+
+    const response =
+      await fetch(
+        url
+      );
 
 
-  hasil.innerHTML =
-    "<strong>✅ QR BERHASIL DIBACA</strong>" +
-    "<br><br>" +
-    decodedText;
+    /*
+     * Baca JSON
+     */
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      "RESPONSE:",
+      data
+    );
+
+
+    /*
+     * Hilangkan loading
+     */
+
+    document
+      .getElementById(
+        "loading"
+      )
+      .classList
+      .add("hidden");
+
+
+    /*
+     * Kalau gagal
+     */
+
+    if (!data.success) {
+
+      tampilError(
+        data.message ||
+        "Barang tidak ditemukan."
+      );
+
+      return;
+
+    }
+
+
+    /*
+     * Kalau berhasil
+     */
+
+    tampilBarang(
+      data.data
+    );
+
+
+  }
+
+  catch(error) {
+
+
+    console.error(
+      error
+    );
+
+
+    document
+      .getElementById(
+        "loading"
+      )
+      .classList
+      .add("hidden");
+
+
+    tampilError(
+
+      "Gagal menghubungi server Apps Script.<br><br>" +
+
+      error.message
+
+    );
+
+  }
 
 }
 
 
+
 /*
-========================================
-ERROR SCAN
-========================================
+================================================
+TAMPILKAN BARANG
+================================================
 */
 
-function qrError(errorMessage) {
+function tampilBarang(
+  data
+) {
 
-  /*
-   * Error kecil dari scanner
-   * tidak perlu ditampilkan
-   */
+
+  document
+    .getElementById(
+      "hasil"
+    )
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById(
+      "namaBarang"
+    )
+    .textContent =
+    data.namaBarang || "-";
+
+
+  document
+    .getElementById(
+      "merkTipe"
+    )
+    .textContent =
+    data.merkTipe || "-";
+
+
+  document
+    .getElementById(
+      "kodeRegister"
+    )
+    .textContent =
+    data.kodeRegister || "-";
+
+
+  document
+    .getElementById(
+      "nup"
+    )
+    .textContent =
+    data.nup || "-";
+
+
+  document
+    .getElementById(
+      "ruangan"
+    )
+    .textContent =
+    data.ruangan || "-";
+
+
+  document
+    .getElementById(
+      "kondisi"
+    )
+    .textContent =
+    data.kondisi || "-";
 
 }
 
 
+
 /*
-========================================
+================================================
+ERROR
+================================================
+*/
+
+function tampilError(
+  pesan
+) {
+
+
+  const error =
+    document.getElementById(
+      "error"
+    );
+
+
+  error.innerHTML =
+    "❌ " +
+    pesan;
+
+
+  error.className =
+    "error";
+
+
+  error.classList
+    .remove("hidden");
+
+}
+
+
+
+/*
+================================================
+SCAN LAGI
+================================================
+*/
+
+function scanLagi() {
+
+
+  document
+    .getElementById(
+      "hasil"
+    )
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById(
+      "error"
+    )
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById(
+      "scannerCard"
+    )
+    .classList
+    .remove("hidden");
+
+
+  sudahScan =
+    false;
+
+
+  mulaiScanner();
+
+}
+
+
+
+/*
+================================================
 MULAI SCANNER
-========================================
+================================================
 */
 
 function mulaiScanner() {
@@ -214,8 +787,11 @@ function mulaiScanner() {
     fps: 10,
 
     qrbox: {
+
       width: 250,
+
       height: 250
+
     }
 
   };
@@ -230,41 +806,34 @@ function mulaiScanner() {
 
     config,
 
-    qrBerhasil,
-
-    qrError
+    qrBerhasil
 
   )
 
-  .catch(function(error) {
+  .catch(
 
+    function(error) {
 
-    console.error(error);
-
-
-    const errorBox =
-      document.getElementById(
-        "error"
+      console.error(
+        error
       );
 
+      tampilError(
+        "Kamera tidak dapat digunakan."
+      );
 
-    errorBox.style.display =
-      "block";
+    }
 
-
-    errorBox.innerHTML =
-      "❌ Kamera tidak dapat digunakan.<br><br>" +
-      error;
-
-  });
+  );
 
 }
 
 
+
 /*
-========================================
-JALANKAN
-========================================
+================================================
+START
+================================================
 */
 
 window.onload =
@@ -274,7 +843,9 @@ window.onload =
 
   };
 
+
 </script>
+
 
 </body>
 
