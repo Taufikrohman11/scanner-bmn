@@ -591,34 +591,24 @@ async function cariBarang(
 
   }
 
-  catch(error) {
+ catch(error) {
 
+  console.error(error);
 
-    console.error(
-      error
-    );
+  document
+    .getElementById("loading")
+    .classList
+    .add("hidden");
 
-
-    document
-      .getElementById(
-        "loading"
-      )
-      .classList
-      .add("hidden");
-
-
-    tampilError(
-
-      "Gagal menghubungi server Apps Script.<br><br>" +
-
-      error.message
-
-    );
-
-  }
+  tampilError(
+    "<b>ERROR:</b><br>" +
+    error.name +
+    "<br><br>" +
+    "<b>PESAN:</b><br>" +
+    error.message
+  );
 
 }
-
 
 
 /*
