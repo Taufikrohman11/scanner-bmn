@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>Scanner BMN</title>
+
+  <script src="https://unpkg.com/html5-qrcode"
+          type="text/javascript">
+  </script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      opacity: .8;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    #reader {
+      width: 100%;
+    }
+
+    #hasil {
+      margin-top: 20px;
+      padding: 15px;
+      background: #dcfce7;
+      border-radius: 10px;
+      word-break: break-all;
+      display: none;
+    }
+
+    #error {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: 10px;
+      display: none;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+
+    <h1>📷 SCANNER BMN</h1>
+
+    <p>BPVP Lombok Timur</p>
+
+  </div>
+
+
+  <div class="card">
+
+    <div id="reader"></div>
+
+    <div id="hasil"></div>
+
+    <div id="error"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let scanner;
+
+
+/*
+========================================
+QR BERHASIL DIBACA
+========================================
+*/
+
+function qrBerhasil(
+  decodedText,
+  decodedResult
+) {
+
+  console.log(
+    "QR:",
+    decodedText
+  );
+
+
+  /*
+  Hentikan scanner
+  */
+
+  if (scanner) {
+
+    scanner.stop()
+      .then(function() {
+
+        console.log(
+          "Scanner dihentikan"
+        );
+
+      })
+      .catch(function(error) {
+
+        console.log(error);
+
+      });
+
+  }
+
+
+  /*
+  Tampilkan hasil
+  */
+
+  const hasil =
+    document.getElementById(
+      "hasil"
+    );
+
+
+  hasil.style.display =
+    "block";
+
+
+  hasil.innerHTML =
+    "<strong>✅ QR BERHASIL DIBACA</strong>" +
+    "<br><br>" +
+    decodedText;
+
+}
+
+
+/*
+========================================
+ERROR SCAN
+========================================
+*/
+
+function qrError(errorMessage) {
+
+  /*
+   * Error kecil dari scanner
+   * tidak perlu ditampilkan
+   */
+
+}
+
+
+/*
+========================================
+MULAI SCANNER
+========================================
+*/
+
+function mulaiScanner() {
+
+
+  scanner =
+    new Html5Qrcode(
+      "reader"
+    );
+
+
+  const config = {
+
+    fps: 10,
+
+    qrbox: {
+      width: 250,
+      height: 250
+    }
+
+  };
+
+
+  scanner.start(
+
+    {
+      facingMode:
+        "environment"
+    },
+
+    config,
+
+    qrBerhasil,
+
+    qrError
+
+  )
+
+  .catch(function(error) {
+
+
+    console.error(error);
+
+
+    const errorBox =
+      document.getElementById(
+        "error"
+      );
+
+
+    errorBox.style.display =
+      "block";
+
+
+    errorBox.innerHTML =
+      "❌ Kamera tidak dapat digunakan.<br><br>" +
+      error;
+
+  });
+
+}
+
+
+/*
+========================================
+JALANKAN
+========================================
+*/
+
+window.onload =
+  function() {
+
+    mulaiScanner();
+
+  };
+
+</script>
+
+</body>
+
+</html>
