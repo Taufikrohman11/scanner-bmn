@@ -565,7 +565,23 @@ function tampilBarang(response) {
 
   }
 
+  /*
+   * ==========================================
+   * RIWAYAT TRANSAKSI
+   * ==========================================
+   */
 
+  html +=
+
+    "<div id='riwayat'>" +
+
+    "<div class='riwayat-loading'>" +
+
+    "🔄 Memuat riwayat transaksi..." +
+
+    "</div>" +
+
+    "</div>";
   /*
    * TOMBOL SCAN ULANG
    */
@@ -583,16 +599,279 @@ function tampilBarang(response) {
     "</button>";
 
 
-  hasil.innerHTML =
+   hasil.innerHTML =
     html;
 
 
   hasil.style.display =
     "block";
 
+
+  /*
+   * ==========================================
+   * AMBIL RIWAYAT TRANSAKSI
+   * ==========================================
+   */
+
+  ambilRiwayatBarang(
+    data.kodeRegister
+  );
+
 }
 
 
+
+  
+
+
+function ambilRiwayatBarang(kodeQR) {
+
+  console.log(
+    "Mengambil riwayat:",
+    kodeQR
+  );
+
+  const callbackName =
+    "hasilRiwayat_" +
+    Date.now();
+
+  /*
+   * Callback JSONP
+   */
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "Response riwayat:",
+        response
+      );
+
+      /*
+       * Hapus callback
+       */
+
+      delete window[callbackName];
+
+      /*
+       * Tampilkan hasil
+       */
+
+      tampilRiwayat(response);
+
+    };
+
+  /*
+   * Buat URL JSONP
+   */
+
+  const url =
+    API_URL +
+    "?action=getRiwayatBarang" +
+    "&kodeQR=" +
+    encodeURIComponent(kodeQR) +
+    "&callback=" +
+    callbackName;
+
+  console.log(
+    "URL Riwayat:",
+    url
+  );
+
+  /*
+   * Buat script JSONP
+   */
+
+  const script =
+    document.createElement("script");
+
+  script.src =
+    url;
+
+  /*
+   * Jika gagal
+   */
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "Gagal mengambil riwayat"
+      );
+
+      delete window[callbackName];
+
+      const riwayat =
+        document.getElementById(
+          "riwayat"
+        );
+
+      if (riwayat) {
+
+        riwayat.innerHTML =
+          "<div class='info'>" +
+          "❌ Gagal mengambil riwayat transaksi." +
+          "</div>";
+
+      }
+
+    };
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+
+  function tampilRiwayat(response) {
+
+  const riwayatBox =
+    document.getElementById(
+      "riwayat"
+    );
+
+  if (!riwayatBox) {
+    return;
+  }
+
+  /*
+   * Jika gagal
+   */
+
+  if (!response.success) {
+
+    riwayatBox.innerHTML =
+
+      "<div class='info'>" +
+
+      "❌ " +
+
+      (response.message ||
+       "Riwayat tidak dapat dimuat.") +
+
+      "</div>";
+
+    return;
+
+  }
+
+  const data =
+    response.riwayat || [];
+
+  /*
+   * Tidak ada riwayat
+   */
+
+  if (data.length === 0) {
+
+    riwayatBox.innerHTML =
+
+      "<div class='info'>" +
+
+      "📋 Belum ada riwayat transaksi." +
+
+      "</div>";
+
+    return;
+
+  }
+
+  let html =
+
+    "<div class='riwayat-title'>" +
+
+    "📋 RIWAYAT TRANSAKSI" +
+
+    "</div>";
+
+  html +=
+
+    "<div class='riwayat-count'>" +
+
+    "Total transaksi: " +
+
+    data.length +
+
+    "</div>";
+
+  /*
+   * Tampilkan transaksi
+   */
+
+  data.forEach(function(item) {
+
+    html +=
+
+      "<div class='riwayat-item'>" +
+
+      "<b>" +
+      (item.idTransaksi || "-") +
+      "</b>" +
+
+      "<br><br>" +
+
+      "<b>Peminjam:</b><br>" +
+      (item.namaPeminjam || "-") +
+
+      "<br><br>" +
+
+      "<b>Tanggal Pinjam:</b><br>" +
+      formatTanggal(
+        item.tanggalPinjam
+      ) +
+
+      "<br><br>" +
+
+      "<b>Rencana Kembali:</b><br>" +
+      formatTanggal(
+        item.tanggalRencanaKembali
+      ) +
+
+      "<br><br>" +
+
+      "<b>Status:</b><br>" +
+      (item.status || "-");
+
+    /*
+     * Jika sudah dikembalikan
+     */
+
+    if (
+      item.status ===
+      "DIKEMBALIKAN"
+    ) {
+
+      html +=
+
+        "<br><br>" +
+
+        "<b>Tanggal Kembali:</b><br>" +
+
+        formatTanggal(
+          item.tanggalKembali
+        ) +
+
+        "<br><br>" +
+
+        "<b>Kondisi Saat Kembali:</b><br>" +
+
+        (item.kondisiSaatKembali ||
+         "-");
+
+    }
+
+    html +=
+
+      "</div>";
+
+  });
+
+  riwayatBox.innerHTML =
+    html;
+
+}
 /*
  * ==========================================
  * FORM PEMINJAMAN
