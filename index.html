@@ -857,12 +857,17 @@ function ambilRiwayatBarang(kodeQR) {
 
       "<br><br>" +
 
-      "<b>Peminjam:</b><br>" +
-      (item.namaPeminjam || "-") +
+    "<b>Peminjam:</b><br>" +
+(item.namaPeminjam || "-") +
 
-      "<br><br>" +
+"<br><br>" +
 
-      "<b>Tanggal Pinjam:</b><br>" +
+"<b>Unit:</b><br>" +
+(item.unit || "-") +
+
+"<br><br>" +
+
+"<b>Tanggal Pinjam:</b><br>" +
       formatTanggal(
         item.tanggalPinjam
       ) +
