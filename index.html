@@ -902,8 +902,15 @@ function ambilRiwayatBarang(kodeQR) {
 
         "<b>Kondisi Saat Kembali:</b><br>" +
 
-        (item.kondisiSaatKembali ||
-         "-");
+(item.kondisiSaatKembali ||
+ "-") +
+
+"<br><br>" +
+
+"<b>Catatan:</b><br>" +
+
+(item.catatan ||
+ "-");
 
     }
 
