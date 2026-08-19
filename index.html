@@ -304,6 +304,7 @@ let keranjangPeminjaman = [];
   );
 
     tampilKeranjang();
+    lanjutScan();
 
 }
 function tampilKeranjang() {
@@ -1875,7 +1876,15 @@ function mulaiScanner() {
 
 }
 
+function lanjutScan() {
 
+  console.log(
+    "📷 Mengaktifkan scanner kembali..."
+  );
+
+  mulaiScanner();
+
+}
 /*
  * ==========================================
  * JALANKAN
