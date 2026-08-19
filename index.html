@@ -1016,7 +1016,109 @@ function formPengembalianMassal(pinjam) {
 
 }
 
-  function prosesPengembalianMassal(pinjam) {
+ 
+
+function ambilRiwayatBarang(kodeQR) {
+
+  console.log(
+    "Mengambil riwayat:",
+    kodeQR
+  );
+
+  const callbackName =
+    "hasilRiwayat_" +
+    Date.now();
+
+  /*
+   * Callback JSONP
+   */
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "Response riwayat:",
+        response
+      );
+
+      /*
+       * Hapus callback
+       */
+
+      delete window[callbackName];
+
+      /*
+       * Tampilkan hasil
+       */
+
+      tampilRiwayat(response);
+
+    };
+
+  /*
+   * Buat URL JSONP
+   */
+
+  const url =
+    API_URL +
+    "?action=getRiwayatBarang" +
+    "&kodeQR=" +
+    encodeURIComponent(kodeQR) +
+    "&callback=" +
+    callbackName;
+
+  console.log(
+    "URL Riwayat:",
+    url
+  );
+
+  /*
+   * Buat script JSONP
+   */
+
+  const script =
+    document.createElement("script");
+
+  script.src =
+    url;
+
+  /*
+   * Jika gagal
+   */
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "Gagal mengambil riwayat"
+      );
+
+      delete window[callbackName];
+
+      const riwayat =
+        document.getElementById(
+          "riwayat"
+        );
+
+      if (riwayat) {
+
+        riwayat.innerHTML =
+          "<div class='info'>" +
+          "❌ Gagal mengambil riwayat transaksi." +
+          "</div>";
+
+      }
+
+    };
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+function prosesPengembalianMassal(pinjam) {
 
   console.log(
     "↩️ Memproses pengembalian massal:",
@@ -1262,106 +1364,9 @@ function formPengembalianMassal(pinjam) {
 }
 
 
-function ambilRiwayatBarang(kodeQR) {
-
-  console.log(
-    "Mengambil riwayat:",
-    kodeQR
-  );
-
-  const callbackName =
-    "hasilRiwayat_" +
-    Date.now();
-
-  /*
-   * Callback JSONP
-   */
-
-  window[callbackName] =
-    function(response) {
-
-      console.log(
-        "Response riwayat:",
-        response
-      );
-
-      /*
-       * Hapus callback
-       */
-
-      delete window[callbackName];
-
-      /*
-       * Tampilkan hasil
-       */
-
-      tampilRiwayat(response);
-
-    };
-
-  /*
-   * Buat URL JSONP
-   */
-
-  const url =
-    API_URL +
-    "?action=getRiwayatBarang" +
-    "&kodeQR=" +
-    encodeURIComponent(kodeQR) +
-    "&callback=" +
-    callbackName;
-
-  console.log(
-    "URL Riwayat:",
-    url
-  );
-
-  /*
-   * Buat script JSONP
-   */
-
-  const script =
-    document.createElement("script");
-
-  script.src =
-    url;
-
-  /*
-   * Jika gagal
-   */
-
-  script.onerror =
-    function() {
-
-      console.error(
-        "Gagal mengambil riwayat"
-      );
-
-      delete window[callbackName];
-
-      const riwayat =
-        document.getElementById(
-          "riwayat"
-        );
-
-      if (riwayat) {
-
-        riwayat.innerHTML =
-          "<div class='info'>" +
-          "❌ Gagal mengambil riwayat transaksi." +
-          "</div>";
-
-      }
-
-    };
-
-  document.body.appendChild(
-    script
-  );
-
-}
 
 
+  
 
   function tampilRiwayat(response) {
 
