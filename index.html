@@ -303,8 +303,117 @@ let keranjangPeminjaman = [];
     "✅ Barang ditambahkan ke keranjang."
   );
 
-}
+    tampilKeranjang();
 
+}
+function tampilKeranjang() {
+
+  const hasil =
+    document.getElementById("hasil");
+
+  if (
+    keranjangPeminjaman.length === 0
+  ) {
+
+    return;
+
+  }
+
+  let html =
+
+    "<div class='keranjang'>" +
+
+    "<div class='keranjang-title'>" +
+
+    "🛒 KERANJANG PEMINJAMAN" +
+
+    "</div>" +
+
+    "<div class='keranjang-count'>" +
+
+    "Jumlah barang: " +
+
+    keranjangPeminjaman.length +
+
+    "</div>";
+
+
+  /*
+   * DAFTAR BARANG
+   */
+
+  keranjangPeminjaman.forEach(
+    function(item, index) {
+
+      html +=
+
+        "<div class='keranjang-item'>" +
+
+        "<b>" +
+
+        (index + 1) +
+
+        ". " +
+
+        (item.namaBarang || "-") +
+
+        "</b>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Kode Register: " +
+
+        (item.kodeRegister || "-") +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "NUP: " +
+
+        (item.nup || "-") +
+
+        "</small>" +
+
+        "</div>";
+
+    }
+  );
+
+
+  /*
+   * TOMBOL LANJUT
+   */
+
+  html +=
+
+    "<button " +
+
+    "class='btn-lanjut' " +
+
+    "onclick='formPeminjamanMassal()'>" +
+
+    "👤 LANJUT KE DATA PEMINJAM" +
+
+    "</button>";
+
+
+  html +=
+
+    "</div>";
+
+
+  /*
+   * Tambahkan ke halaman
+   */
+
+  hasil.innerHTML += html;
+
+}
 /*
  * ==========================================
  * URL APPS SCRIPT
