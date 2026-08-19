@@ -1016,7 +1016,250 @@ function formPengembalianMassal(pinjam) {
 
 }
 
-  
+  function prosesPengembalianMassal(pinjam) {
+
+  console.log(
+    "↩️ Memproses pengembalian massal:",
+    pinjam
+  );
+
+
+  // ==========================================
+  // 1. VALIDASI BATCH
+  // ==========================================
+
+  if (
+    !pinjam ||
+    !pinjam.batchId
+  ) {
+
+    alert(
+      "Batch ID tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 2. AMBIL DATA FORM
+  // ==========================================
+
+  const kondisiSaatKembali =
+    document.getElementById(
+      "kondisiMassal"
+    ).value.trim();
+
+
+  const catatan =
+    document.getElementById(
+      "catatanMassal"
+    ).value.trim();
+
+
+  // ==========================================
+  // 3. TAMPILKAN LOADING
+  // ==========================================
+
+  const hasil =
+    document.getElementById(
+      "hasil"
+    );
+
+
+  hasil.innerHTML =
+
+    "<div class='loading'>" +
+
+    "⏳ Memproses pengembalian semua barang..." +
+
+    "</div>";
+
+
+  // ==========================================
+  // 4. CALLBACK JSONP
+  // ==========================================
+
+  const callbackName =
+    "hasilPengembalianMassal_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Response Pengembalian Massal:",
+        response
+      );
+
+
+      delete window[callbackName];
+
+
+      // ======================================
+      // GAGAL
+      // ======================================
+
+      if (!response.success) {
+
+        hasil.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ " +
+
+          (
+            response.message ||
+            "Pengembalian gagal."
+          ) +
+
+          "</div>";
+
+        return;
+
+      }
+
+
+      // ======================================
+      // BERHASIL
+      // ======================================
+
+      hasil.innerHTML =
+
+        "<div class='status tersedia'>" +
+
+        "✅ PENGEMBALIAN BERHASIL" +
+
+        "</div>" +
+
+        "<div class='info'>" +
+
+        "<b>Batch ID:</b><br>" +
+
+        (
+          response.batchId ||
+          pinjam.batchId
+        ) +
+
+        "<br><br>" +
+
+        "<b>Jumlah barang dikembalikan:</b><br>" +
+
+        response.jumlahBerhasil +
+
+        "<br><br>" +
+
+        "Semua barang dalam batch berhasil dikembalikan." +
+
+        "</div>" +
+
+
+        "<button " +
+
+        "class='btn-scan' " +
+
+        "onclick='location.reload()'>" +
+
+        "📷 SCAN BARANG LAIN" +
+
+        "</button>";
+
+    };
+
+
+  // ==========================================
+  // 5. DATA YANG DIKIRIM
+  // ==========================================
+
+  const data = {
+
+    batchId:
+      pinjam.batchId,
+
+    kondisiSaatKembali:
+      kondisiSaatKembali || "Baik",
+
+    catatan:
+      catatan
+
+  };
+
+
+  console.log(
+    "📦 Data pengembalian massal:",
+    data
+  );
+
+
+  // ==========================================
+  // 6. URL APPS SCRIPT
+  // ==========================================
+
+  const url =
+    API_URL +
+
+    "?action=kembalikanBarangMassal" +
+
+    "&data=" +
+
+    encodeURIComponent(
+      JSON.stringify(data)
+    ) +
+
+    "&callback=" +
+
+    callbackName;
+
+
+  console.log(
+    "🌐 URL:",
+    url
+  );
+
+
+  // ==========================================
+  // 7. KIRIM JSONP
+  // ==========================================
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "Gagal menghubungi Apps Script."
+      );
+
+
+      delete window[callbackName];
+
+
+      hasil.innerHTML =
+
+        "<div class='info'>" +
+
+        "❌ Gagal menghubungi server Apps Script." +
+
+        "</div>";
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
 
 
 function ambilRiwayatBarang(kodeQR) {
