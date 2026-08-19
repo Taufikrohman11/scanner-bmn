@@ -811,6 +811,8 @@ console.log(
 
         "</button>";
 
+      
+
       /*
  * ==========================================
  * PENGEMBALIAN MASSAL
@@ -898,7 +900,121 @@ if (
 
 }
 
+function formPengembalianMassal(pinjam) {
 
+  const hasil =
+    document.getElementById("hasil");
+
+
+  /*
+   * ==========================================
+   * VALIDASI BATCH
+   * ==========================================
+   */
+
+  if (
+    !pinjam ||
+    !pinjam.batchId
+  ) {
+
+    alert(
+      "Batch ID tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * ==========================================
+   * TAMPILKAN FORM
+   * ==========================================
+   */
+
+  hasil.innerHTML =
+
+    "<strong>📦 PENGEMBALIAN MASSAL</strong>" +
+
+    "<br><br>" +
+
+    "<div class='info'>" +
+
+    "<b>Batch ID:</b><br>" +
+
+    pinjam.batchId +
+
+    "<br><br>" +
+
+    "<b>Peminjam:</b><br>" +
+
+    (pinjam.namaPeminjam || "-") +
+
+    "<br><br>" +
+
+    "<b>NIP / NIK:</b><br>" +
+
+    (pinjam.nipNik || "-") +
+
+    "<br><br>" +
+
+    "<b>Unit:</b><br>" +
+
+    (pinjam.unit || "-") +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Kondisi Semua Barang Saat Kembali</label>" +
+
+    "<input id='kondisiMassal' " +
+
+    "value='Baik'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Catatan Pengembalian</label>" +
+
+    "<textarea " +
+
+    "id='catatanMassal' " +
+
+    "placeholder='Catatan pengembalian'></textarea>" +
+
+    "</div>" +
+
+
+    "<button " +
+
+    "class='btn-kembali' " +
+
+    "onclick='prosesPengembalianMassal(" +
+
+    JSON.stringify(pinjam) +
+
+    ")'>" +
+
+    "↩️ KEMBALIKAN SEMUA BARANG" +
+
+    "</button>" +
+
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='location.reload()'>" +
+
+    "❌ BATAL" +
+
+    "</button>";
+
+}
 
   
 
