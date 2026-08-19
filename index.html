@@ -1467,7 +1467,332 @@ function formPeminjaman(data) {
     "</button>";
 
 }
+function kirimPeminjamanMassal() {
 
+  console.log(
+    "📤 Memproses peminjaman massal..."
+  );
+
+
+  // ==========================================
+  // 1. CEK KERANJANG
+  // ==========================================
+
+  if (
+    keranjangPeminjaman.length === 0
+  ) {
+
+    alert(
+      "Keranjang peminjaman masih kosong."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 2. AMBIL DATA FORM
+  // ==========================================
+
+  const namaPeminjam =
+    document.getElementById(
+      "namaPeminjam"
+    ).value.trim();
+
+
+  const nipNik =
+    document.getElementById(
+      "nipNik"
+    ).value.trim();
+
+
+  const unit =
+    document.getElementById(
+      "unit"
+    ).value.trim();
+
+
+  const keperluan =
+    document.getElementById(
+      "keperluan"
+    ).value.trim();
+
+
+  const tanggalRencanaKembali =
+    document.getElementById(
+      "tanggalKembali"
+    ).value;
+
+
+  const kondisiSaatPinjam =
+    document.getElementById(
+      "kondisi"
+    ).value.trim();
+
+
+  const catatan =
+    document.getElementById(
+      "catatan"
+    ).value.trim();
+
+
+  // ==========================================
+  // 3. VALIDASI
+  // ==========================================
+
+  if (!namaPeminjam) {
+
+    alert(
+      "Nama peminjam wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if (!nipNik) {
+
+    alert(
+      "NIP / NIK wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if (!keperluan) {
+
+    alert(
+      "Keperluan wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if (!tanggalRencanaKembali) {
+
+    alert(
+      "Tanggal rencana kembali wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 4. BUAT DATA MASSAL
+  // ==========================================
+
+  const data = {
+
+    barang:
+      keranjangPeminjaman,
+
+    namaPeminjam:
+      namaPeminjam,
+
+    nipNik:
+      nipNik,
+
+    unit:
+      unit,
+
+    keperluan:
+      keperluan,
+
+    tanggalRencanaKembali:
+      tanggalRencanaKembali,
+
+    kondisiSaatPinjam:
+      kondisiSaatPinjam || "Baik",
+
+    catatan:
+      catatan,
+
+    petugas:
+      "ADMIN"
+
+  };
+
+
+  console.log(
+    "📦 DATA PEMINJAMAN MASSAL:",
+    data
+  );
+
+
+  // ==========================================
+  // 5. TAMPILKAN LOADING
+  // ==========================================
+
+  const hasil =
+    document.getElementById(
+      "hasil"
+    );
+
+
+  hasil.innerHTML =
+
+    "<div class='loading'>" +
+
+    "⏳ Menyimpan " +
+
+    keranjangPeminjaman.length +
+
+    " barang..." +
+
+    "</div>";
+
+
+  // ==========================================
+  // 6. CALLBACK JSONP
+  // ==========================================
+
+  const callbackName =
+    "hasilPeminjamanMassal_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Response Apps Script:",
+        response
+      );
+
+
+      delete window[callbackName];
+
+
+      if (!response.success) {
+
+        hasil.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ " +
+
+          (
+            response.message ||
+            "Peminjaman gagal disimpan."
+          ) +
+
+          "</div>";
+
+        return;
+
+      }
+
+
+      // ======================================
+      // BERHASIL
+      // ======================================
+
+      hasil.innerHTML =
+
+        "<div class='status tersedia'>" +
+
+        "✅ PEMINJAMAN BERHASIL" +
+
+        "</div>" +
+
+        "<div class='info'>" +
+
+        "<b>Jumlah barang:</b><br>" +
+
+        response.jumlahBerhasil +
+
+        "<br><br>" +
+
+        "<b>Batch ID:</b><br>" +
+
+        response.batchId +
+
+        "<br><br>" +
+
+        "Semua barang berhasil diproses." +
+
+        "</div>";
+
+
+      console.log(
+        "🎉 Peminjaman massal berhasil:",
+        response
+      );
+
+    };
+
+
+  // ==========================================
+  // 7. KIRIM KE APPS SCRIPT
+  // ==========================================
+
+  const url =
+    API_URL +
+
+    "?action=simpanPeminjamanMassal" +
+
+    "&data=" +
+
+    encodeURIComponent(
+      JSON.stringify(data)
+    ) +
+
+    "&callback=" +
+
+    callbackName;
+
+
+  console.log(
+    "🌐 URL:",
+    url
+  );
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "Gagal menghubungi Apps Script."
+      );
+
+
+      delete window[callbackName];
+
+
+      hasil.innerHTML =
+
+        "<div class='info'>" +
+
+        "❌ Gagal menghubungi server Apps Script." +
+
+        "</div>";
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
 
 /*
  * ==========================================
