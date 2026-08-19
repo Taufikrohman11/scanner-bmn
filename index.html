@@ -928,7 +928,7 @@ function formPengembalianMassal(pinjam) {
 
   /*
    * ==========================================
-   * TAMPILKAN FORM
+   * TAMPILKAN LOADING
    * ==========================================
    */
 
@@ -964,17 +964,287 @@ function formPengembalianMassal(pinjam) {
 
     "</div>" +
 
+    "<div class='loading'>" +
+
+    "🔄 Mengambil daftar barang..." +
+
+    "</div>";
+
+
+  /*
+   * ==========================================
+   * AMBIL BARANG DALAM BATCH
+   * ==========================================
+   */
+
+  ambilBarangByBatchId(
+    pinjam
+  );
+
+}
+
+
+
+function ambilBarangByBatchId(pinjam) {
+
+  console.log(
+    "📦 Mengambil barang dalam batch:",
+    pinjam.batchId
+  );
+
+
+  /*
+   * ==========================================
+   * CALLBACK JSONP
+   * ==========================================
+   */
+
+  const callbackName =
+    "hasilBarangBatch_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Response barang batch:",
+        response
+      );
+
+
+      /*
+       * Hapus callback
+       */
+
+      delete window[callbackName];
+
+
+      /*
+       * Jika gagal
+       */
+
+      if (!response.success) {
+
+        const hasil =
+          document.getElementById("hasil");
+
+        hasil.innerHTML +=
+
+          "<div class='info'>" +
+
+          "❌ " +
+
+          (
+            response.message ||
+            "Gagal mengambil daftar barang."
+          ) +
+
+          "</div>";
+
+        return;
+
+      }
+
+
+      /*
+       * Tampilkan daftar barang
+       */
+
+      tampilDaftarBarangBatch(
+        pinjam,
+        response
+      );
+
+    };
+
+
+  /*
+   * ==========================================
+   * URL JSONP
+   * ==========================================
+   */
+
+  const url =
+    API_URL +
+
+    "?action=getBarangByBatchId" +
+
+    "&batchId=" +
+
+    encodeURIComponent(
+      pinjam.batchId
+    ) +
+
+    "&callback=" +
+
+    callbackName;
+
+
+  console.log(
+    "🌐 URL Barang Batch:",
+    url
+  );
+
+
+  /*
+   * ==========================================
+   * SCRIPT JSONP
+   * ==========================================
+   */
+
+  const script =
+    document.createElement("script");
+
+
+  script.src =
+    url;
+
+
+  /*
+   * Error koneksi
+   */
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "❌ Gagal mengambil barang dalam batch."
+      );
+
+
+      delete window[callbackName];
+
+
+      const hasil =
+        document.getElementById("hasil");
+
+      hasil.innerHTML +=
+
+        "<div class='info'>" +
+
+        "❌ Gagal mengambil daftar barang." +
+
+        "</div>";
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+function tampilDaftarBarangBatch(
+  pinjam,
+  response
+) {
+
+  const hasil =
+    document.getElementById("hasil");
+
+
+  let html = "";
+
+
+  /*
+   * ==========================================
+   * DAFTAR BARANG
+   * ==========================================
+   */
+
+  html +=
+
+    "<div class='info'>" +
+
+    "<b>📦 DAFTAR BARANG</b>" +
+
+    "<br><br>" +
+
+    "<b>Jumlah barang:</b> " +
+
+    response.jumlah +
+
+    "</div>";
+
+
+  response.barang.forEach(
+    function(item, index) {
+
+      html +=
+
+        "<div class='keranjang-item'>" +
+
+        "<b>" +
+
+        (index + 1) +
+
+        ". " +
+
+        (item.namaBarang || "-") +
+
+        "</b>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Kode Register: " +
+
+        (item.kodeRegister || "-") +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "NUP: " +
+
+        (item.nup || "-") +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Ruangan: " +
+
+        (item.ruanganAsal || "-") +
+
+        "</small>" +
+
+        "</div>";
+
+    }
+  );
+
+
+  /*
+   * ==========================================
+   * FORM PENGEMBALIAN
+   * ==========================================
+   */
+
+  html +=
 
     "<div class='form-group'>" +
 
     "<label>Kondisi Semua Barang Saat Kembali</label>" +
 
-    "<input id='kondisiMassal' " +
+    "<input " +
+
+    "id='kondisiMassal' " +
 
     "value='Baik'>" +
 
-    "</div>" +
+    "</div>";
 
+
+  html +=
 
     "<div class='form-group'>" +
 
@@ -986,8 +1256,16 @@ function formPengembalianMassal(pinjam) {
 
     "placeholder='Catatan pengembalian'></textarea>" +
 
-    "</div>" +
+    "</div>";
 
+
+  /*
+   * ==========================================
+   * TOMBOL KEMBALIKAN
+   * ==========================================
+   */
+
+  html +=
 
     "<button " +
 
@@ -1001,8 +1279,16 @@ function formPengembalianMassal(pinjam) {
 
     "↩️ KEMBALIKAN SEMUA BARANG" +
 
-    "</button>" +
+    "</button>";
 
+
+  /*
+   * ==========================================
+   * TOMBOL BATAL
+   * ==========================================
+   */
+
+  html +=
 
     "<button " +
 
@@ -1014,7 +1300,22 @@ function formPengembalianMassal(pinjam) {
 
     "</button>";
 
+
+  /*
+   * TAMPILKAN
+   */
+
+  hasil.innerHTML =
+    hasil.innerHTML +
+    html;
+
 }
+
+
+  
+
+
+  
 
  
 
