@@ -227,6 +227,84 @@
 let scanner = null;
 let keranjangPeminjaman = [];
 
+
+
+
+  function tambahKeKeranjang(data) {
+
+  console.log(
+    "🛒 Menambahkan ke keranjang:",
+    data
+  );
+
+
+  // ==========================================
+  // CEK BARANG SUDAH ADA
+  // ==========================================
+
+  const sudahAda =
+    keranjangPeminjaman.some(
+      function(item) {
+
+        return (
+          String(item.kodeRegister).trim() ===
+          String(data.kodeRegister).trim()
+        );
+
+      }
+    );
+
+
+  if (sudahAda) {
+
+    alert(
+      "Barang ini sudah ada di keranjang."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // TAMBAHKAN BARANG
+  // ==========================================
+
+  keranjangPeminjaman.push({
+
+    kodeRegister:
+      data.kodeRegister || "",
+
+    nup:
+      data.nup || "",
+
+    namaBarang:
+      data.namaBarang || "",
+
+    merkTipe:
+      data.merkTipe || "",
+
+    ruangan:
+      data.ruangan || "",
+
+    kondisi:
+      data.kondisi || ""
+
+  });
+
+
+  console.log(
+    "🛒 Isi keranjang:",
+    keranjangPeminjaman
+  );
+
+
+  alert(
+    "✅ Barang ditambahkan ke keranjang."
+  );
+
+}
+
 /*
  * ==========================================
  * URL APPS SCRIPT
