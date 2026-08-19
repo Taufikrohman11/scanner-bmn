@@ -1262,6 +1262,212 @@ function formPeminjaman(data) {
 
 }
 
+  function formPeminjamanMassal() {
+
+  const hasil =
+    document.getElementById("hasil");
+
+
+  /*
+   * CEK KERANJANG
+   */
+
+  if (
+    keranjangPeminjaman.length === 0
+  ) {
+
+    alert(
+      "Keranjang peminjaman masih kosong."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * DAFTAR BARANG
+   */
+
+  let daftarBarang =
+
+    "<div class='keranjang'>" +
+
+    "<div class='keranjang-title'>" +
+
+    "🛒 BARANG YANG AKAN DIPINJAM" +
+
+    "</div>" +
+
+    "<div class='keranjang-count'>" +
+
+    "Jumlah barang: " +
+
+    keranjangPeminjaman.length +
+
+    "</div>";
+
+
+  keranjangPeminjaman.forEach(
+    function(item, index) {
+
+      daftarBarang +=
+
+        "<div class='keranjang-item'>" +
+
+        "<b>" +
+
+        (index + 1) +
+
+        ". " +
+
+        (item.namaBarang || "-") +
+
+        "</b>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Kode Register: " +
+
+        (item.kodeRegister || "-") +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "NUP: " +
+
+        (item.nup || "-") +
+
+        "</small>" +
+
+        "</div>";
+
+    }
+  );
+
+
+  daftarBarang +=
+    "</div>";
+
+
+  /*
+   * FORM PEMINJAM
+   */
+
+  hasil.innerHTML =
+
+    daftarBarang +
+
+    "<strong>📤 DATA PEMINJAM</strong>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Nama Peminjam</label>" +
+
+    "<input id='namaPeminjam' " +
+
+    "placeholder='Nama lengkap'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>NIP / NIK</label>" +
+
+    "<input id='nipNik' " +
+
+    "placeholder='NIP / NIK'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Unit</label>" +
+
+    "<input id='unit' " +
+
+    "value='BPVP Lombok Timur'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Keperluan</label>" +
+
+    "<textarea id='keperluan' " +
+
+    "placeholder='Keperluan peminjaman'></textarea>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Rencana Tanggal Kembali</label>" +
+
+    "<input id='tanggalKembali' " +
+
+    "type='date'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Kondisi Barang</label>" +
+
+    "<input id='kondisi' " +
+
+    "value='Baik'>" +
+
+    "</div>" +
+
+
+    "<div class='form-group'>" +
+
+    "<label>Catatan</label>" +
+
+    "<textarea id='catatan'></textarea>" +
+
+    "</div>" +
+
+
+    "<button " +
+
+    "class='btn-pinjam' " +
+
+    "onclick='kirimPeminjamanMassal()'>" +
+
+    "📤 PINJAM " +
+
+    keranjangPeminjaman.length +
+
+    " BARANG" +
+
+    "</button>" +
+
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='location.reload()'>" +
+
+    "❌ BATAL" +
+
+    "</button>";
+
+}
+
 
 /*
  * ==========================================
