@@ -811,6 +811,35 @@ console.log(
 
         "</button>";
 
+      /*
+ * ==========================================
+ * PENGEMBALIAN MASSAL
+ * ==========================================
+ */
+
+if (
+  pinjam &&
+  pinjam.batchId
+) {
+
+  html +=
+
+    "<button " +
+
+    "class='btn-kembali-massal' " +
+
+    "onclick='formPengembalianMassal(" +
+
+    JSON.stringify(pinjam) +
+
+    ")'>" +
+
+    "📦 KEMBALIKAN SEMUA BARANG" +
+
+    "</button>";
+
+}
+
     }
 
   }
