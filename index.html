@@ -3372,6 +3372,12 @@ function kirimPeminjamanMassal() {
 
 function simpanPeminjaman(data) {
 
+  /*
+   * ==========================================
+   * AMBIL DATA FORM
+   * ==========================================
+   */
+
   const nama =
     document.getElementById(
       "namaPeminjam"
@@ -3381,6 +3387,18 @@ function simpanPeminjaman(data) {
   const nip =
     document.getElementById(
       "nipNik"
+    ).value.trim();
+
+
+  const jabatan =
+    document.getElementById(
+      "jabatan"
+    ).value.trim();
+
+
+  const noHp =
+    document.getElementById(
+      "noHp"
     ).value.trim();
 
 
@@ -3415,7 +3433,9 @@ function simpanPeminjaman(data) {
 
 
   /*
-   * Validasi
+   * ==========================================
+   * VALIDASI
+   * ==========================================
    */
 
   if (!nama) {
@@ -3429,15 +3449,12 @@ function simpanPeminjaman(data) {
   }
 
 
-  if (!nip) {
-
-    alert(
-      "NIP / NIK wajib diisi."
-    );
-
-    return;
-
-  }
+  /*
+   * NIP TIDAK WAJIB
+   *
+   * Karena ada pegawai yang
+   * memang tidak memiliki NIP.
+   */
 
 
   if (!keperluan) {
@@ -3463,7 +3480,9 @@ function simpanPeminjaman(data) {
 
 
   /*
-   * Tampilkan loading
+   * ==========================================
+   * LOADING
+   * ==========================================
    */
 
   document.getElementById(
@@ -3478,7 +3497,9 @@ function simpanPeminjaman(data) {
 
 
   /*
-   * Data transaksi
+   * ==========================================
+   * DATA TRANSAKSI
+   * ==========================================
    */
 
   const transaksi = {
@@ -3504,6 +3525,12 @@ function simpanPeminjaman(data) {
     nipNik:
       nip,
 
+    jabatan:
+      jabatan,
+
+    noHp:
+      noHp,
+
     unit:
       unit,
 
@@ -3525,14 +3552,37 @@ function simpanPeminjaman(data) {
   };
 
 
+  console.log(
+    "📦 Data transaksi:",
+    transaksi
+  );
+
+
   /*
-   * Panggil Apps Script
+   * ==========================================
+   * PANGGIL APPS SCRIPT
+   * ==========================================
    */
 
   panggilJSONP(
+
     "simpanPeminjaman",
+
     transaksi,
+
     function(response) {
+
+      console.log(
+        "📥 Response simpan:",
+        response
+      );
+
+
+      /*
+       * ======================================
+       * GAGAL
+       * ======================================
+       */
 
       if (!response.success) {
 
@@ -3544,6 +3594,12 @@ function simpanPeminjaman(data) {
 
       }
 
+
+      /*
+       * ======================================
+       * BERHASIL
+       * ======================================
+       */
 
       document.getElementById(
         "hasil"
