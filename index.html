@@ -695,7 +695,7 @@ console.log(
    * ==========================================
    */
 
-  if (status === "TERSEDIA") {
+ if (status === "TERSEDIA") {
 
   html +=
 
@@ -742,6 +742,12 @@ console.log(
   }
 
 
+  /*
+   * ==========================================
+   * TOMBOL PINJAM LANGSUNG
+   * ==========================================
+   */
+
   html +=
 
     "<button " +
@@ -756,40 +762,32 @@ console.log(
 
     "📤 PINJAM BARANG" +
 
-    "</button>"; +
-
-      "<button " +
-
-      "class='btn-pinjam' " +
-
-      "onclick='formPeminjaman(" +
-
-      JSON.stringify(data) +
-
-      ")'>" +
-
-      "📤 PINJAM BARANG" +
-
-      "</button>";
+    "</button>";
 
 
-    html +=
+  /*
+   * ==========================================
+   * TOMBOL KERANJANG
+   * ==========================================
+   */
 
-  "<button " +
+  html +=
 
-  "class='btn-pinjam' " +
+    "<button " +
 
-  "onclick='tambahKeKeranjang(" +
+    "class='btn-pinjam' " +
 
-  JSON.stringify(data) +
+    "onclick='tambahKeKeranjang(" +
 
-  ")'>" +
+    JSON.stringify(data) +
 
-  "🛒 TAMBAHKAN KE KERANJANG" +
+    ")'>" +
 
-  "</button>";
+    "🛒 TAMBAHKAN KE KERANJANG" +
 
-  }
+    "</button>";
+
+}
 
 
   /*
