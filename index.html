@@ -2584,6 +2584,119 @@ function formPeminjaman(data) {
 
 }
 
+function pilihPegawai(pegawai) {
+
+  console.log(
+    "👤 Pegawai dipilih:",
+    pegawai
+  );
+
+
+  /*
+   * ==========================================
+   * ISI NAMA
+   * ==========================================
+   */
+
+  const nama =
+    document.getElementById(
+      "namaPeminjam"
+    );
+
+  if (nama) {
+
+    nama.value =
+      pegawai.nama || "";
+
+  }
+
+
+  /*
+   * ==========================================
+   * ISI NIP
+   * ==========================================
+   */
+
+  const nipNik =
+    document.getElementById(
+      "nipNik"
+    );
+
+  if (nipNik) {
+
+    nipNik.value =
+      pegawai.nip || "";
+
+  }
+
+
+  /*
+   * ==========================================
+   * ISI JABATAN
+   * ==========================================
+   */
+
+  const jabatan =
+    document.getElementById(
+      "jabatan"
+    );
+
+  if (jabatan) {
+
+    jabatan.value =
+      pegawai.jabatan || "";
+
+  }
+
+
+  /*
+   * ==========================================
+   * ISI NO HP / WA
+   * ==========================================
+   */
+
+  const noHp =
+    document.getElementById(
+      "noHp"
+    );
+
+  if (noHp) {
+
+    noHp.value =
+      pegawai.noHp || "";
+
+  }
+
+
+  /*
+   * ==========================================
+   * HILANGKAN HASIL PENCARIAN
+   * ==========================================
+   */
+
+  const hasilPegawai =
+    document.getElementById(
+      "hasilPegawai"
+    );
+
+  if (hasilPegawai) {
+
+    hasilPegawai.innerHTML =
+      "";
+
+  }
+
+
+  console.log(
+    "✅ Data pegawai berhasil diisi otomatis."
+  );
+
+}
+
+
+
+  
+
   function formPeminjamanMassal() {
 
   const hasil =
