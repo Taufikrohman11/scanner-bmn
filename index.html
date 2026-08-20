@@ -641,7 +641,11 @@ console.log(
   const status =
     response.status;
 
+  const dataTerakhir =
+    response.dataTerakhir || null;
 
+
+  
   let html = "";
 
 
@@ -693,13 +697,66 @@ console.log(
 
   if (status === "TERSEDIA") {
 
+  html +=
+
+    "<div class='status tersedia'>" +
+
+    "🟢 BARANG TERSEDIA" +
+
+    "</div>";
+
+
+  /*
+   * ==========================================
+   * KONDISI TERAKHIR
+   * ==========================================
+   */
+
+  if (dataTerakhir) {
+
     html +=
 
-      "<div class='status tersedia'>" +
+      "<div class='info'>" +
 
-      "🟢 BARANG TERSEDIA" +
+      "<b>Kondisi Terakhir:</b><br>" +
 
-      "</div>" +
+      (
+        dataTerakhir.kondisiSaatKembali ||
+        "Belum ada data"
+      ) +
+
+      "<br><br>" +
+
+      "<b>Terakhir Dikembalikan:</b><br>" +
+
+      (
+        dataTerakhir.tanggalKembali
+          ? formatTanggal(
+              dataTerakhir.tanggalKembali
+            )
+          : "Belum ada data"
+      ) +
+
+      "</div>";
+
+  }
+
+
+  html +=
+
+    "<button " +
+
+    "class='btn-pinjam' " +
+
+    "onclick='formPeminjaman(" +
+
+    JSON.stringify(data) +
+
+    ")'>" +
+
+    "📤 PINJAM BARANG" +
+
+    "</button>"; +
 
       "<button " +
 
