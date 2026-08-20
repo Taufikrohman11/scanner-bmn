@@ -1271,10 +1271,10 @@ function tampilDaftarBarangBatch(
 
     "class='btn-kembali' " +
 
-   "onclick='konfirmasiPengembalianMassal(" +
+  "onclick='konfirmasiPengembalianMassal(" +
 JSON.stringify(pinjam) +
 "," +
-response.jumlah +
+JSON.stringify(response.barang) +
 ")'>" +
 "↩️ KEMBALIKAN SEMUA BARANG" +
 
@@ -1314,28 +1314,86 @@ response.jumlah +
   
 function konfirmasiPengembalianMassal(
   pinjam,
-  jumlah
+  barang
 ) {
+
+  let daftarBarang = "";
+
+
+  /*
+   * ==========================================
+   * BUAT DAFTAR BARANG
+   * ==========================================
+   */
+
+  barang.forEach(
+    function(item, index) {
+
+      daftarBarang +=
+
+        (index + 1) +
+        ". " +
+        (item.namaBarang || "-") +
+
+        "\n" +
+
+        "   NUP: " +
+        (item.nup || "-") +
+
+        "\n" +
+
+        "   Kode: " +
+        (item.kodeRegister || "-") +
+
+        "\n\n";
+
+    }
+  );
+
+
+  /*
+   * ==========================================
+   * KONFIRMASI
+   * ==========================================
+   */
 
   const yakin =
     confirm(
+
       "⚠️ KONFIRMASI PENGEMBALIAN\n\n" +
 
       "Anda akan mengembalikan " +
-      jumlah +
+
+      barang.length +
+
       " barang sekaligus.\n\n" +
 
       "Batch ID:\n" +
+
       pinjam.batchId +
+
       "\n\n" +
 
       "Peminjam:\n" +
+
       (pinjam.namaPeminjam || "-") +
+
       "\n\n" +
 
-      "Apakah Anda yakin?"
+      "DAFTAR BARANG:\n\n" +
+
+      daftarBarang +
+
+      "Apakah Anda yakin ingin mengembalikan semua barang tersebut?"
+
     );
 
+
+  /*
+   * ==========================================
+   * BATAL
+   * ==========================================
+   */
 
   if (!yakin) {
 
@@ -1348,12 +1406,17 @@ function konfirmasiPengembalianMassal(
   }
 
 
+  /*
+   * ==========================================
+   * LANJUTKAN
+   * ==========================================
+   */
+
   prosesPengembalianMassal(
     pinjam
   );
 
 }
-
   
 
  
