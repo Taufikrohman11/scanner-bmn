@@ -2295,7 +2295,11 @@ function formPeminjaman(data) {
 
 
   function cariNamaPegawai(keyword) {
-
+    
+console.log(
+  "🔎 INPUT PENCARIAN PEGAWAI:",
+  keyword
+);
   /*
    * ==========================================
    * VALIDASI INPUT
@@ -2365,6 +2369,13 @@ function formPeminjaman(data) {
   window[callbackName] =
     function(response) {
 
+console.log(
+  "📥 HASIL CARI PEGAWAI:",
+  response
+);
+
+
+      
       console.log(
         "📥 Response cari pegawai:",
         response
