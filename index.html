@@ -1271,13 +1271,12 @@ function tampilDaftarBarangBatch(
 
     "class='btn-kembali' " +
 
-    "onclick='prosesPengembalianMassal(" +
-
-    JSON.stringify(pinjam) +
-
-    ")'>" +
-
-    "↩️ KEMBALIKAN SEMUA BARANG" +
+   "onclick='konfirmasiPengembalianMassal(" +
+JSON.stringify(pinjam) +
+"," +
+response.jumlah +
+")'>" +
+"↩️ KEMBALIKAN SEMUA BARANG" +
 
     "</button>";
 
@@ -1313,7 +1312,47 @@ function tampilDaftarBarangBatch(
 
 
   
+function konfirmasiPengembalianMassal(
+  pinjam,
+  jumlah
+) {
 
+  const yakin =
+    confirm(
+      "⚠️ KONFIRMASI PENGEMBALIAN\n\n" +
+
+      "Anda akan mengembalikan " +
+      jumlah +
+      " barang sekaligus.\n\n" +
+
+      "Batch ID:\n" +
+      pinjam.batchId +
+      "\n\n" +
+
+      "Peminjam:\n" +
+      (pinjam.namaPeminjam || "-") +
+      "\n\n" +
+
+      "Apakah Anda yakin?"
+    );
+
+
+  if (!yakin) {
+
+    console.log(
+      "Pengembalian massal dibatalkan."
+    );
+
+    return;
+
+  }
+
+
+  prosesPengembalianMassal(
+    pinjam
+  );
+
+}
 
   
 
