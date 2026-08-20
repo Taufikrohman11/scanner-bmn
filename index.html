@@ -1217,6 +1217,82 @@ function tampilDaftarBarangBatch(
 
         "</small>" +
 
+        response.barang.forEach(
+  function(item, index) {
+
+    html +=
+
+      "<div class='keranjang-item'>" +
+
+      "<b>" +
+
+      (index + 1) +
+
+      ". " +
+
+      (item.namaBarang || "-") +
+
+      "</b>" +
+
+      "<br>" +
+
+      "<small>" +
+
+      "Kode Register: " +
+
+      (item.kodeRegister || "-") +
+
+      "</small>" +
+
+      "<br>" +
+
+      "<small>" +
+
+      "NUP: " +
+
+      (item.nup || "-") +
+
+      "</small>" +
+
+      "<br>" +
+
+      "<small>" +
+
+      "Ruangan: " +
+
+      (item.ruanganAsal || "-") +
+
+      "</small>" +
+
+      "<div class='form-group'>" +
+
+      "<label>Kondisi Saat Kembali</label>" +
+
+      "<select " +
+
+      "class='kondisi-barang' " +
+
+      "data-kode='" +
+
+      item.kodeRegister +
+
+      "'>" +
+
+      "<option value='Baik'>Baik</option>" +
+
+      "<option value='Rusak Ringan'>Rusak Ringan</option>" +
+
+      "<option value='Rusak Berat'>Rusak Berat</option>" +
+
+      "</select>" +
+
+      "</div>" +
+
+      "</div>";
+
+  }
+);
+
         "</div>";
 
     }
@@ -1229,19 +1305,7 @@ function tampilDaftarBarangBatch(
    * ==========================================
    */
 
-  html +=
-
-    "<div class='form-group'>" +
-
-    "<label>Kondisi Semua Barang Saat Kembali</label>" +
-
-    "<input " +
-
-    "id='kondisiMassal' " +
-
-    "value='Baik'>" +
-
-    "</div>";
+  
 
 
   html +=
