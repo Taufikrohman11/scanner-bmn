@@ -1151,7 +1151,7 @@ function tampilDaftarBarangBatch(
 
   /*
    * ==========================================
-   * DAFTAR BARANG
+   * INFORMASI BATCH
    * ==========================================
    */
 
@@ -1169,6 +1169,12 @@ function tampilDaftarBarangBatch(
 
     "</div>";
 
+
+  /*
+   * ==========================================
+   * DAFTAR BARANG
+   * ==========================================
+   */
 
   response.barang.forEach(
     function(item, index) {
@@ -1217,81 +1223,36 @@ function tampilDaftarBarangBatch(
 
         "</small>" +
 
-        response.barang.forEach(
-  function(item, index) {
 
-    html +=
+        /*
+         * ==================================
+         * DROPDOWN KONDISI
+         * ==================================
+         */
 
-      "<div class='keranjang-item'>" +
+        "<div class='form-group'>" +
 
-      "<b>" +
+        "<label>Kondisi Saat Kembali</label>" +
 
-      (index + 1) +
+        "<select " +
 
-      ". " +
+        "class='kondisi-barang' " +
 
-      (item.namaBarang || "-") +
+        "data-kode='" +
 
-      "</b>" +
+        (item.kodeRegister || "") +
 
-      "<br>" +
+        "'>" +
 
-      "<small>" +
+        "<option value='Baik'>Baik</option>" +
 
-      "Kode Register: " +
+        "<option value='Rusak Ringan'>Rusak Ringan</option>" +
 
-      (item.kodeRegister || "-") +
+        "<option value='Rusak Berat'>Rusak Berat</option>" +
 
-      "</small>" +
+        "</select>" +
 
-      "<br>" +
-
-      "<small>" +
-
-      "NUP: " +
-
-      (item.nup || "-") +
-
-      "</small>" +
-
-      "<br>" +
-
-      "<small>" +
-
-      "Ruangan: " +
-
-      (item.ruanganAsal || "-") +
-
-      "</small>" +
-
-      "<div class='form-group'>" +
-
-      "<label>Kondisi Saat Kembali</label>" +
-
-      "<select " +
-
-      "class='kondisi-barang' " +
-
-      "data-kode='" +
-
-      item.kodeRegister +
-
-      "'>" +
-
-      "<option value='Baik'>Baik</option>" +
-
-      "<option value='Rusak Ringan'>Rusak Ringan</option>" +
-
-      "<option value='Rusak Berat'>Rusak Berat</option>" +
-
-      "</select>" +
-
-      "</div>" +
-
-      "</div>";
-
-  }
-);
+        "</div>" +
 
         "</div>";
 
@@ -1301,12 +1262,9 @@ function tampilDaftarBarangBatch(
 
   /*
    * ==========================================
-   * FORM PENGEMBALIAN
+   * CATATAN
    * ==========================================
    */
-
-  
-
 
   html +=
 
@@ -1335,12 +1293,17 @@ function tampilDaftarBarangBatch(
 
     "class='btn-kembali' " +
 
-  "onclick='konfirmasiPengembalianMassal(" +
-JSON.stringify(pinjam) +
-"," +
-JSON.stringify(response.barang) +
-")'>" +
-"↩️ KEMBALIKAN SEMUA BARANG" +
+    "onclick='konfirmasiPengembalianMassal(" +
+
+    JSON.stringify(pinjam) +
+
+    "," +
+
+    JSON.stringify(response.barang) +
+
+    ")'>" +
+
+    "↩️ KEMBALIKAN SEMUA BARANG" +
 
     "</button>";
 
@@ -1365,7 +1328,9 @@ JSON.stringify(response.barang) +
 
 
   /*
+   * ==========================================
    * TAMPILKAN
+   * ==========================================
    */
 
   hasil.innerHTML =
@@ -1373,8 +1338,6 @@ JSON.stringify(response.barang) +
     html;
 
 }
-
-
   
 function konfirmasiPengembalianMassal(
   pinjam,
