@@ -2708,14 +2708,16 @@ function pilihPegawai(pegawai) {
 
   
 
-  function formPeminjamanMassal() {
+function formPeminjamanMassal() {
 
   const hasil =
     document.getElementById("hasil");
 
 
   /*
+   * ==========================================
    * CEK KERANJANG
+   * ==========================================
    */
 
   if (
@@ -2732,7 +2734,9 @@ function pilihPegawai(pegawai) {
 
 
   /*
+   * ==========================================
    * DAFTAR BARANG
+   * ==========================================
    */
 
   let daftarBarang =
@@ -2802,7 +2806,9 @@ function pilihPegawai(pegawai) {
 
 
   /*
+   * ==========================================
    * FORM PEMINJAM
+   * ==========================================
    */
 
   hasil.innerHTML =
@@ -2812,80 +2818,192 @@ function pilihPegawai(pegawai) {
     "<strong>📤 DATA PEMINJAM</strong>" +
 
 
+    /*
+     * ========================================
+     * NAMA PEMINJAM
+     * ========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Nama Peminjam</label>" +
 
-    "<input id='namaPeminjam' " +
+    "<input " +
 
-    "placeholder='Nama lengkap'>" +
+    "id='namaPeminjam' " +
+
+    "placeholder='Ketik nama pegawai...' " +
+
+    "autocomplete='off' " +
+
+    "oninput='cariNamaPegawai(this.value)'>" +
+
+    "<div " +
+
+    "id='hasilPegawai' " +
+
+    "class='hasil-pegawai'>" +
 
     "</div>" +
 
+    "</div>" +
+
+
+    /*
+     * ==========================================
+     * NIP / NIK
+     * ==========================================
+     */
 
     "<div class='form-group'>" +
 
     "<label>NIP / NIK</label>" +
 
-    "<input id='nipNik' " +
+    "<input " +
 
-    "placeholder='NIP / NIK'>" +
+    "id='nipNik' " +
+
+    "placeholder='Otomatis dari database'>" +
 
     "</div>" +
 
+
+    /*
+     * ==========================================
+     * JABATAN
+     * ==========================================
+     */
+
+    "<div class='form-group'>" +
+
+    "<label>Jabatan</label>" +
+
+    "<input " +
+
+    "id='jabatan' " +
+
+    "placeholder='Otomatis dari database'>" +
+
+    "</div>" +
+
+
+    /*
+     * ==========================================
+     * NO HP / WA
+     * ==========================================
+     */
+
+    "<div class='form-group'>" +
+
+    "<label>No HP / WA</label>" +
+
+    "<input " +
+
+    "id='noHp' " +
+
+    "placeholder='Otomatis dari database'>" +
+
+    "</div>" +
+
+
+    /*
+     * ==========================================
+     * UNIT
+     * ==========================================
+     */
 
     "<div class='form-group'>" +
 
     "<label>Unit</label>" +
 
-    "<input id='unit' " +
+    "<input " +
+
+    "id='unit' " +
 
     "value='BPVP Lombok Timur'>" +
 
     "</div>" +
 
 
+    /*
+     * ==========================================
+     * KEPERLUAN
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Keperluan</label>" +
 
-    "<textarea id='keperluan' " +
+    "<textarea " +
+
+    "id='keperluan' " +
 
     "placeholder='Keperluan peminjaman'></textarea>" +
 
     "</div>" +
 
 
+    /*
+     * ==========================================
+     * TANGGAL KEMBALI
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Rencana Tanggal Kembali</label>" +
 
-    "<input id='tanggalKembali' " +
+    "<input " +
+
+    "id='tanggalKembali' " +
 
     "type='date'>" +
 
     "</div>" +
 
 
+    /*
+     * ==========================================
+     * KONDISI
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Kondisi Barang</label>" +
 
-    "<input id='kondisi' " +
+    "<input " +
+
+    "id='kondisi' " +
 
     "value='Baik'>" +
 
     "</div>" +
 
 
+    /*
+     * ==========================================
+     * CATATAN
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Catatan</label>" +
 
-    "<textarea id='catatan'></textarea>" +
+    "<textarea " +
+
+    "id='catatan'></textarea>" +
 
     "</div>" +
 
+
+    /*
+     * ==========================================
+     * TOMBOL SIMPAN
+     * ==========================================
+     */
 
     "<button " +
 
@@ -2901,6 +3019,12 @@ function pilihPegawai(pegawai) {
 
     "</button>" +
 
+
+    /*
+     * ==========================================
+     * TOMBOL BATAL
+     * ==========================================
+     */
 
     "<button " +
 
