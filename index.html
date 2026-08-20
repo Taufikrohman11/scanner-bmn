@@ -3396,16 +3396,26 @@ function simpanPeminjaman(data) {
     ).value.trim();
 
 
-  const noHp =
-    document.getElementById(
-      "noHp"
-    ).value.trim();
+const noHpElement =
+  document.getElementById(
+    "noHp"
+  );
+
+const noHp =
+  noHpElement
+    ? noHpElement.value.trim()
+    : "";
 
 
-  const unit =
-    document.getElementById(
-      "unit"
-    ).value.trim();
+const unitElement =
+  document.getElementById(
+    "unit"
+  );
+
+const unit =
+  unitElement
+    ? unitElement.value.trim()
+    : "";
 
 
   const keperluan =
