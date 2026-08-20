@@ -2090,74 +2090,173 @@ function formPeminjaman(data) {
     (data.merkTipe || "-") +
 
 
+    /*
+     * ==========================================
+     * NAMA PEMINJAM
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Nama Peminjam</label>" +
 
-    "<input id='namaPeminjam' " +
-    "placeholder='Nama lengkap'>" +
+    "<input " +
+
+    "id='namaPeminjam' " +
+
+    "placeholder='Ketik nama pegawai...' " +
+
+    "autocomplete='off' " +
+
+    "oninput='cariNamaPegawai(this.value)'>" +
+
+    "<div " +
+
+    "id='hasilPegawai' " +
+
+    "class='hasil-pegawai'>" +
 
     "</div>" +
 
+    "</div>" +
+
+
+    /*
+     * ==========================================
+     * NIP / NIK
+     * ==========================================
+     */
 
     "<div class='form-group'>" +
 
     "<label>NIP / NIK</label>" +
 
-    "<input id='nipNik' " +
-    "placeholder='NIP / NIK'>" +
+    "<input " +
+
+    "id='nipNik' " +
+
+    "placeholder='Otomatis dari database'>" +
 
     "</div>" +
 
+
+    /*
+     * ==========================================
+     * JABATAN
+     * ==========================================
+     */
 
     "<div class='form-group'>" +
 
-    "<label>Unit</label>" +
+    "<label>Jabatan</label>" +
 
-    "<input id='unit' " +
-    "value='BPVP Lombok Timur'>" +
+    "<input " +
+
+    "id='jabatan' " +
+
+    "placeholder='Otomatis dari database'>" +
 
     "</div>" +
 
+
+    /*
+     * ==========================================
+     * NO HP / WA
+     * ==========================================
+     */
+
+    "<div class='form-group'>" +
+
+    "<label>No HP / WA</label>" +
+
+    "<input " +
+
+    "id='noHp' " +
+
+    "placeholder='Otomatis dari database'>" +
+
+    "</div>" +
+
+
+    /*
+     * ==========================================
+     * KEPERLUAN
+     * ==========================================
+     */
 
     "<div class='form-group'>" +
 
     "<label>Keperluan</label>" +
 
-    "<textarea id='keperluan' " +
+    "<textarea " +
+
+    "id='keperluan' " +
+
     "placeholder='Keperluan peminjaman'></textarea>" +
 
     "</div>" +
 
 
+    /*
+     * ==========================================
+     * TANGGAL KEMBALI
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Rencana Tanggal Kembali</label>" +
 
-    "<input id='tanggalKembali' " +
+    "<input " +
+
+    "id='tanggalKembali' " +
+
     "type='date'>" +
 
     "</div>" +
 
 
+    /*
+     * ==========================================
+     * KONDISI
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Kondisi Barang</label>" +
 
-    "<input id='kondisi' " +
+    "<input " +
+
+    "id='kondisi' " +
+
     "value='Baik'>" +
 
     "</div>" +
 
 
+    /*
+     * ==========================================
+     * CATATAN
+     * ==========================================
+     */
+
     "<div class='form-group'>" +
 
     "<label>Catatan</label>" +
 
-    "<textarea id='catatan'></textarea>" +
+    "<textarea " +
+
+    "id='catatan'></textarea>" +
 
     "</div>" +
 
+
+    /*
+     * ==========================================
+     * SIMPAN
+     * ==========================================
+     */
 
     "<button " +
 
@@ -2174,6 +2273,12 @@ function formPeminjaman(data) {
     "</button>" +
 
 
+    /*
+     * ==========================================
+     * BATAL
+     * ==========================================
+     */
+
     "<button " +
 
     "class='btn-scan' " +
@@ -2183,6 +2288,299 @@ function formPeminjaman(data) {
     "❌ BATAL" +
 
     "</button>";
+
+}
+
+
+
+
+  function cariNamaPegawai(keyword) {
+
+  /*
+   * ==========================================
+   * VALIDASI INPUT
+   * ==========================================
+   */
+
+  const hasilPegawai =
+    document.getElementById(
+      "hasilPegawai"
+    );
+
+
+  if (!hasilPegawai) {
+    return;
+  }
+
+
+  keyword =
+    String(
+      keyword || ""
+    ).trim();
+
+
+  /*
+   * Kosongkan hasil jika
+   * keyword terlalu pendek
+   */
+
+  if (
+    keyword.length < 2
+  ) {
+
+    hasilPegawai.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  /*
+   * ==========================================
+   * TAMPILKAN LOADING
+   * ==========================================
+   */
+
+  hasilPegawai.innerHTML =
+
+    "<div class='info'>" +
+
+    "🔎 Mencari pegawai..." +
+
+    "</div>";
+
+
+  /*
+   * ==========================================
+   * CALLBACK JSONP
+   * ==========================================
+   */
+
+  const callbackName =
+    "hasilCariPegawai_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Response cari pegawai:",
+        response
+      );
+
+
+      /*
+       * Hapus callback
+       */
+
+      delete window[
+        callbackName
+      ];
+
+
+      /*
+       * ======================================
+       * JIKA GAGAL
+       * ======================================
+       */
+
+      if (
+        !response ||
+        !response.success
+      ) {
+
+        hasilPegawai.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ Gagal mencari data pegawai." +
+
+          "</div>";
+
+        return;
+
+      }
+
+
+      /*
+       * ======================================
+       * TIDAK DITEMUKAN
+       * ======================================
+       */
+
+      if (
+        !response.pegawai ||
+        response.pegawai.length === 0
+      ) {
+
+        hasilPegawai.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ Pegawai tidak ditemukan." +
+
+          "<br><br>" +
+
+          "<button " +
+
+          "class='btn-scan' " +
+
+          "onclick='gunakanPeminjamManual()'>" +
+
+          "➕ Gunakan Peminjam Manual" +
+
+          "</button>" +
+
+          "</div>";
+
+        return;
+
+      }
+
+
+      /*
+       * ======================================
+       * TAMPILKAN HASIL
+       * ======================================
+       */
+
+      let html = "";
+
+
+      response.pegawai.forEach(
+        function(pegawai, index) {
+
+          html +=
+
+            "<div " +
+
+            "class='pegawai-item' " +
+
+            "onclick='pilihPegawai(" +
+
+            JSON.stringify(
+              pegawai
+            ) +
+
+            ")'>" +
+
+            "<b>" +
+
+            (pegawai.nama || "-") +
+
+            "</b>" +
+
+            "<br>" +
+
+            "<small>" +
+
+            "NIP: " +
+
+            (
+              pegawai.nip ||
+              "Tidak tersedia"
+            ) +
+
+            "</small>" +
+
+            "<br>" +
+
+            "<small>" +
+
+            "Jabatan: " +
+
+            (
+              pegawai.jabatan ||
+              "Tidak tersedia"
+            ) +
+
+            "</small>" +
+
+            "</div>";
+
+        }
+      );
+
+
+      hasilPegawai.innerHTML =
+        html;
+
+    };
+
+
+  /*
+   * ==========================================
+   * URL APPS SCRIPT
+   * ==========================================
+   */
+
+  const url =
+    API_URL +
+
+    "?action=cariPegawai" +
+
+    "&keyword=" +
+
+    encodeURIComponent(
+      keyword
+    ) +
+
+    "&callback=" +
+
+    callbackName;
+
+
+  console.log(
+    "🌐 URL Cari Pegawai:",
+    url
+  );
+
+
+  /*
+   * ==========================================
+   * KIRIM JSONP
+   * ==========================================
+   */
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "❌ Gagal mencari pegawai."
+      );
+
+
+      delete window[
+        callbackName
+      ];
+
+
+      hasilPegawai.innerHTML =
+
+        "<div class='info'>" +
+
+        "❌ Gagal menghubungi server." +
+
+        "</div>";
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
 
 }
 
