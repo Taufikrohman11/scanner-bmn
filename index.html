@@ -1575,14 +1575,62 @@ function prosesPengembalianMassal(pinjam) {
 
 
   // ==========================================
-  // 2. AMBIL DATA FORM
+  // 2. AMBIL KONDISI SETIAP BARANG
   // ==========================================
 
-  const kondisiSaatKembali =
-    document.getElementById(
-      "kondisiMassal"
-    ).value.trim();
+  const dropdownKondisi =
+    document.querySelectorAll(
+      ".kondisi-barang"
+    );
 
+
+  const barang =
+    [];
+
+
+  dropdownKondisi.forEach(
+    function(select) {
+
+      barang.push({
+
+        kodeRegister:
+          select.dataset.kode,
+
+        kondisiSaatKembali:
+          select.value
+
+      });
+
+    }
+  );
+
+
+  console.log(
+    "📦 Kondisi setiap barang:",
+    barang
+  );
+
+
+  // ==========================================
+  // VALIDASI
+  // ==========================================
+
+  if (
+    barang.length === 0
+  ) {
+
+    alert(
+      "Data kondisi barang tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 3. AMBIL CATATAN
+  // ==========================================
 
   const catatan =
     document.getElementById(
@@ -1591,7 +1639,7 @@ function prosesPengembalianMassal(pinjam) {
 
 
   // ==========================================
-  // 3. TAMPILKAN LOADING
+  // 4. TAMPILKAN LOADING
   // ==========================================
 
   const hasil =
@@ -1610,7 +1658,7 @@ function prosesPengembalianMassal(pinjam) {
 
 
   // ==========================================
-  // 4. CALLBACK JSONP
+  // 5. CALLBACK JSONP
   // ==========================================
 
   const callbackName =
@@ -1702,7 +1750,7 @@ function prosesPengembalianMassal(pinjam) {
 
 
   // ==========================================
-  // 5. DATA YANG DIKIRIM
+  // 6. DATA YANG DIKIRIM
   // ==========================================
 
   const data = {
@@ -1710,8 +1758,8 @@ function prosesPengembalianMassal(pinjam) {
     batchId:
       pinjam.batchId,
 
-    kondisiSaatKembali:
-      kondisiSaatKembali || "Baik",
+    barang:
+      barang,
 
     catatan:
       catatan
@@ -1720,13 +1768,13 @@ function prosesPengembalianMassal(pinjam) {
 
 
   console.log(
-    "📦 Data pengembalian massal:",
+    "📦 DATA PENGEMBALIAN:",
     data
   );
 
 
   // ==========================================
-  // 6. URL APPS SCRIPT
+  // 7. URL APPS SCRIPT
   // ==========================================
 
   const url =
@@ -1752,7 +1800,7 @@ function prosesPengembalianMassal(pinjam) {
 
 
   // ==========================================
-  // 7. KIRIM JSONP
+  // 8. KIRIM JSONP
   // ==========================================
 
   const script =
@@ -1792,8 +1840,6 @@ function prosesPengembalianMassal(pinjam) {
   );
 
 }
-
-
 
 
   
