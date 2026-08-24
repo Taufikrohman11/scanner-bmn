@@ -3666,7 +3666,100 @@ const unit =
 
 }
 
+function gunakanPeminjamManual() {
 
+  console.log(
+    "✏️ Menggunakan peminjam manual"
+  );
+
+  const nama =
+    document.getElementById(
+      "namaPeminjam"
+    );
+
+  const nipNik =
+    document.getElementById(
+      "nipNik"
+    );
+
+  const jabatan =
+    document.getElementById(
+      "jabatan"
+    );
+
+  const noHp =
+    document.getElementById(
+      "noHp"
+    );
+
+  const hasilPegawai =
+    document.getElementById(
+      "hasilPegawai"
+    );
+
+
+  /*
+   * ==========================================
+   * AKTIFKAN INPUT MANUAL
+   * ==========================================
+   */
+
+  if (nama) {
+
+    nama.readOnly = false;
+
+    nama.focus();
+
+  }
+
+  if (nipNik) {
+
+    nipNik.readOnly = false;
+
+    nipNik.value = "";
+
+  }
+
+  if (jabatan) {
+
+    jabatan.readOnly = false;
+
+    jabatan.value = "";
+
+  }
+
+  if (noHp) {
+
+    noHp.readOnly = false;
+
+    noHp.value = "";
+
+  }
+
+
+  /*
+   * ==========================================
+   * HILANGKAN HASIL PENCARIAN
+   * ==========================================
+   */
+
+  if (hasilPegawai) {
+
+    hasilPegawai.innerHTML =
+
+      "<div class='info'>" +
+
+      "✏️ Mode peminjam manual aktif." +
+
+      "<br><br>" +
+
+      "Silakan isi data peminjam secara manual." +
+
+      "</div>";
+
+  }
+
+}
 /*
  * ==========================================
  * FORM PENGEMBALIAN
