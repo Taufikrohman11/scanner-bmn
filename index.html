@@ -3076,6 +3076,18 @@ function kirimPeminjamanMassal() {
       "nipNik"
     ).value.trim();
 
+const jabatan =
+  document.getElementById(
+    "jabatan"
+  ).value.trim();
+
+
+const noHp =
+  document.getElementById(
+    "noHp"
+  ).value.trim();
+
+  
 
   const unit =
     document.getElementById(
@@ -3122,16 +3134,6 @@ function kirimPeminjamanMassal() {
   }
 
 
-  if (!nipNik) {
-
-    alert(
-      "NIP / NIK wajib diisi."
-    );
-
-    return;
-
-  }
-
 
   if (!keperluan) {
 
@@ -3170,6 +3172,12 @@ function kirimPeminjamanMassal() {
     nipNik:
       nipNik,
 
+ jabatan:
+    jabatan,
+
+  noHp:
+    noHp,
+    
     unit:
       unit,
 
