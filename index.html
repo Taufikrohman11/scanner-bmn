@@ -3126,68 +3126,110 @@ function formPeminjamanMassal() {
 
   let daftarBarang =
 
-    "<div class='keranjang'>" +
+  "<div class='keranjang'>" +
 
-    "<div class='keranjang-title'>" +
+  "<div class='keranjang-title'>" +
 
-    "🛒 BARANG YANG AKAN DIPINJAM" +
+  "🛒 BARANG YANG AKAN DIPINJAM" +
 
-    "</div>" +
+  "</div>" +
 
-    "<div class='keranjang-count'>" +
+  "<div class='keranjang-count'>" +
 
-    "Jumlah barang: " +
+  "Jumlah item: " +
 
-    keranjangPeminjaman.length +
+  keranjangPeminjaman.length +
 
-    "</div>";
-
-
-  keranjangPeminjaman.forEach(
-    function(item, index) {
-
-      daftarBarang +=
-
-        "<div class='keranjang-item'>" +
-
-        "<b>" +
-
-        (index + 1) +
-
-        ". " +
-
-        (item.namaBarang || "-") +
-
-        "</b>" +
-
-        "<br>" +
-
-        "<small>" +
-
-        "Kode Register: " +
-
-        (item.kodeRegister || "-") +
-
-        "</small>" +
-
-        "<br>" +
-
-        "<small>" +
-
-        "NUP: " +
-
-        (item.nup || "-") +
-
-        "</small>" +
-
-        "</div>";
-
-    }
-  );
+  "</div>";
 
 
-  daftarBarang +=
-    "</div>";
+keranjangPeminjaman.forEach(
+  function(item, index) {
+
+    const isNonBMN =
+      item.jenisBarang === "NON_BMN";
+
+
+    daftarBarang +=
+
+      "<div class='keranjang-item'>" +
+
+      "<b>" +
+
+      (index + 1) +
+
+      ". " +
+
+      (item.namaBarang || "-") +
+
+      "</b>" +
+
+      "<br>" +
+
+      "<small>" +
+
+      (
+        isNonBMN
+          ? "🔵 NON-BMN"
+          : "🟢 BMN"
+      ) +
+
+      "</small>" +
+
+      "<br>" +
+
+      (
+        isNonBMN
+
+          ?
+
+          "<small>" +
+
+          "Jumlah: " +
+
+          (item.jumlah || 1) +
+
+          "</small>" +
+
+          "<br>" +
+
+          "<small>" +
+
+          "Kondisi: " +
+
+          (item.kondisi || "Baik") +
+
+          "</small>"
+
+          :
+
+          "<small>" +
+
+          "Kode Register: " +
+
+          (item.kodeRegister || "-") +
+
+          "</small>" +
+
+          "<br>" +
+
+          "<small>" +
+
+          "NUP: " +
+
+          (item.nup || "-") +
+
+          "</small>"
+      ) +
+
+      "</div>";
+
+  }
+);
+
+
+daftarBarang +=
+  "</div>";
 
 
   /*
