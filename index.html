@@ -498,18 +498,33 @@ function formBarangNonBMN() {
     "📦 Membuka form barang Non-BMN"
   );
 
+
   const hasil =
     document.getElementById("hasil");
 
+
+  console.log(
+    "🔎 Elemen hasil:",
+    hasil
+  );
+
+
   if (!hasil) {
+
+    console.error(
+      "❌ Elemen #hasil tidak ditemukan!"
+    );
+
     return;
+
   }
 
-console.log(
-  "🎨 MENAMPILKAN FORM NON-BMN"
-);
 
-  
+  console.log(
+    "🎨 MENAMPILKAN FORM NON-BMN"
+  );
+
+
   hasil.innerHTML =
 
     "<strong>📦 TAMBAH BARANG NON-BMN</strong>" +
@@ -526,7 +541,6 @@ console.log(
 
     "</div>" +
 
-
     "<div class='form-group'>" +
 
     "<label>Jumlah</label>" +
@@ -539,7 +553,6 @@ console.log(
 
     "</div>" +
 
-
     "<div class='form-group'>" +
 
     "<label>Kondisi</label>" +
@@ -551,7 +564,6 @@ console.log(
 
     "</div>" +
 
-
     "<button " +
 
     "class='btn-pinjam' " +
@@ -561,7 +573,6 @@ console.log(
     "➕ TAMBAHKAN KE KERANJANG" +
 
     "</button>" +
-
 
     "<button " +
 
