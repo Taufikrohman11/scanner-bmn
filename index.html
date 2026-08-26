@@ -527,12 +527,54 @@ function qrBerhasil(decodedText, decodedResult) {
 
 
   /*
-   * Hentikan scanner
+   * ==========================================
+   * HENTIKAN SCANNER
+   * ==========================================
    */
 
   if (scanner) {
 
     scanner.stop()
+
+      .then(function() {
+
+        console.log(
+          "✅ Scanner berhenti setelah QR berhasil."
+        );
+
+
+        /*
+         * Bersihkan scanner
+         */
+
+        scanner.clear();
+
+        scanner = null;
+
+
+        /*
+         * Ubah tombol menjadi
+         * SCAN BARANG LAGI
+         */
+
+        const tombol =
+          document.getElementById(
+            "btnMulaiScan"
+          );
+
+
+        if (tombol) {
+
+          tombol.innerHTML =
+            "📷 SCAN BARANG LAGI";
+
+          tombol.onclick =
+            mulaiScanner;
+
+        }
+
+      })
+
       .catch(function(error) {
 
         console.log(
@@ -540,31 +582,65 @@ function qrBerhasil(decodedText, decodedResult) {
           error
         );
 
+
+        scanner = null;
+
+
+        const tombol =
+          document.getElementById(
+            "btnMulaiScan"
+          );
+
+
+        if (tombol) {
+
+          tombol.innerHTML =
+            "📷 SCAN BARANG LAGI";
+
+          tombol.onclick =
+            mulaiScanner;
+
+        }
+
       });
 
   }
 
 
   /*
-   * Tampilkan loading
+   * ==========================================
+   * TAMPILKAN LOADING
+   * ==========================================
    */
 
   const hasil =
-    document.getElementById("hasil");
+    document.getElementById(
+      "hasil"
+    );
 
-  hasil.style.display = "block";
+
+  hasil.style.display =
+    "block";
+
 
   hasil.innerHTML =
+
     '<div class="loading">' +
+
     '🔄 Mengambil data barang...' +
+
     '</div>';
 
 
   /*
-   * Kirim ke Apps Script
+   * ==========================================
+   * KIRIM KE APPS SCRIPT
+   * ==========================================
    */
 
-  getStatusBarang(decodedText);
+  getStatusBarang(
+    decodedText
+  );
 
 }
 function formBarangNonBMN() {
