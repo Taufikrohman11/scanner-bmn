@@ -570,6 +570,196 @@ function formBarangNonBMN() {
     "</button>";
 
 }
+
+
+
+function tambahBarangNonBMN() {
+
+  console.log(
+    "📦 Menambahkan barang Non-BMN ke keranjang..."
+  );
+
+
+  // ==========================================
+  // 1. AMBIL DATA FORM
+  // ==========================================
+
+  const namaBarang =
+    document.getElementById(
+      "namaBarangNonBMN"
+    ).value.trim();
+
+
+  const jumlah =
+    Number(
+      document.getElementById(
+        "jumlahNonBMN"
+      ).value
+    );
+
+
+  const kondisi =
+    document.getElementById(
+      "kondisiNonBMN"
+    ).value.trim();
+
+
+  // ==========================================
+  // 2. VALIDASI
+  // ==========================================
+
+  if (!namaBarang) {
+
+    alert(
+      "Nama barang wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !jumlah ||
+    jumlah < 1
+  ) {
+
+    alert(
+      "Jumlah barang minimal 1."
+    );
+
+    return;
+
+  }
+
+
+  if (!kondisi) {
+
+    alert(
+      "Kondisi barang wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 3. BUAT DATA NON-BMN
+  // ==========================================
+
+  const barangNonBMN = {
+
+    jenisBarang:
+      "NON_BMN",
+
+    kodeRegister:
+      "",
+
+    nup:
+      "",
+
+    namaBarang:
+      namaBarang,
+
+    merkTipe:
+      "",
+
+    ruangan:
+      "",
+
+    jumlah:
+      jumlah,
+
+    kondisi:
+      kondisi
+
+  };
+
+
+  // ==========================================
+  // 4. MASUKKAN KE KERANJANG
+  // ==========================================
+
+  keranjangPeminjaman.push(
+    barangNonBMN
+  );
+
+
+  console.log(
+    "✅ Barang Non-BMN ditambahkan:",
+    barangNonBMN
+  );
+
+
+  console.log(
+    "🛒 Isi keranjang:",
+    keranjangPeminjaman
+  );
+
+
+  // ==========================================
+  // 5. TAMPILKAN HASIL
+  // ==========================================
+
+  const hasil =
+    document.getElementById(
+      "hasil"
+    );
+
+
+  hasil.innerHTML =
+
+    "<div class='status tersedia'>" +
+
+    "✅ BARANG NON-BMN DITAMBAHKAN" +
+
+    "</div>" +
+
+    "<div class='info'>" +
+
+    "<b>Nama Barang:</b><br>" +
+
+    namaBarang +
+
+    "<br><br>" +
+
+    "<b>Jumlah:</b><br>" +
+
+    jumlah +
+
+    "<br><br>" +
+
+    "<b>Kondisi:</b><br>" +
+
+    kondisi +
+
+    "</div>" +
+
+    "<button " +
+
+    "class='btn-pinjam' " +
+
+    "onclick='formBarangNonBMN()'>" +
+
+    "➕ TAMBAH NON-BMN LAGI" +
+
+    "</button>" +
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='location.reload()'>" +
+
+    "📷 KEMBALI KE SCANNER" +
+
+    "</button>";
+
+}
+
+
+  
 /*
  * ==========================================
  * AMBIL DATA DARI APPS SCRIPT
