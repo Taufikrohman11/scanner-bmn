@@ -215,6 +215,16 @@
 
   <div id="reader"></div>
 
+<button
+  id="btnMulaiScan"
+  class="btn-scan"
+  type="button"
+  onclick="mulaiScanner()">
+
+  ▶ MULAI SCAN
+
+</button>
+
 </div>
 
 
@@ -4637,6 +4647,26 @@ function qrError(errorMessage) {
 
 function mulaiScanner() {
 
+  console.log(
+    "📷 Memulai scanner..."
+  );
+
+
+  // ==========================================
+  // CEGAH SCANNER GANDA
+  // ==========================================
+
+  if (scanner) {
+
+    console.log(
+      "⚠️ Scanner sudah aktif."
+    );
+
+    return;
+
+  }
+
+
   scanner =
     new Html5Qrcode(
       "reader"
@@ -4670,11 +4700,40 @@ function mulaiScanner() {
 
   )
 
+  .then(function() {
+
+    console.log(
+      "✅ Kamera scanner aktif."
+    );
+
+
+    const tombol =
+      document.getElementById(
+        "btnMulaiScan"
+      );
+
+
+    if (tombol) {
+
+      tombol.innerHTML =
+        "⏹ STOP SCAN";
+
+      tombol.onclick =
+        berhentiScanner;
+
+    }
+
+  })
+
   .catch(function(error) {
 
     console.error(
+      "❌ Gagal memulai scanner:",
       error
     );
+
+
+    scanner = null;
 
 
     const errorBox =
@@ -4683,22 +4742,94 @@ function mulaiScanner() {
       );
 
 
-    errorBox.style.display =
-      "block";
+    if (errorBox) {
 
+      errorBox.style.display =
+        "block";
 
-    errorBox.innerHTML =
+      errorBox.innerHTML =
 
-      "❌ Kamera tidak dapat digunakan." +
+        "❌ Kamera tidak dapat digunakan." +
 
-      "<br><br>" +
+        "<br><br>" +
 
-      error;
+        error;
+
+    }
 
   });
 
 }
 
+function berhentiScanner() {
+
+  console.log(
+    "⏹ Menghentikan scanner..."
+  );
+
+
+  if (!scanner) {
+
+    console.log(
+      "ℹ️ Scanner sedang tidak aktif."
+    );
+
+    return;
+
+  }
+
+
+  scanner.stop()
+
+    .then(function() {
+
+      console.log(
+        "✅ Scanner berhasil dihentikan."
+      );
+
+
+      scanner.clear();
+
+
+      scanner = null;
+
+
+      const tombol =
+        document.getElementById(
+          "btnMulaiScan"
+        );
+
+
+      if (tombol) {
+
+        tombol.innerHTML =
+          "▶ MULAI SCAN";
+
+        tombol.onclick =
+          mulaiScanner;
+
+      }
+
+    })
+
+    .catch(function(error) {
+
+      console.error(
+        "❌ Gagal menghentikan scanner:",
+        error
+      );
+
+      scanner = null;
+
+    });
+
+}
+
+
+
+
+
+  
 function lanjutScan() {
 
   console.log(
@@ -4721,7 +4852,9 @@ function lanjutScan() {
 window.onload =
   function() {
 
-    mulaiScanner();
+    console.log(
+      "📱 Halaman scanner siap. Kamera belum diaktifkan."
+    );
 
   };
 
