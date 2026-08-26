@@ -362,47 +362,90 @@ function tampilKeranjang() {
    */
 
   keranjangPeminjaman.forEach(
-    function(item, index) {
+  function(item, index) {
 
-      html +=
+    const isNonBMN =
+      item.jenisBarang === "NON_BMN";
 
-        "<div class='keranjang-item'>" +
 
-        "<b>" +
+    daftarBarang +=
 
-        (index + 1) +
+      "<div class='keranjang-item'>" +
 
-        ". " +
+      "<b>" +
 
-        (item.namaBarang || "-") +
+      (index + 1) +
 
-        "</b>" +
+      ". " +
 
-        "<br>" +
+      (item.namaBarang || "-") +
 
-        "<small>" +
+      "</b>" +
 
-        "Kode Register: " +
+      "<br>" +
 
-        (item.kodeRegister || "-") +
+      "<small>" +
 
-        "</small>" +
+      (
+        isNonBMN
+          ? "🔵 NON-BMN"
+          : "🟢 BMN"
+      ) +
 
-        "<br>" +
+      "</small>" +
 
-        "<small>" +
+      "<br>" +
 
-        "NUP: " +
 
-        (item.nup || "-") +
+      (
+        isNonBMN
 
-        "</small>" +
+          ?
 
-        "</div>";
+          "<small>" +
 
-    }
-  );
+          "Jumlah: " +
 
+          (item.jumlah || 1) +
+
+          "</small>" +
+
+          "<br>" +
+
+          "<small>" +
+
+          "Kondisi: " +
+
+          (item.kondisi || "Baik") +
+
+          "</small>"
+
+          :
+
+          "<small>" +
+
+          "Kode Register: " +
+
+          (item.kodeRegister || "-") +
+
+          "</small>" +
+
+          "<br>" +
+
+          "<small>" +
+
+          "NUP: " +
+
+          (item.nup || "-") +
+
+          "</small>"
+
+      ) +
+
+      "</div>";
+
+  }
+);
 
   /*
    * TOMBOL LANJUT
