@@ -330,6 +330,7 @@ function tampilKeranjang() {
   const hasil =
     document.getElementById("hasil");
 
+
   if (
     keranjangPeminjaman.length === 0
   ) {
@@ -337,6 +338,13 @@ function tampilKeranjang() {
     return;
 
   }
+
+
+  /*
+   * ==========================================
+   * CONTAINER KERANJANG
+   * ==========================================
+   */
 
   let html =
 
@@ -350,7 +358,7 @@ function tampilKeranjang() {
 
     "<div class='keranjang-count'>" +
 
-    "Jumlah barang: " +
+    "Jumlah item: " +
 
     keranjangPeminjaman.length +
 
@@ -358,97 +366,102 @@ function tampilKeranjang() {
 
 
   /*
+   * ==========================================
    * DAFTAR BARANG
+   * ==========================================
    */
 
   keranjangPeminjaman.forEach(
-  function(item, index) {
+    function(item, index) {
 
-    const isNonBMN =
-      item.jenisBarang === "NON_BMN";
-
-
-    daftarBarang +=
-
-      "<div class='keranjang-item'>" +
-
-      "<b>" +
-
-      (index + 1) +
-
-      ". " +
-
-      (item.namaBarang || "-") +
-
-      "</b>" +
-
-      "<br>" +
-
-      "<small>" +
-
-      (
-        isNonBMN
-          ? "🔵 NON-BMN"
-          : "🟢 BMN"
-      ) +
-
-      "</small>" +
-
-      "<br>" +
+      const isNonBMN =
+        item.jenisBarang === "NON_BMN";
 
 
-      (
-        isNonBMN
+      html +=
 
-          ?
+        "<div class='keranjang-item'>" +
 
-          "<small>" +
+        "<b>" +
 
-          "Jumlah: " +
+        (index + 1) +
 
-          (item.jumlah || 1) +
+        ". " +
 
-          "</small>" +
+        (item.namaBarang || "-") +
 
-          "<br>" +
+        "</b>" +
 
-          "<small>" +
+        "<br>" +
 
-          "Kondisi: " +
+        "<small>" +
 
-          (item.kondisi || "Baik") +
+        (
+          isNonBMN
+            ? "🔵 NON-BMN"
+            : "🟢 BMN"
+        ) +
 
-          "</small>"
+        "</small>" +
 
-          :
+        "<br>" +
 
-          "<small>" +
 
-          "Kode Register: " +
+        (
+          isNonBMN
 
-          (item.kodeRegister || "-") +
+            ?
 
-          "</small>" +
+            "<small>" +
 
-          "<br>" +
+            "Jumlah: " +
 
-          "<small>" +
+            (item.jumlah || 1) +
 
-          "NUP: " +
+            "</small>" +
 
-          (item.nup || "-") +
+            "<br>" +
 
-          "</small>"
+            "<small>" +
 
-      ) +
+            "Kondisi: " +
 
-      "</div>";
+            (item.kondisi || "Baik") +
 
-  }
-);
+            "</small>"
+
+            :
+
+            "<small>" +
+
+            "Kode Register: " +
+
+            (item.kodeRegister || "-") +
+
+            "</small>" +
+
+            "<br>" +
+
+            "<small>" +
+
+            "NUP: " +
+
+            (item.nup || "-") +
+
+            "</small>"
+
+        ) +
+
+        "</div>";
+
+    }
+  );
+
 
   /*
+   * ==========================================
    * TOMBOL LANJUT
+   * ==========================================
    */
 
   html +=
@@ -470,10 +483,13 @@ function tampilKeranjang() {
 
 
   /*
-   * Tambahkan ke halaman
+   * ==========================================
+   * TAMPILKAN KERANJANG
+   * ==========================================
    */
 
-  hasil.innerHTML += html;
+  hasil.innerHTML =
+    html;
 
 }
 /*
