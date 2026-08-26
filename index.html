@@ -1016,62 +1016,10 @@ function tambahBarangNonBMN() {
 
 
   // ==========================================
-  // 5. TAMPILKAN HASIL
+  // 5. TAMPILKAN KERANJANG
   // ==========================================
 
-  const hasil =
-    document.getElementById(
-      "hasil"
-    );
-
-
-  hasil.innerHTML =
-
-    "<div class='status tersedia'>" +
-
-    "✅ BARANG NON-BMN DITAMBAHKAN" +
-
-    "</div>" +
-
-    "<div class='info'>" +
-
-    "<b>Nama Barang:</b><br>" +
-
-    namaBarang +
-
-    "<br><br>" +
-
-    "<b>Jumlah:</b><br>" +
-
-    jumlah +
-
-    "<br><br>" +
-
-    "<b>Kondisi:</b><br>" +
-
-    kondisi +
-
-    "</div>" +
-
-    "<button " +
-
-    "class='btn-pinjam' " +
-
-    "onclick='formBarangNonBMN()'>" +
-
-    "➕ TAMBAH NON-BMN LAGI" +
-
-    "</button>" +
-
-    "<button " +
-
-    "class='btn-scan' " +
-
-    "onclick='location.reload()'>" +
-
-    "📷 KEMBALI KE SCANNER" +
-
-    "</button>";
+  tampilKeranjang();
 
 }
 
