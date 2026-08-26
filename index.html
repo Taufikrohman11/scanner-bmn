@@ -557,7 +557,6 @@ function qrBerhasil(decodedText, decodedResult) {
   getStatusBarang(decodedText);
 
 }
-
 function formBarangNonBMN() {
 
   console.log(
@@ -569,63 +568,193 @@ function formBarangNonBMN() {
     document.getElementById("hasil");
 
 
-  
-
   if (!hasil) {
+    return;
+  }
 
-    console.error(
-      "❌ Elemen #hasil tidak ditemukan!"
+
+  /*
+   * ==========================================
+   * TAMPILKAN KERANJANG YANG SUDAH ADA
+   * ==========================================
+   */
+
+  let html = "";
+
+
+  if (
+    keranjangPeminjaman.length > 0
+  ) {
+
+    html +=
+
+      "<div class='keranjang'>" +
+
+      "<div class='keranjang-title'>" +
+
+      "🛒 BARANG YANG AKAN DIPINJAM" +
+
+      "</div>" +
+
+      "<div class='keranjang-count'>" +
+
+      "Jumlah item: " +
+
+      keranjangPeminjaman.length +
+
+      "</div>";
+
+
+    keranjangPeminjaman.forEach(
+      function(item, index) {
+
+        const isNonBMN =
+          item.jenisBarang === "NON_BMN";
+
+
+        html +=
+
+          "<div class='keranjang-item'>" +
+
+          "<b>" +
+
+          (index + 1) +
+
+          ". " +
+
+          (item.namaBarang || "-") +
+
+          "</b>" +
+
+          "<br>" +
+
+          "<small>" +
+
+          (
+            isNonBMN
+              ? "🔵 NON-BMN"
+              : "🟢 BMN"
+          ) +
+
+          "</small>" +
+
+          "<br>" +
+
+          (
+            isNonBMN
+
+              ?
+
+              "<small>" +
+
+              "Jumlah: " +
+
+              (item.jumlah || 1) +
+
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+
+              "Kondisi: " +
+
+              (item.kondisi || "Baik") +
+
+              "</small>"
+
+              :
+
+              "<small>" +
+
+              "Kode Register: " +
+
+              (item.kodeRegister || "-") +
+
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+
+              "NUP: " +
+
+              (item.nup || "-") +
+
+              "</small>"
+          ) +
+
+          "</div>";
+
+      }
     );
 
-    return;
+
+    html +=
+      "</div>";
 
   }
 
 
+  /*
+   * ==========================================
+   * FORM NON-BMN
+   * ==========================================
+   */
 
-  hasil.style.display = "block";
+  html +=
 
-
-
-  
-  hasil.innerHTML =
+    "<div class='keranjang'>" +
 
     "<strong>📦 TAMBAH BARANG NON-BMN</strong>" +
 
     "<br><br>" +
+
 
     "<div class='form-group'>" +
 
     "<label>Nama Barang</label>" +
 
     "<input " +
+
     "id='namaBarangNonBMN' " +
+
     "placeholder='Contoh: Kabel HDMI'>" +
 
     "</div>" +
+
 
     "<div class='form-group'>" +
 
     "<label>Jumlah</label>" +
 
     "<input " +
+
     "id='jumlahNonBMN' " +
+
     "type='number' " +
+
     "min='1' " +
+
     "value='1'>" +
 
     "</div>" +
+
 
     "<div class='form-group'>" +
 
     "<label>Kondisi</label>" +
 
     "<input " +
+
     "id='kondisiNonBMN' " +
+
     "value='Baik' " +
+
     "placeholder='Contoh: Baik'>" +
 
     "</div>" +
+
 
     "<button " +
 
@@ -637,6 +766,18 @@ function formBarangNonBMN() {
 
     "</button>" +
 
+
+    "<button " +
+
+    "class='btn-lanjut' " +
+
+    "onclick='formPeminjamanMassal()'>" +
+
+    "👤 LANJUT KE DATA PEMINJAM" +
+
+    "</button>" +
+
+
     "<button " +
 
     "class='btn-scan' " +
@@ -645,36 +786,23 @@ function formBarangNonBMN() {
 
     "❌ BATAL" +
 
-    "</button>";
+    "</button>" +
+
+    "</div>";
 
 
-  console.log(
-  "✅ FORM NON-BMN SELESAI DIBUAT"
-);
+  /*
+   * ==========================================
+   * TAMPILKAN
+   * ==========================================
+   */
 
-  console.log(
-  "📏 Tinggi hasil setelah form dibuat:",
-  hasil.offsetHeight
-);
+  hasil.style.display = "block";
 
-console.log(
-  "👁️ Display hasil:",
-  getComputedStyle(hasil).display
-);
-
-console.log(
-  "👁️ Visibility hasil:",
-  getComputedStyle(hasil).visibility
-);
-
-console.log(
-  "📍 Posisi hasil:",
-  hasil.getBoundingClientRect()
-);
+  hasil.innerHTML =
+    html;
 
 }
-
-
 
 function tambahBarangNonBMN() {
 
