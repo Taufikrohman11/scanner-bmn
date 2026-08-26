@@ -533,6 +533,33 @@ function formBarangNonBMN() {
 
   hasil.style.display = "block";
 
+console.log(
+  "🔴 CEK DISPLAY HASIL:",
+  hasil.style.display
+);
+
+console.log(
+  "🔴 CEK COMPUTED DISPLAY:",
+  window.getComputedStyle(hasil).display
+);
+
+console.log(
+  "🔴 CEK VISIBILITY:",
+  window.getComputedStyle(hasil).visibility
+);
+
+console.log(
+  "🔴 CEK OPACITY:",
+  window.getComputedStyle(hasil).opacity
+);
+
+console.log(
+  "🔴 CEK HEIGHT:",
+  hasil.offsetHeight
+);
+
+
+  
   hasil.innerHTML =
 
     "<strong>📦 TAMBAH BARANG NON-BMN</strong>" +
