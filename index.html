@@ -5310,6 +5310,316 @@ window.onload =
 
 }
 
+
+
+
+
+
+  function formProsesPengembalian(data) {
+
+  console.log(
+    "🔄 Membuka form proses pengembalian:",
+    data
+  );
+
+
+  const hasil =
+    document.getElementById("hasil");
+
+
+  if (!hasil) {
+
+    console.error(
+      "❌ Elemen #hasil tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // AMBIL BARANG YANG DICENTANG
+  // ==========================================
+
+  const checkbox =
+    document.querySelectorAll(
+      ".checkbox-pengembalian:checked"
+    );
+
+
+  if (
+    checkbox.length === 0
+  ) {
+
+    alert(
+      "Pilih minimal satu barang yang akan dikembalikan."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // AMBIL DATA BARANG
+  // ==========================================
+
+  const barangDipilih = [];
+
+
+  checkbox.forEach(
+    function(cb) {
+
+      const index =
+        Number(cb.value);
+
+
+      if (
+        data[index]
+      ) {
+
+        barangDipilih.push(
+          data[index]
+        );
+
+      }
+
+    }
+  );
+
+
+  console.log(
+    "📦 Barang yang dipilih:",
+    barangDipilih
+  );
+
+
+  // ==========================================
+  // FORM PENGEMBALIAN
+  // ==========================================
+
+  let html =
+
+    "<div class='keranjang'>" +
+
+    "<div class='keranjang-title'>" +
+
+    "🔄 KONFIRMASI PENGEMBALIAN" +
+
+    "</div>";
+
+
+  html +=
+
+    "<div class='info'>" +
+
+    "<b>Peminjam:</b><br>" +
+
+    (
+      barangDipilih[0].namaPeminjam ||
+      "-"
+    ) +
+
+    "</div>";
+
+
+  // ==========================================
+  // DAFTAR BARANG
+  // ==========================================
+
+  barangDipilih.forEach(
+    function(item, index) {
+
+      const isNonBMN =
+        item.jenisBarang ===
+        "NON_BMN";
+
+
+      html +=
+
+        "<div class='keranjang-item'>" +
+
+        "<b>" +
+
+        (index + 1) +
+
+        ". " +
+
+        (
+          item.namaBarang ||
+          "-"
+        ) +
+
+        "</b>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        (
+          isNonBMN
+            ? "🔵 NON-BMN"
+            : "🟢 BMN"
+        ) +
+
+        "</small>" +
+
+        "<br>" +
+
+        (
+          isNonBMN
+
+            ?
+
+            "<small>" +
+            "Jumlah: " +
+            (item.jumlah || 1) +
+            "</small>"
+
+            :
+
+            "<small>" +
+            "Kode Register: " +
+            (
+              item.kodeRegister ||
+              "-"
+            ) +
+            "</small>"
+
+        ) +
+
+        "</div>";
+
+    }
+  );
+
+
+  // ==========================================
+  // TANGGAL KEMBALI
+  // ==========================================
+
+  const tanggalHariIni =
+    new Date()
+      .toISOString()
+      .split("T")[0];
+
+
+  html +=
+
+    "<div class='form-group'>" +
+
+    "<label>Tanggal Kembali</label>" +
+
+    "<input " +
+
+    "type='date' " +
+
+    "id='tanggalKembali' " +
+
+    "value='" +
+
+    tanggalHariIni +
+
+    "'>" +
+
+    "</div>";
+
+
+  // ==========================================
+  // KONDISI KEMBALI
+  // ==========================================
+
+  html +=
+
+    "<div class='form-group'>" +
+
+    "<label>Kondisi Saat Kembali</label>" +
+
+    "<select id='kondisiKembali'>" +
+
+    "<option value='Baik'>Baik</option>" +
+
+    "<option value='Rusak Ringan'>Rusak Ringan</option>" +
+
+    "<option value='Rusak Berat'>Rusak Berat</option>" +
+
+    "<option value='Tidak Lengkap'>Tidak Lengkap</option>" +
+
+    "</select>" +
+
+    "</div>";
+
+
+  // ==========================================
+  // CATATAN
+  // ==========================================
+
+  html +=
+
+    "<div class='form-group'>" +
+
+    "<label>Catatan</label>" +
+
+    "<textarea " +
+
+    "id='catatanPengembalian' " +
+
+    "placeholder='Catatan pengembalian (opsional)'>" +
+
+    "</textarea>" +
+
+    "</div>";
+
+
+  // ==========================================
+  // TOMBOL SIMPAN
+  // ==========================================
+
+  html +=
+
+    "<button " +
+
+    "class='btn-pinjam' " +
+
+    "onclick='simpanPengembalian(" +
+
+    JSON.stringify(
+      barangDipilih
+    ).replace(
+      /"/g,
+      "&quot;"
+    ) +
+
+    ")'>" +
+
+    "✅ SIMPAN PENGEMBALIAN" +
+
+    "</button>";
+
+
+  html +=
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='bukaFormPengembalian()'>" +
+
+    "↩️ KEMBALI" +
+
+    "</button>";
+
+
+  html +=
+
+    "</div>";
+
+
+  hasil.innerHTML =
+    html;
+
+}
 </script>
 
 </body>
