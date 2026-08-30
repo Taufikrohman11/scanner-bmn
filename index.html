@@ -5367,27 +5367,81 @@ window.onload =
 
   const barangDipilih = [];
 
-
-  checkbox.forEach(
-    function(cb) {
-
-      const index =
-        Number(cb.value);
+const idSudahDipilih = new Set();
 
 
-      if (
-        data[index]
-      ) {
+checkbox.forEach(
+  function(cb) {
 
-        barangDipilih.push(
-          data[index]
-        );
+    const index =
+      Number(cb.value);
 
-      }
+
+    const item =
+      data[index];
+
+
+    if (!item) {
+      return;
+    }
+
+
+    const idTransaksi =
+      String(
+        item.idTransaksi || ""
+      ).trim();
+
+
+    // ========================================
+    // CEGAH DUPLIKAT
+    // ========================================
+
+    if (
+      idTransaksi &&
+      idSudahDipilih.has(
+        idTransaksi
+      )
+    ) {
+
+      console.warn(
+        "⚠️ Duplikat diabaikan:",
+        idTransaksi
+      );
+
+      return;
 
     }
-  );
 
+
+    if (idTransaksi) {
+
+      idSudahDipilih.add(
+        idTransaksi
+      );
+
+    }
+
+
+    barangDipilih.push(
+      item
+    );
+
+  }
+);
+
+
+// ==========================================
+// SIMPAN DATA
+// ==========================================
+
+window.barangPengembalianDipilih =
+  barangDipilih;
+
+
+console.log(
+  "📦 Barang yang akan dikembalikan:",
+  barangDipilih
+);
 
    
 
