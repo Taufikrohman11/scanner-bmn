@@ -5674,6 +5674,323 @@ window.onload =
     "block";
 
 }
+
+function simpanPengembalian() {
+
+  console.log(
+    "🔄 Menyimpan pengembalian..."
+  );
+
+
+  // ==========================================
+  // 1. AMBIL BARANG YANG DIPILIH
+  // ==========================================
+
+  const barang =
+    window.barangPengembalianDipilih || [];
+
+
+  if (
+    barang.length === 0
+  ) {
+
+    alert(
+      "Belum ada barang yang dipilih."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 2. AMBIL DATA FORM
+  // ==========================================
+
+  const tanggalKembali =
+    document.getElementById(
+      "tanggalKembali"
+    ).value;
+
+
+  const kondisiSaatKembali =
+    document.getElementById(
+      "kondisiKembali"
+    ).value;
+
+
+  const catatan =
+    document.getElementById(
+      "catatanPengembalian"
+    ).value.trim();
+
+
+  // ==========================================
+  // 3. VALIDASI TANGGAL
+  // ==========================================
+
+  if (!tanggalKembali) {
+
+    alert(
+      "Tanggal kembali wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 4. BUAT DATA YANG DIKIRIM
+  // ==========================================
+
+  const dataPengembalian = {
+
+    barang:
+      barang,
+
+    tanggalKembali:
+      tanggalKembali,
+
+    kondisiSaatKembali:
+      kondisiSaatKembali,
+
+    catatan:
+      catatan
+
+  };
+
+
+  console.log(
+    "📤 Data pengembalian:",
+    dataPengembalian
+  );
+
+
+  // ==========================================
+  // 5. TAMPILKAN LOADING
+  // ==========================================
+
+  const hasil =
+    document.getElementById(
+      "hasil"
+    );
+
+
+  if (hasil) {
+
+    hasil.innerHTML =
+
+      "<div class='loading'>" +
+
+      "🔄 Menyimpan pengembalian..." +
+
+      "</div>";
+
+  }
+
+
+  // ==========================================
+  // 6. CALLBACK JSONP
+  // ==========================================
+
+  const callbackName =
+    "hasilPengembalian_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Response pengembalian:",
+        response
+      );
+
+
+      delete window[
+        callbackName
+      ];
+
+
+      // ======================================
+      // GAGAL
+      // ======================================
+
+      if (
+        !response ||
+        !response.success
+      ) {
+
+        if (hasil) {
+
+          hasil.innerHTML =
+
+            "<div class='info'>" +
+
+            "❌ " +
+
+            (
+              response &&
+              response.message
+                ? response.message
+                : "Pengembalian gagal."
+            ) +
+
+            "</div>";
+
+        }
+
+        return;
+
+      }
+
+
+      // ======================================
+      // BERHASIL
+      // ======================================
+
+      if (hasil) {
+
+        hasil.innerHTML =
+
+          "<div class='status tersedia'>" +
+
+          "✅ PENGEMBALIAN BERHASIL" +
+
+          "</div>" +
+
+          "<div class='info'>" +
+
+          "<b>Jumlah barang dikembalikan:</b><br>" +
+
+          response.jumlahBerhasil +
+
+          "</div>" +
+
+          (
+            response.jumlahGagal > 0
+
+              ?
+
+              "<div class='info'>" +
+
+              "⚠️ Barang gagal dikembalikan: " +
+
+              response.jumlahGagal +
+
+              "</div>"
+
+              :
+
+              ""
+
+          ) +
+
+          "<br>" +
+
+          "<button " +
+
+          "class='btn-kembali' " +
+
+          "onclick='bukaFormPengembalian()'>" +
+
+          "🔄 PENGEMBALIAN LAIN" +
+
+          "</button>" +
+
+          "<button " +
+
+          "class='btn-scan' " +
+
+          "onclick='location.reload()'>" +
+
+          "🏠 KEMBALI KE AWAL" +
+
+          "</button>";
+
+      }
+
+    };
+
+
+  // ==========================================
+  // 7. KIRIM KE APPS SCRIPT
+  // ==========================================
+
+  const url =
+
+    API_URL +
+
+    "?action=kembalikanBarangMassal" +
+
+    "&data=" +
+
+    encodeURIComponent(
+      JSON.stringify(
+        dataPengembalian
+      )
+    ) +
+
+    "&callback=" +
+
+    callbackName;
+
+
+  console.log(
+    "🌐 URL pengembalian:",
+    url
+  );
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "❌ Gagal menghubungi Apps Script."
+      );
+
+
+      delete window[
+        callbackName
+      ];
+
+
+      if (hasil) {
+
+        hasil.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ Gagal menghubungi server." +
+
+          "</div>";
+
+      }
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+
+
+  
 </script>
 
 </body>
