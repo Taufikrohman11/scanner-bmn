@@ -4957,6 +4957,350 @@ window.onload =
 
 }
 
+
+  function cariPeminjaman() {
+
+  console.log(
+    "🔎 Mencari barang yang masih dipinjam..."
+  );
+
+
+  const input =
+    document.getElementById(
+      "keywordPengembalian"
+    );
+
+
+  const hasil =
+    document.getElementById(
+      "hasil"
+    );
+
+
+  if (!input || !hasil) {
+
+    console.error(
+      "❌ Elemen form tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  const keyword =
+    input.value.trim();
+
+
+  if (keyword.length < 2) {
+
+    alert(
+      "Masukkan minimal 2 karakter nama peminjam."
+    );
+
+    return;
+
+  }
+
+
+  hasil.innerHTML =
+
+    "<div class='loading'>" +
+
+    "🔎 Mencari barang..." +
+
+    "</div>";
+
+
+  // ==========================================
+  // CALLBACK JSONP
+  // ==========================================
+
+  const callbackName =
+    "hasilCariPeminjaman_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Response pencarian:",
+        response
+      );
+
+
+      delete window[
+        callbackName
+      ];
+
+
+      if (
+        !response ||
+        !response.success
+      ) {
+
+        hasil.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ " +
+
+          (
+            response &&
+            response.message
+              ? response.message
+              : "Gagal mencari barang."
+          ) +
+
+          "</div>";
+
+        return;
+
+      }
+
+
+      if (
+        !response.data ||
+        response.data.length === 0
+      ) {
+
+        hasil.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ Tidak ada barang yang sedang dipinjam oleh " +
+
+          keyword +
+
+          ".</div>";
+
+        return;
+
+      }
+
+
+      // ======================================
+      // TAMPILKAN HASIL
+      // ======================================
+
+      let html =
+
+        "<div class='keranjang'>" +
+
+        "<div class='keranjang-title'>" +
+
+        "🔄 BARANG YANG SEDANG DIPINJAM" +
+
+        "</div>";
+
+
+      html +=
+
+        "<div class='info'>" +
+
+        "<b>Peminjam:</b><br>" +
+
+        response.data[0].namaPeminjam +
+
+        "</div>";
+
+
+      response.data.forEach(
+        function(item, index) {
+
+          const isNonBMN =
+            item.jenisBarang ===
+            "NON_BMN";
+
+
+          html +=
+
+            "<div class='keranjang-item'>" +
+
+            "<label style='display:block; cursor:pointer;'>" +
+
+            "<input " +
+
+            "type='checkbox' " +
+
+            "class='checkbox-pengembalian' " +
+
+            "value='" +
+
+            index +
+
+            "' " +
+
+            "style='margin-right:8px;'>" +
+
+            "<b>" +
+
+            (index + 1) +
+
+            ". " +
+
+            (
+              item.namaBarang ||
+              "-"
+            ) +
+
+            "</b>" +
+
+            "</label>" +
+
+            "<small>" +
+
+            (
+              isNonBMN
+                ? "🔵 NON-BMN"
+                : "🟢 BMN"
+            ) +
+
+            "</small>" +
+
+            "<br>" +
+
+            (
+              isNonBMN
+
+                ?
+
+                "<small>" +
+                "Jumlah: " +
+                (item.jumlah || 1) +
+                "</small>"
+
+                :
+
+                "<small>" +
+                "Kode Register: " +
+                (item.kodeRegister || "-") +
+                "</small>"
+            ) +
+
+            "<br>" +
+
+            "<small>" +
+
+            "Kondisi saat pinjam: " +
+
+            (
+              item.kondisiSaatPinjam ||
+              "Tidak diketahui"
+            ) +
+
+            "</small>" +
+
+            "</div>";
+
+        }
+      );
+
+
+      // ======================================
+      // TOMBOL PROSES
+      // ======================================
+
+      html +=
+
+        "<button " +
+
+        "class='btn-pinjam' " +
+
+        "onclick='formProsesPengembalian(" +
+
+        JSON.stringify(
+          response.data
+        ).replace(
+          /"/g,
+          "&quot;"
+        ) +
+
+        ")'>" +
+
+        "🔄 PROSES PENGEMBALIAN" +
+
+        "</button>";
+
+
+      html +=
+        "</div>";
+
+
+      hasil.innerHTML =
+        html;
+
+    };
+
+
+  // ==========================================
+  // URL API
+  // ==========================================
+
+  const url =
+
+    API_URL +
+
+    "?action=cariBarangDipinjam" +
+
+    "&keyword=" +
+
+    encodeURIComponent(
+      keyword
+    ) +
+
+    "&callback=" +
+
+    callbackName;
+
+
+  console.log(
+    "🌐 URL pencarian:",
+    url
+  );
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "❌ Gagal menghubungi Apps Script."
+      );
+
+
+      delete window[
+        callbackName
+      ];
+
+
+      hasil.innerHTML =
+
+        "<div class='info'>" +
+
+        "❌ Gagal menghubungi server." +
+
+        "</div>";
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
 </script>
 
 </body>
