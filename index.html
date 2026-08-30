@@ -264,7 +264,7 @@ let keranjangPeminjaman = [];
 
 
   // ==========================================
-  // CEK BARANG SUDAH ADA
+  // CEK BARANG BMN SUDAH ADA
   // ==========================================
 
   const sudahAda =
@@ -272,6 +272,7 @@ let keranjangPeminjaman = [];
       function(item) {
 
         return (
+          item.jenisBarang === "BMN" &&
           String(item.kodeRegister).trim() ===
           String(data.kodeRegister).trim()
         );
@@ -292,10 +293,13 @@ let keranjangPeminjaman = [];
 
 
   // ==========================================
-  // TAMBAHKAN BARANG
+  // TAMBAHKAN BMN
   // ==========================================
 
   keranjangPeminjaman.push({
+
+    jenisBarang:
+      "BMN",
 
     kodeRegister:
       data.kodeRegister || "",
@@ -312,27 +316,40 @@ let keranjangPeminjaman = [];
     ruangan:
       data.ruangan || "",
 
+    jumlah:
+      1,
+
     kondisi:
-      data.kondisi || ""
+      data.kondisi || "Baik"
 
   });
 
 
   console.log(
-    "🛒 Isi keranjang:",
+    "🛒 BMN berhasil masuk keranjang:",
     keranjangPeminjaman
   );
 
 
   alert(
-    "✅ Barang ditambahkan ke keranjang."
+    "✅ Barang BMN ditambahkan ke keranjang."
   );
 
-    tampilKeranjang();
-    lanjutScan();
+
+  // ==========================================
+  // TAMPILKAN KERANJANG
+  // ==========================================
+
+  tampilKeranjang();
+
+
+  // ==========================================
+  // LANJUTKAN SCAN
+  // ==========================================
+
+  lanjutScan();
 
 }
-
 
   
 function tampilKeranjang() {
