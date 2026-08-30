@@ -5315,7 +5315,7 @@ window.onload =
 
 
 
-  function formProsesPengembalian(data) {
+ function formProsesPengembalian(data) {
 
   console.log(
     "🔄 Membuka form proses pengembalian:",
@@ -5339,7 +5339,7 @@ window.onload =
 
 
   // ==========================================
-  // AMBIL BARANG YANG DICENTANG
+  // CEK BARANG YANG DIPILIH
   // ==========================================
 
   const checkbox =
@@ -5362,7 +5362,7 @@ window.onload =
 
 
   // ==========================================
-  // AMBIL DATA BARANG
+  // AMBIL BARANG YANG DIPILIH
   // ==========================================
 
   const barangDipilih = [];
@@ -5390,13 +5390,26 @@ window.onload =
 
 
   console.log(
-    "📦 Barang yang dipilih:",
+    "📦 Barang yang akan dikembalikan:",
     barangDipilih
   );
 
 
+  if (
+    barangDipilih.length === 0
+  ) {
+
+    alert(
+      "Data barang tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
   // ==========================================
-  // FORM PENGEMBALIAN
+  // TAMPILKAN FORM
   // ==========================================
 
   let html =
@@ -5409,6 +5422,10 @@ window.onload =
 
     "</div>";
 
+
+  // ==========================================
+  // DATA PEMINJAM
+  // ==========================================
 
   html +=
 
@@ -5489,6 +5506,19 @@ window.onload =
 
         ) +
 
+        "<br>" +
+
+        "<small>" +
+
+        "Kondisi saat pinjam: " +
+
+        (
+          item.kondisiSaatPinjam ||
+          "Tidak diketahui"
+        ) +
+
+        "</small>" +
+
         "</div>";
 
     }
@@ -5512,22 +5542,17 @@ window.onload =
     "<label>Tanggal Kembali</label>" +
 
     "<input " +
-
     "type='date' " +
-
     "id='tanggalKembali' " +
-
     "value='" +
-
     tanggalHariIni +
-
     "'>" +
 
     "</div>";
 
 
   // ==========================================
-  // KONDISI KEMBALI
+  // KONDISI
   // ==========================================
 
   html +=
@@ -5562,9 +5587,7 @@ window.onload =
     "<label>Catatan</label>" +
 
     "<textarea " +
-
     "id='catatanPengembalian' " +
-
     "placeholder='Catatan pengembalian (opsional)'>" +
 
     "</textarea>" +
@@ -5573,7 +5596,7 @@ window.onload =
 
 
   // ==========================================
-  // TOMBOL SIMPAN
+  // SIMPAN
   // ==========================================
 
   html +=
@@ -5582,21 +5605,16 @@ window.onload =
 
     "class='btn-pinjam' " +
 
-    "onclick='simpanPengembalian(" +
-
-    JSON.stringify(
-      barangDipilih
-    ).replace(
-      /"/g,
-      "&quot;"
-    ) +
-
-    ")'>" +
+    "onclick='simpanPengembalian()'>" +
 
     "✅ SIMPAN PENGEMBALIAN" +
 
     "</button>";
 
+
+  // ==========================================
+  // KEMBALI
+  // ==========================================
 
   html +=
 
@@ -5612,12 +5630,15 @@ window.onload =
 
 
   html +=
-
     "</div>";
 
 
   hasil.innerHTML =
     html;
+
+
+  hasil.style.display =
+    "block";
 
 }
 </script>
