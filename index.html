@@ -4899,6 +4899,64 @@ window.onload =
 
   };
 
+
+
+  function bukaFormPengembalian() {
+
+  console.log(
+    "🔄 Membuka form pengembalian..."
+  );
+
+  const hasil =
+    document.getElementById("hasil");
+
+  if (!hasil) {
+    console.error(
+      "❌ Elemen #hasil tidak ditemukan."
+    );
+    return;
+  }
+
+  hasil.style.display = "block";
+
+  hasil.innerHTML =
+
+    "<div class='card'>" +
+
+    "<strong>🔄 PENGEMBALIAN BARANG</strong>" +
+
+    "<br><br>" +
+
+    "<div class='form-group'>" +
+
+    "<label>Nama Peminjam</label>" +
+
+    "<input " +
+    "id='keywordPengembalian' " +
+    "placeholder='Ketik nama peminjam...'>" +
+
+    "</div>" +
+
+    "<button " +
+    "class='btn-pinjam' " +
+    "onclick='cariPeminjaman()'>" +
+
+    "🔎 CARI BARANG" +
+
+    "</button>" +
+
+    "<button " +
+    "class='btn-scan' " +
+    "onclick='location.reload()'>" +
+
+    "❌ BATAL" +
+
+    "</button>" +
+
+    "</div>";
+
+}
+
 </script>
 
 </body>
