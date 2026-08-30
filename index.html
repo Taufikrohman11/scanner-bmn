@@ -5389,6 +5389,39 @@ window.onload =
   );
 
 
+    const barangDipilih = [];
+
+
+  checkbox.forEach(
+    function(cb) {
+
+      const index =
+        Number(cb.value);
+
+
+      if (
+        data[index]
+      ) {
+
+        barangDipilih.push(
+          data[index]
+        );
+
+      }
+
+    }
+  );
+
+
+   window.barangPengembalianDipilih =
+  barangDipilih;
+
+  console.log(
+    "📦 Barang yang akan dikembalikan:",
+    barangDipilih
+  );
+
+
   console.log(
     "📦 Barang yang akan dikembalikan:",
     barangDipilih
