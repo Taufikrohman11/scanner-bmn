@@ -4646,35 +4646,125 @@ function formPengembalian(data) {
  * ==========================================
  */
 
-function simpanPengembalian(data) {
+function simpanPengembalian() {
 
-  const kondisi =
+  console.log(
+    "↩️ Memulai proses simpan pengembalian..."
+  );
+
+
+  // ==========================================
+  // 1. AMBIL BARANG YANG DIPILIH
+  // ==========================================
+
+  const barangDipilih =
+    window.barangPengembalianDipilih || [];
+
+
+  console.log(
+    "📦 BARANG YANG AKAN DIKEMBALIKAN:",
+    barangDipilih
+  );
+
+
+  if (
+    barangDipilih.length === 0
+  ) {
+
+    alert(
+      "Tidak ada barang yang dipilih."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 2. AMBIL BATCH ID
+  // ==========================================
+
+  const batchId =
+    barangDipilih[0].batchId || "";
+
+
+  if (!batchId) {
+
+    alert(
+      "Batch ID tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  // ==========================================
+  // 3. AMBIL KONDISI
+  // ==========================================
+
+  const kondisiElement =
     document.getElementById(
       "kondisiKembali"
-    ).value.trim();
+    );
+
+
+  const kondisi =
+    kondisiElement
+      ? kondisiElement.value.trim()
+      : "Baik";
+
+
+  // ==========================================
+  // 4. AMBIL CATATAN
+  // ==========================================
+
+  const catatanElement =
+    document.getElementById(
+      "catatanPengembalian"
+    );
 
 
   const catatan =
+    catatanElement
+      ? catatanElement.value.trim()
+      : "";
+
+
+  // ==========================================
+  // 5. TAMPILKAN LOADING
+  // ==========================================
+
+  const hasil =
     document.getElementById(
-      "catatanKembali"
-    ).value.trim();
+      "hasil"
+    );
 
 
-  document.getElementById(
-    "hasil"
-  ).innerHTML =
+  if (hasil) {
 
-    "<div class='loading'>" +
+    hasil.innerHTML =
 
-    "↩️ Memproses pengembalian..." +
+      "<div class='loading'>" +
 
-    "</div>";
+      "↩️ Memproses pengembalian..." +
 
+      "</div>";
+
+  }
+
+
+  // ==========================================
+  // 6. SIAPKAN DATA
+  // ==========================================
 
   const transaksi = {
 
-    kodeRegister:
-      data.kodeRegister,
+    batchId:
+      batchId,
+
+    barang:
+      barangDipilih,
 
     kondisiSaatKembali:
       kondisi,
@@ -4685,15 +4775,40 @@ function simpanPengembalian(data) {
   };
 
 
+  console.log(
+    "📤 DATA DIKIRIM KE SERVER:",
+    transaksi
+  );
+
+
+  // ==========================================
+  // 7. PANGGIL APPS SCRIPT
+  // ==========================================
+
   panggilJSONP(
-    "kembalikanBarang",
+
+    "kembalikanBarangMassal",
+
     transaksi,
+
     function(response) {
 
-      if (!response.success) {
+      console.log(
+        "📥 RESPONSE PENGEMBALIAN:",
+        response
+      );
+
+
+      if (
+        !response ||
+        !response.success
+      ) {
 
         tampilError(
+          response &&
           response.message
+            ? response.message
+            : "Pengembalian gagal."
         );
 
         return;
@@ -4701,21 +4816,31 @@ function simpanPengembalian(data) {
       }
 
 
-      document.getElementById(
-        "hasil"
-      ).innerHTML =
+      // ======================================
+      // 8. HASIL BERHASIL
+      // ======================================
+
+      if (!hasil) {
+        return;
+      }
+
+
+      hasil.innerHTML =
 
         "<div class='status tersedia'>" +
 
-        "✅ BARANG BERHASIL DIKEMBALIKAN" +
+        "✅ PENGEMBALIAN BERHASIL" +
 
         "</div>" +
 
         "<div class='info'>" +
 
-        "<b>Peminjam:</b><br>" +
+        "<b>Jumlah barang dikembalikan:</b><br>" +
 
-        response.data.namaPeminjam +
+        (
+          response.jumlahBerhasil ||
+          0
+        ) +
 
         "<br><br>" +
 
@@ -4725,14 +4850,13 @@ function simpanPengembalian(data) {
 
         "</div>" +
 
-
         "<button " +
 
         "class='btn-scan' " +
 
         "onclick='location.reload()'>" +
 
-        "📷 SCAN BARANG LAIN" +
+        "📷 KEMBALI KE AWAL" +
 
         "</button>";
 
