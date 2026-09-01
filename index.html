@@ -2175,26 +2175,33 @@ function ambilRiwayatBarang(kodeQR) {
 
 }
 
-
-function prosesPengembalianMassal(pinjam) {
+function formProsesPengembalian(data) {
 
   console.log(
-    "↩️ Memproses pengembalian massal:",
-    pinjam
+    "🔄 Membuka form proses pengembalian..."
+  );
+
+  console.log(
+    "📦 DATA YANG DITERIMA:",
+    data
   );
 
 
   // ==========================================
-  // 1. VALIDASI BATCH
+  // 1. CEK DATA
   // ==========================================
 
   if (
-    !pinjam ||
-    !pinjam.batchId
+    !Array.isArray(data)
   ) {
 
+    console.error(
+      "❌ Data pengembalian bukan array:",
+      data
+    );
+
     alert(
-      "Batch ID tidak ditemukan."
+      "Data barang tidak valid."
     );
 
     return;
@@ -2203,52 +2210,123 @@ function prosesPengembalianMassal(pinjam) {
 
 
   // ==========================================
-  // 2. AMBIL KONDISI SETIAP BARANG
+  // 2. AMBIL CHECKBOX YANG DICENTANG
   // ==========================================
 
-  const dropdownKondisi =
+  const checkbox =
     document.querySelectorAll(
-      ".kondisi-barang"
+      ".checkbox-pengembalian:checked"
     );
 
 
-  const barang =
-    [];
+  console.log(
+    "☑️ JUMLAH CHECKBOX TERPILIH:",
+    checkbox.length
+  );
 
 
-  dropdownKondisi.forEach(
-    function(select) {
+  if (
+    checkbox.length === 0
+  ) {
 
-      barang.push({
+    alert(
+      "Pilih minimal satu barang yang akan dikembalikan."
+    );
 
-        kodeRegister:
-          select.dataset.kode,
+    return;
 
-        kondisiSaatKembali:
-          select.value
+  }
 
-      });
+
+  // ==========================================
+  // 3. AMBIL DATA BARANG YANG DICENTANG
+  // ==========================================
+
+  const barangDipilih = [];
+
+
+  checkbox.forEach(
+    function(cb) {
+
+      const index =
+        parseInt(
+          cb.value,
+          10
+        );
+
+
+      console.log(
+        "☑️ CHECKBOX INDEX:",
+        index
+      );
+
+
+      if (
+        isNaN(index)
+      ) {
+
+        console.warn(
+          "⚠️ Index checkbox tidak valid:",
+          cb.value
+        );
+
+        return;
+
+      }
+
+
+      const item =
+        data[index];
+
+
+      if (!item) {
+
+        console.warn(
+          "⚠️ Data barang tidak ditemukan untuk index:",
+          index
+        );
+
+        return;
+
+      }
+
+
+      console.log(
+        "📦 BARANG DIPILIH:",
+        item
+      );
+
+
+      barangDipilih.push(
+        item
+      );
 
     }
   );
 
 
+  // ==========================================
+  // 4. VALIDASI HASIL
+  // ==========================================
+
   console.log(
-    "📦 Kondisi setiap barang:",
-    barang
+    "📦 HASIL AKHIR BARANG DIPILIH:",
+    barangDipilih
   );
 
 
-  // ==========================================
-  // VALIDASI
-  // ==========================================
+  console.log(
+    "🔢 JUMLAH BARANG DIPILIH:",
+    barangDipilih.length
+  );
+
 
   if (
-    barang.length === 0
+    barangDipilih.length === 0
   ) {
 
     alert(
-      "Data kondisi barang tidak ditemukan."
+      "Tidak ada barang yang dipilih."
     );
 
     return;
@@ -2257,17 +2335,15 @@ function prosesPengembalianMassal(pinjam) {
 
 
   // ==========================================
-  // 3. AMBIL CATATAN
+  // 5. SIMPAN UNTUK PROSES SELANJUTNYA
   // ==========================================
 
-  const catatan =
-    document.getElementById(
-      "catatanMassal"
-    ).value.trim();
+  window.barangPengembalianDipilih =
+    barangDipilih;
 
 
   // ==========================================
-  // 4. TAMPILKAN LOADING
+  // 6. TAMPILKAN FORM
   // ==========================================
 
   const hasil =
@@ -2276,201 +2352,300 @@ function prosesPengembalianMassal(pinjam) {
     );
 
 
-  hasil.innerHTML =
+  if (!hasil) {
 
-    "<div class='loading'>" +
+    console.error(
+      "❌ Elemen #hasil tidak ditemukan."
+    );
 
-    "⏳ Memproses pengembalian semua barang..." +
+    return;
+
+  }
+
+
+  hasil.style.display =
+    "block";
+
+
+  let html =
+
+    "<div class='keranjang'>" +
+
+    "<div class='keranjang-title'>" +
+
+    "🔄 KONFIRMASI PENGEMBALIAN" +
 
     "</div>";
 
 
   // ==========================================
-  // 5. CALLBACK JSONP
+  // 7. DATA PEMINJAM
   // ==========================================
 
-  const callbackName =
-    "hasilPengembalianMassal_" +
-    Date.now();
+  html +=
 
+    "<div class='info'>" +
 
-  window[callbackName] =
-    function(response) {
+    "<b>Peminjam:</b><br>" +
 
-      console.log(
-        "📥 Response Pengembalian Massal:",
-        response
-      );
-
-
-      delete window[callbackName];
-
-
-      // ======================================
-      // GAGAL
-      // ======================================
-
-      if (!response.success) {
-
-        hasil.innerHTML =
-
-          "<div class='info'>" +
-
-          "❌ " +
-
-          (
-            response.message ||
-            "Pengembalian gagal."
-          ) +
-
-          "</div>";
-
-        return;
-
-      }
-
-
-      // ======================================
-      // BERHASIL
-      // ======================================
-
-      hasil.innerHTML =
-
-        "<div class='status tersedia'>" +
-
-        "✅ PENGEMBALIAN BERHASIL" +
-
-        "</div>" +
-
-        "<div class='info'>" +
-
-        "<b>Batch ID:</b><br>" +
-
-        (
-          response.batchId ||
-          pinjam.batchId
-        ) +
-
-        "<br><br>" +
-
-        "<b>Jumlah barang dikembalikan:</b><br>" +
-
-        response.jumlahBerhasil +
-
-        "<br><br>" +
-
-        "Semua barang dalam batch berhasil dikembalikan." +
-
-        "</div>" +
-
-
-        "<button " +
-
-        "class='btn-scan' " +
-
-        "onclick='location.reload()'>" +
-
-        "📷 SCAN BARANG LAIN" +
-
-        "</button>";
-
-    };
-
-
-  // ==========================================
-  // 6. DATA YANG DIKIRIM
-  // ==========================================
-
-  const data = {
-
-    batchId:
-      pinjam.batchId,
-
-    barang:
-      barang,
-
-    catatan:
-      catatan
-
-  };
-
-
-  console.log(
-    "📦 DATA PENGEMBALIAN:",
-    data
-  );
-
-
-  // ==========================================
-  // 7. URL APPS SCRIPT
-  // ==========================================
-
-  const url =
-    API_URL +
-
-    "?action=kembalikanBarangMassal" +
-
-    "&data=" +
-
-    encodeURIComponent(
-      JSON.stringify(data)
+    (
+      barangDipilih[0].namaPeminjam ||
+      "-"
     ) +
 
-    "&callback=" +
-
-    callbackName;
-
-
-  console.log(
-    "🌐 URL:",
-    url
-  );
+    "</div>";
 
 
   // ==========================================
-  // 8. KIRIM JSONP
+  // 8. TAMPILKAN BARANG YANG DIPILIH SAJA
   // ==========================================
 
-  const script =
-    document.createElement(
-      "script"
-    );
+  barangDipilih.forEach(
+    function(item, index) {
+
+      const isNonBMN =
+        item.jenisBarang ===
+        "NON_BMN";
 
 
-  script.src =
-    url;
+      html +=
+
+        "<div class='keranjang-item'>" +
+
+        "<b>" +
+
+        (index + 1) +
+
+        ". " +
+
+        (
+          item.namaBarang ||
+          "-"
+        ) +
+
+        "</b>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        (
+          isNonBMN
+            ? "🔵 NON-BMN"
+            : "🟢 BMN"
+        ) +
+
+        "</small>" +
+
+        "<br>" +
 
 
-  script.onerror =
-    function() {
+        (
+          isNonBMN
 
-      console.error(
-        "Gagal menghubungi Apps Script."
-      );
+            ?
 
+            "<small>" +
 
-      delete window[callbackName];
+            "Jumlah: " +
 
+            (
+              item.jumlah ||
+              1
+            ) +
 
-      hasil.innerHTML =
+            "</small>"
 
-        "<div class='info'>" +
+            :
 
-        "❌ Gagal menghubungi server Apps Script." +
+            "<small>" +
+
+            "Kode Register: " +
+
+            (
+              item.kodeRegister ||
+              "-"
+            ) +
+
+            "</small>"
+
+        ) +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Kondisi saat pinjam: " +
+
+        (
+          item.kondisiSaatPinjam ||
+          "Tidak diketahui"
+        ) +
+
+        "</small>" +
 
         "</div>";
 
-    };
+    }
+  );
 
 
-  document.body.appendChild(
-    script
+  // ==========================================
+  // 9. TANGGAL KEMBALI
+  // ==========================================
+
+  const sekarang =
+    new Date();
+
+
+  const tahun =
+    sekarang.getFullYear();
+
+
+  const bulan =
+    String(
+      sekarang.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const tanggal =
+    String(
+      sekarang.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const tanggalHariIni =
+    tahun +
+    "-" +
+    bulan +
+    "-" +
+    tanggal;
+
+
+  html +=
+
+    "<div class='form-group'>" +
+
+    "<label>Tanggal Kembali</label>" +
+
+    "<input " +
+
+    "type='date' " +
+
+    "id='tanggalKembali' " +
+
+    "value='" +
+
+    tanggalHariIni +
+
+    "'>" +
+
+    "</div>";
+
+
+  // ==========================================
+  // 10. KONDISI KEMBALI
+  // ==========================================
+
+  html +=
+
+    "<div class='form-group'>" +
+
+    "<label>Kondisi Saat Kembali</label>" +
+
+    "<select id='kondisiKembali'>" +
+
+    "<option value='Baik'>Baik</option>" +
+
+    "<option value='Rusak Ringan'>Rusak Ringan</option>" +
+
+    "<option value='Rusak Berat'>Rusak Berat</option>" +
+
+    "<option value='Tidak Lengkap'>Tidak Lengkap</option>" +
+
+    "</select>" +
+
+    "</div>";
+
+
+  // ==========================================
+  // 11. CATATAN
+  // ==========================================
+
+  html +=
+
+    "<div class='form-group'>" +
+
+    "<label>Catatan</label>" +
+
+    "<textarea " +
+
+    "id='catatanPengembalian' " +
+
+    "placeholder='Catatan pengembalian (opsional)'>" +
+
+    "</textarea>" +
+
+    "</div>";
+
+
+  // ==========================================
+  // 12. TOMBOL SIMPAN
+  // ==========================================
+
+  html +=
+
+    "<button " +
+
+    "class='btn-pinjam' " +
+
+    "onclick='simpanPengembalian()'>" +
+
+    "✅ SIMPAN PENGEMBALIAN" +
+
+    "</button>";
+
+
+  // ==========================================
+  // 13. TOMBOL KEMBALI
+  // ==========================================
+
+  html +=
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='bukaFormPengembalian()'>" +
+
+    "↩️ KEMBALI" +
+
+    "</button>";
+
+
+  html +=
+    "</div>";
+
+
+  // ==========================================
+  // 14. TAMPILKAN
+  // ==========================================
+
+  hasil.innerHTML =
+    html;
+
+
+  console.log(
+    "✅ Form konfirmasi berhasil ditampilkan."
   );
 
 }
-
-
-  
 
   function tampilRiwayat(response) {
 
