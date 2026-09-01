@@ -2320,7 +2320,16 @@ function formProsesPengembalian(data) {
     barangDipilih.length
   );
 
-
+console.log(
+  "🔍 DETAIL JUMLAH BARANG:",
+  barangDipilih.map(function(item) {
+    return {
+      idTransaksi: item.idTransaksi,
+      nomorBaris: item.nomorBaris,
+      namaBarang: item.namaBarang
+    };
+  })
+);
   if (
     barangDipilih.length === 0
   ) {
@@ -2637,8 +2646,17 @@ function formProsesPengembalian(data) {
   // 14. TAMPILKAN
   // ==========================================
 
-  hasil.innerHTML =
-    html;
+ hasil.innerHTML = "";
+
+hasil.innerHTML =
+  html;
+
+console.log(
+  "🖥️ JUMLAH ELEMEN BARANG DI LAYAR:",
+  hasil.querySelectorAll(
+    ".keranjang-item"
+  ).length
+);
 
 
   console.log(
