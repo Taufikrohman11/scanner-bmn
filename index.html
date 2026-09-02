@@ -4990,76 +4990,111 @@ function simpanPengembalian() {
 
     transaksi,
 
-    function(response) {
+  function(response) {
 
-      console.log(
-        "📥 RESPONSE PENGEMBALIAN:",
-        response
-      );
+  console.log(
+    "📥 RESPONSE PENGEMBALIAN:",
+    response
+  );
 
+  if (!response) {
 
-      if (
-        !response ||
-        !response.success
-      ) {
+    tampilError(
+      "Tidak ada response dari server."
+    );
 
-        tampilError(
-          response &&
-          response.message
-            ? response.message
-            : "Pengembalian gagal."
-        );
+    return;
 
-        return;
-
-      }
+  }
 
 
-      // ======================================
-      // 8. HASIL BERHASIL
-      // ======================================
+  // ======================================
+  // CEK HASIL SERVER
+  // ======================================
 
-      if (!hasil) {
-        return;
-      }
+  if (!response.success) {
+
+    tampilError(
+      response.message ||
+      "Pengembalian gagal."
+    );
+
+    return;
+
+  }
 
 
-      hasil.innerHTML =
+  // ======================================
+  // PENGEMBALIAN BERHASIL
+  // ======================================
 
-        "<div class='status tersedia'>" +
+  if (!hasil) {
+    return;
+  }
 
-        "✅ PENGEMBALIAN BERHASIL" +
 
-        "</div>" +
+  const jumlahBerhasil =
+    Number(
+      response.jumlahBerhasil || 0
+    );
 
-        "<div class='info'>" +
 
-        "<b>Jumlah barang dikembalikan:</b><br>" +
+  const jumlahGagal =
+    Number(
+      response.jumlahGagal || 0
+    );
 
-        (
-          response.jumlahBerhasil ||
-          0
-        ) +
+
+  hasil.innerHTML =
+
+    "<div class='status tersedia'>" +
+
+    "✅ PENGEMBALIAN BERHASIL" +
+
+    "</div>" +
+
+    "<div class='info'>" +
+
+    "<b>Jumlah barang dikembalikan:</b><br>" +
+
+    jumlahBerhasil +
+
+    "<br><br>" +
+
+    "<b>Status:</b><br>" +
+
+    "DIKEMBALIKAN" +
+
+    (
+      jumlahGagal > 0
+
+        ?
 
         "<br><br>" +
 
-        "<b>Status:</b><br>" +
+        "<b>Gagal:</b><br>" +
 
-        "DIKEMBALIKAN" +
+        jumlahGagal
 
-        "</div>" +
+        :
 
-        "<button " +
+        ""
 
-        "class='btn-scan' " +
+    ) +
 
-        "onclick='location.reload()'>" +
+    "</div>" +
 
-        "📷 KEMBALI KE AWAL" +
+    "<button " +
 
-        "</button>";
+    "class='btn-scan' " +
 
-    }
+    "onclick='location.reload()'>" +
+
+    "📷 KEMBALI KE AWAL" +
+
+    "</button>";
+
+}
 
   );
 
