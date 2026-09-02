@@ -2173,6 +2173,207 @@ function ambilRiwayatBarang(kodeQR) {
 
 }
 
+
+function tampilBarangPeminjamPengembalian(pegawai, data) {
+
+  console.log(
+    "📦 BARANG PEMINJAM TERPILIH:",
+    pegawai,
+    data
+  );
+
+  const hasil =
+    document.getElementById("hasil");
+
+  if (!hasil) {
+    console.error(
+      "❌ Elemen #hasil tidak ditemukan."
+    );
+    return;
+  }
+
+  hasil.style.display = "block";
+
+  if (
+    !Array.isArray(data) ||
+    data.length === 0
+  ) {
+
+    hasil.innerHTML =
+      "<div class='keranjang'>" +
+
+      "<strong>📦 BARANG YANG MASIH DIPINJAM</strong>" +
+
+      "<br><br>" +
+
+      "<div class='info'>" +
+
+      "Tidak ada barang yang sedang dipinjam oleh " +
+
+      "<b>" +
+
+      (pegawai.nama || "-") +
+
+      "</b>." +
+
+      "</div>" +
+
+      "<button " +
+
+      "class='btn-scan' " +
+
+      "onclick='bukaFormPengembalian()'>" +
+
+      "↩️ KEMBALI" +
+
+      "</button>" +
+
+      "</div>";
+
+    return;
+  }
+
+  let html =
+
+    "<div class='keranjang'>" +
+
+    "<div class='keranjang-title'>" +
+
+    "🔄 BARANG YANG SEDANG DIPINJAM" +
+
+    "</div>" +
+
+    "<div class='keranjang-count'>" +
+
+    "Peminjam: <b>" +
+
+    (pegawai.nama || "-") +
+
+    "</b><br>" +
+
+    "Jumlah transaksi: " +
+
+    data.length +
+
+    "</div>";
+
+  data.forEach(
+    function(item, index) {
+
+      html +=
+
+        "<div class='keranjang-item'>" +
+
+        "<input " +
+
+        "type='checkbox' " +
+
+        "class='checkbox-pengembalian' " +
+
+        "value='" +
+
+        index +
+
+        "'>" +
+
+        "<b>" +
+
+        (index + 1) +
+
+        ". " +
+
+        (item.namaBarang || "-") +
+
+        "</b>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Kode Register: " +
+
+        (item.kodeRegister || "-") +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "NUP: " +
+
+        (item.nup || "-") +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Ruangan: " +
+
+        (item.ruanganAsal || "-") +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Tanggal Pinjam: " +
+
+        formatTanggal(item.tanggalPinjam) +
+
+        "</small>" +
+
+        "<br>" +
+
+        "<small>" +
+
+        "Kondisi Saat Pinjam: " +
+
+        (item.kondisiSaatPinjam || "-") +
+
+        "</small>" +
+
+        "</div>";
+
+    }
+  );
+
+  html +=
+
+    "<button " +
+
+    "class='btn-kembali' " +
+
+    "onclick='formProsesPengembalian(window.dataBarangPeminjamPengembalian)'>" +
+
+    "↩️ PROSES PENGEMBALIAN BARANG TERPILIH" +
+
+    "</button>" +
+
+    "<button " +
+
+    "class='btn-scan' " +
+
+    "onclick='bukaFormPengembalian()'>" +
+
+    "↩️ KEMBALI KE PENCARIAN" +
+
+    "</button>" +
+
+    "</div>";
+
+  window.dataBarangPeminjamPengembalian = data;
+
+  hasil.innerHTML = html;
+
+}
+
+
+
+  
 function formProsesPengembalian(data) {
 console.log(
   "🚨 formProsesPengembalian DIPANGGIL"
