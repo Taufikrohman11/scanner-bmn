@@ -5254,21 +5254,21 @@ window.onload =
 
     "<div class='form-group'>" +
 
-    "<label>Nama Peminjam</label>" +
+    "<label>Cari Peminjam</label>" +
 
     "<input " +
     "id='keywordPengembalian' " +
-    "placeholder='Ketik nama peminjam...'>" +
+    "placeholder='Ketik nama peminjam...' " +
+    "autocomplete='off' " +
+    "oninput='cariNamaPeminjamPengembalian(this.value)'>" +
 
     "</div>" +
 
-    "<button " +
-    "class='btn-pinjam' " +
-    "onclick='cariPeminjaman()'>" +
+    "<div " +
+    "id='hasilPeminjamPengembalian' " +
+    "class='hasil-pegawai'>" +
 
-    "🔎 CARI BARANG" +
-
-    "</button>" +
+    "</div>" +
 
     "<button " +
     "class='btn-scan' " +
@@ -5282,7 +5282,392 @@ window.onload =
 
 }
 
+function cariNamaPeminjamPengembalian(keyword) {
 
+  console.log(
+    "🔎 Mencari peminjam untuk pengembalian:",
+    keyword
+  );
+
+  const hasil =
+    document.getElementById(
+      "hasilPeminjamPengembalian"
+    );
+
+  if (!hasil) {
+    console.error(
+      "❌ Elemen hasil peminjam tidak ditemukan."
+    );
+    return;
+  }
+
+  keyword =
+    String(keyword || "").trim();
+
+  if (keyword.length < 2) {
+
+    hasil.innerHTML = "";
+
+    return;
+  }
+
+  hasil.innerHTML =
+    "<div class='info'>" +
+    "🔎 Mencari peminjam..." +
+    "</div>";
+
+  const callbackName =
+    "hasilCariPeminjamPengembalian_" +
+    Date.now();
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Hasil pencarian peminjam:",
+        response
+      );
+
+      delete window[callbackName];
+
+      if (
+        !response ||
+        !response.success
+      ) {
+
+        hasil.innerHTML =
+          "<div class='info'>" +
+          "❌ Gagal mencari data peminjam." +
+          "</div>";
+
+        return;
+      }
+
+      if (
+        !response.pegawai ||
+        response.pegawai.length === 0
+      ) {
+
+        hasil.innerHTML =
+          "<div class='info'>" +
+          "❌ Peminjam tidak ditemukan." +
+          "</div>";
+
+        return;
+      }
+
+      let html =
+
+        "<div class='keranjang'>" +
+
+        "<div class='keranjang-title'>" +
+
+        "👤 PILIH PEMINJAM" +
+
+        "</div>";
+
+      response.pegawai.forEach(
+        function(pegawai) {
+
+          html +=
+
+            "<div " +
+
+            "class='pegawai-item' " +
+
+            "style='cursor:pointer; padding:12px; margin-top:10px; border:1px solid #ddd; border-radius:10px;' " +
+
+            "onclick='pilihPeminjamPengembalian(" +
+
+            JSON.stringify(pegawai)
+              .replace(/"/g, "&quot;") +
+
+            ")'>" +
+
+            "<b>" +
+
+            (pegawai.nama || "-") +
+
+            "</b>" +
+
+            "<br>" +
+
+            "<small>" +
+
+            "NIP/NIK: " +
+
+            (
+              pegawai.nip ||
+              "Tidak tersedia"
+            ) +
+
+            "</small>" +
+
+            "<br>" +
+
+            "<small>" +
+
+            "Jabatan: " +
+
+            (
+              pegawai.jabatan ||
+              "Tidak tersedia"
+            ) +
+
+            "</small>" +
+
+            "</div>";
+
+        }
+      );
+
+      html +=
+
+        "</div>";
+
+      hasil.innerHTML =
+        html;
+
+    };
+
+  const url =
+
+    API_URL +
+
+    "?action=cariPegawai" +
+
+    "&keyword=" +
+
+    encodeURIComponent(keyword) +
+
+    "&callback=" +
+
+    callbackName;
+
+  console.log(
+    "🌐 URL pencarian peminjam:",
+    url
+  );
+
+  const script =
+    document.createElement("script");
+
+  script.src = url;
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "❌ Gagal mencari peminjam."
+      );
+
+      delete window[callbackName];
+
+      hasil.innerHTML =
+        "<div class='info'>" +
+        "❌ Gagal menghubungi server." +
+        "</div>";
+
+    };
+
+  document.body.appendChild(script);
+
+}
+
+
+function pilihPeminjamPengembalian(pegawai) {
+
+  console.log(
+    "👤 Peminjam dipilih untuk pengembalian:",
+    pegawai
+  );
+
+  const hasil =
+    document.getElementById("hasil");
+
+  if (!hasil) {
+    return;
+  }
+
+  hasil.innerHTML =
+
+    "<div class='keranjang'>" +
+
+    "<div class='keranjang-title'>" +
+
+    "👤 PEMINJAM TERPILIH" +
+
+    "</div>" +
+
+    "<div class='info'>" +
+
+    "<b>Nama:</b><br>" +
+
+    (pegawai.nama || "-") +
+
+    "<br><br>" +
+
+    "<b>NIP / NIK:</b><br>" +
+
+    (
+      pegawai.nip ||
+      "Tidak tersedia"
+    ) +
+
+    "<br><br>" +
+
+    "<b>Jabatan:</b><br>" +
+
+    (
+      pegawai.jabatan ||
+      "Tidak tersedia"
+    ) +
+
+    "</div>" +
+
+    "<div class='loading'>" +
+
+    "🔄 Mengambil barang yang sedang dipinjam..." +
+
+    "</div>" +
+
+    "</div>";
+
+  cariBarangPeminjamTerpilih(
+    pegawai
+  );
+
+}
+
+
+  function cariBarangPeminjamTerpilih(pegawai) {
+
+  console.log(
+    "📦 Mencari barang berdasarkan identitas peminjam:",
+    pegawai
+  );
+
+  const hasil =
+    document.getElementById("hasil");
+
+  const callbackName =
+    "hasilBarangPeminjam_" +
+    Date.now();
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📥 Barang peminjam terpilih:",
+        response
+      );
+
+      delete window[callbackName];
+
+      if (
+        !response ||
+        !response.success
+      ) {
+
+        hasil.innerHTML =
+
+          "<div class='info'>" +
+
+          "❌ Gagal mengambil data barang." +
+
+          "</div>";
+
+        return;
+      }
+
+      if (
+        !response.data ||
+        response.data.length === 0
+      ) {
+
+        hasil.innerHTML =
+
+          "<div class='info'>" +
+
+          "📦 Peminjam ini tidak memiliki barang yang sedang dipinjam." +
+
+          "</div>";
+
+        return;
+      }
+
+      tampilBarangPeminjamPengembalian(
+        pegawai,
+        response.data
+      );
+
+    };
+
+  const url =
+
+    API_URL +
+
+    "?action=cariBarangDipinjam" +
+
+    "&nama=" +
+
+    encodeURIComponent(
+      pegawai.nama || ""
+    ) +
+
+    "&nipNik=" +
+
+    encodeURIComponent(
+      pegawai.nip || ""
+    ) +
+
+    "&jabatan=" +
+
+    encodeURIComponent(
+      pegawai.jabatan || ""
+    ) +
+
+    "&callback=" +
+
+    callbackName;
+
+  console.log(
+    "🌐 URL barang peminjam:",
+    url
+  );
+
+  const script =
+    document.createElement("script");
+
+  script.src = url;
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "❌ Gagal mengambil barang peminjam."
+      );
+
+      delete window[callbackName];
+
+      hasil.innerHTML =
+
+        "<div class='info'>" +
+
+        "❌ Gagal menghubungi server." +
+
+        "</div>";
+
+    };
+
+  document.body.appendChild(script);
+
+}
+
+
+
+
+  
   function cariPeminjaman() {
 
   console.log(
