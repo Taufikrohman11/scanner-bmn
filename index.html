@@ -4085,21 +4085,56 @@ daftarBarang +=
 
     "</button>";
 
+
+  
+// ==========================================
+// INISIALISASI FOTO PEMINJAMAN
+// ==========================================
+
+kameraPeminjaman =
+  document.getElementById("kameraPeminjaman");
+
+galeriPeminjaman =
+  document.getElementById("galeriPeminjaman");
+
+previewFotoPeminjaman =
+  document.getElementById("previewFotoPeminjaman");
+
+if (kameraPeminjaman) {
+
+  kameraPeminjaman.addEventListener(
+    "change",
+    function() {
+
+      tampilPreviewFotoPeminjaman(this);
+
+    }
+  );
+
 }
 
+if (galeriPeminjaman) {
+
+  galeriPeminjaman.addEventListener(
+    "change",
+    function() {
+
+      tampilPreviewFotoPeminjaman(this);
+
+    }
+  );
+
+}
+
+}
 
 // ==========================================
 // PREVIEW FOTO PEMINJAMAN
 // ==========================================
 
-const kameraPeminjaman =
-  document.getElementById("kameraPeminjaman");
-
-const galeriPeminjaman =
-  document.getElementById("galeriPeminjaman");
-
-const previewFotoPeminjaman =
-  document.getElementById("previewFotoPeminjaman");
+let kameraPeminjaman = null;
+let galeriPeminjaman = null;
+let previewFotoPeminjaman = null;
 
 function tampilPreviewFotoPeminjaman(input) {
 
