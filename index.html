@@ -4390,42 +4390,22 @@ console.log(
   // 4. BUAT DATA MASSAL
   // ==========================================
 
-  const data = {
+const data = {
+  barang: keranjangPeminjaman,
+  namaPeminjam: namaPeminjam,
+  nipNik: nipNik,
+  jabatan: jabatan,
+  noHp: noHp,
+  unit: unit,
+  keperluan: keperluan,
+  tanggalRencanaKembali: tanggalRencanaKembali,
+  kondisiSaatPinjam: kondisiSaatPinjam || "Baik",
+  catatan: catatan,
+  petugas: "ADMIN",
 
-    barang:
-      keranjangPeminjaman,
-
-    namaPeminjam:
-      namaPeminjam,
-
-    nipNik:
-      nipNik,
-
- jabatan:
-    jabatan,
-
-  noHp:
-    noHp,
-    
-    unit:
-      unit,
-
-    keperluan:
-      keperluan,
-
-    tanggalRencanaKembali:
-      tanggalRencanaKembali,
-
-    kondisiSaatPinjam:
-      kondisiSaatPinjam || "Baik",
-
-    catatan:
-      catatan,
-
-    petugas:
-      "ADMIN"
-
-  };
+  // 📷 DOKUMENTASI FOTO
+  fotoDokumentasi: fotoBase64
+};
 
 
   console.log(
