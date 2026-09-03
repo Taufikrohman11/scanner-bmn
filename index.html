@@ -4007,16 +4007,47 @@ daftarBarang +=
 
 "<div style='margin:10px 0;'>" +
 
-"<label for='fotoPeminjaman'>" +
-"Foto dokumentasi peminjaman (opsional):" +
+"<label>" +
+"Dokumentasi foto (opsional):" +
 "</label>" +
+
+"<div style='display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;'>" +
+
+"<button " +
+"type='button' " +
+"class='btn-scan' " +
+"onclick=\"document.getElementById('kameraPeminjaman').click()\">" +
+"📷 AMBIL FOTO" +
+"</button>" +
+
+"<button " +
+"type='button' " +
+"class='btn-scan' " +
+"onclick=\"document.getElementById('galeriPeminjaman').click()\">" +
+"🖼️ PILIH DARI GALERI" +
+"</button>" +
+
+"</div>" +
 
 "<input " +
 "type='file' " +
-"id='fotoPeminjaman' " +
+"id='kameraPeminjaman' " +
+"accept='image/*' " +
+"capture='environment' " +
+"multiple " +
+"style='display:none;'>" +
+
+"<input " +
+"type='file' " +
+"id='galeriPeminjaman' " +
 "accept='image/*' " +
 "multiple " +
-"style='display:block; margin-top:8px; width:100%;'>" +
+"style='display:none;'>" +
+
+"<div " +
+"id='previewFotoPeminjaman' " +
+"style='margin-top:10px;'>" +
+"</div>" +
 
 "<small>" +
 "Foto akan disimpan sebagai dokumentasi untuk seluruh batch peminjaman." +
