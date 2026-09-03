@@ -4216,7 +4216,7 @@ function fileToBase64(file) {
 }
 
   
-async function kirimPeminjamanMassal() {
+function kirimPeminjamanMassal() {
 
   console.log(
     "📤 Memproses peminjaman massal..."
@@ -4363,29 +4363,7 @@ console.log(
   semuaFoto.length
 );
 
-// ==========================================
-// UBAH FOTO MENJADI BASE64
-// ==========================================
 
-const fotoBase64 = [];
-
-for (const file of semuaFoto) {
-
-  const base64 =
-    await fileToBase64(file);
-
-  fotoBase64.push({
-    namaFile: file.name,
-    tipe: file.type,
-    data: base64
-  });
-
-}
-
-console.log(
-  "📷 Foto Base64 siap:",
-  fotoBase64.length
-);
   // ==========================================
   // 4. BUAT DATA MASSAL
   // ==========================================
@@ -4516,97 +4494,7 @@ console.log(
 
         "</div>";
 
-// ==========================================
-// 📷 KIRIM DOKUMENTASI FOTO
-// ==========================================
 
-if (
-  fotoBase64 &&
-  fotoBase64.length > 0 &&
-  response.batchId
-) {
-
-  console.log(
-    "📷 Mengirim " +
-    fotoBase64.length +
-    " foto untuk Batch ID:",
-    response.batchId
-  );
-
-  hasil.innerHTML +=
-    "<div class='info'>" +
-    "📷 Mengunggah dokumentasi foto..." +
-    "</div>";
-
-  try {
-
-    for (
-      let i = 0;
-      i < fotoBase64.length;
-      i++
-    ) {
-
-      const foto =
-        fotoBase64[i];
-
-      await fetch(API_URL, {
-
-        method: "POST",
-
-        mode: "no-cors",
-
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body: JSON.stringify({
-
-          action:
-            "simpanDokumentasiFoto",
-
-          batchId:
-            response.batchId,
-
-          foto:
-            foto,
-
-          petugas:
-            "ADMIN"
-
-        })
-
-      });
-
-      console.log(
-        "📷 Foto " +
-        (i + 1) +
-        " dikirim."
-      );
-
-    }
-
-    hasil.innerHTML +=
-      "<div class='info'>" +
-      "✅ Dokumentasi foto dikirim." +
-      "</div>";
-
-  } catch (error) {
-
-    console.error(
-      "❌ Gagal mengirim foto:",
-      error
-    );
-
-    hasil.innerHTML +=
-      "<div class='info'>" +
-      "⚠️ Peminjaman berhasil, " +
-      "tetapi dokumentasi foto gagal dikirim." +
-      "</div>";
-
-  }
-
-}
       console.log(
         "🎉 Peminjaman massal berhasil:",
         response
@@ -5855,7 +5743,7 @@ function cariNamaPeminjamPengembalian(keyword) {
     Date.now();
 
   window[callbackName] =
-     async function(response) {
+      function(response) {
 
       console.log(
         "📥 Hasil pencarian peminjam:",
