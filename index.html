@@ -4086,6 +4086,95 @@ daftarBarang +=
     "</button>";
 
 }
+
+
+// ==========================================
+// PREVIEW FOTO PEMINJAMAN
+// ==========================================
+
+const kameraPeminjaman =
+  document.getElementById("kameraPeminjaman");
+
+const galeriPeminjaman =
+  document.getElementById("galeriPeminjaman");
+
+const previewFotoPeminjaman =
+  document.getElementById("previewFotoPeminjaman");
+
+function tampilPreviewFotoPeminjaman(input) {
+
+  previewFotoPeminjaman.innerHTML = "";
+
+  const files =
+    Array.from(input.files || []);
+
+  if (files.length === 0) {
+    return;
+  }
+
+  files.forEach(function(file) {
+
+    if (!file.type.startsWith("image/")) {
+      return;
+    }
+
+    const reader =
+      new FileReader();
+
+    reader.onload = function(e) {
+
+      const img =
+        document.createElement("img");
+
+      img.src =
+        e.target.result;
+
+      img.style.width = "120px";
+      img.style.height = "120px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "8px";
+      img.style.margin = "5px";
+      img.style.border = "1px solid #ccc";
+
+      previewFotoPeminjaman
+        .appendChild(img);
+
+    };
+
+    reader.readAsDataURL(file);
+
+  });
+}
+
+if (kameraPeminjaman) {
+
+  kameraPeminjaman.addEventListener(
+    "change",
+    function() {
+
+      tampilPreviewFotoPeminjaman(this);
+
+    }
+  );
+
+}
+
+if (galeriPeminjaman) {
+
+  galeriPeminjaman.addEventListener(
+    "change",
+    function() {
+
+      tampilPreviewFotoPeminjaman(this);
+
+    }
+  );
+
+}
+
+
+
+  
 function kirimPeminjamanMassal() {
 
   console.log(
