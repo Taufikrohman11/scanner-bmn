@@ -4516,7 +4516,97 @@ console.log(
 
         "</div>";
 
+// ==========================================
+// 📷 KIRIM DOKUMENTASI FOTO
+// ==========================================
 
+if (
+  fotoBase64 &&
+  fotoBase64.length > 0 &&
+  response.batchId
+) {
+
+  console.log(
+    "📷 Mengirim " +
+    fotoBase64.length +
+    " foto untuk Batch ID:",
+    response.batchId
+  );
+
+  hasil.innerHTML +=
+    "<div class='info'>" +
+    "📷 Mengunggah dokumentasi foto..." +
+    "</div>";
+
+  try {
+
+    for (
+      let i = 0;
+      i < fotoBase64.length;
+      i++
+    ) {
+
+      const foto =
+        fotoBase64[i];
+
+      await fetch(API_URL, {
+
+        method: "POST",
+
+        mode: "no-cors",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body: JSON.stringify({
+
+          action:
+            "simpanDokumentasiFoto",
+
+          batchId:
+            response.batchId,
+
+          foto:
+            foto,
+
+          petugas:
+            "ADMIN"
+
+        })
+
+      });
+
+      console.log(
+        "📷 Foto " +
+        (i + 1) +
+        " dikirim."
+      );
+
+    }
+
+    hasil.innerHTML +=
+      "<div class='info'>" +
+      "✅ Dokumentasi foto dikirim." +
+      "</div>";
+
+  } catch (error) {
+
+    console.error(
+      "❌ Gagal mengirim foto:",
+      error
+    );
+
+    hasil.innerHTML +=
+      "<div class='info'>" +
+      "⚠️ Peminjaman berhasil, " +
+      "tetapi dokumentasi foto gagal dikirim." +
+      "</div>";
+
+  }
+
+}
       console.log(
         "🎉 Peminjaman massal berhasil:",
         response
