@@ -4539,7 +4539,44 @@ console.log(
 
         "</div>";
 
+// ==========================================
+// 📷 UPLOAD FOTO DOKUMENTASI
+// ==========================================
 
+if (semuaFoto.length > 0) {
+
+  console.log(
+    "📷 Mulai upload foto:",
+    semuaFoto.length
+  );
+
+  semuaFoto.forEach(function(file) {
+
+    uploadFotoDokumentasi(
+      batchIdBerhasil,
+      file
+    )
+    .then(function() {
+
+      console.log(
+        "✅ Foto berhasil dikirim:",
+        file.name
+      );
+
+    })
+    .catch(function(error) {
+
+      console.error(
+        "❌ Gagal upload foto:",
+        file.name,
+        error
+      );
+
+    });
+
+  });
+
+}
       console.log(
         "🎉 Peminjaman massal berhasil:",
         response
