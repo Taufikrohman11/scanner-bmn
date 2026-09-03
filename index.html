@@ -4304,7 +4304,33 @@ const noHp =
 
   }
 
+// ==========================================
+// AMBIL FOTO DOKUMENTASI
+// ==========================================
 
+const inputFoto =
+  document.getElementById("kameraPeminjaman");
+
+const inputGaleri =
+  document.getElementById("galeriPeminjaman");
+
+const fileFoto =
+  inputFoto && inputFoto.files.length > 0
+    ? Array.from(inputFoto.files)
+    : [];
+
+const fileGaleri =
+  inputGaleri && inputGaleri.files.length > 0
+    ? Array.from(inputGaleri.files)
+    : [];
+
+const semuaFoto =
+  fileFoto.concat(fileGaleri);
+
+console.log(
+  "📷 Jumlah foto dokumentasi:",
+  semuaFoto.length
+);
   // ==========================================
   // 4. BUAT DATA MASSAL
   // ==========================================
