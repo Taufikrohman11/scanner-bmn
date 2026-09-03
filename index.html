@@ -4215,6 +4215,42 @@ function fileToBase64(file) {
 
 }
 
+
+// ==========================================
+// UPLOAD FOTO DOKUMENTASI KE GOOGLE DRIVE
+// ==========================================
+
+function uploadFotoDokumentasi(batchId, file) {
+
+  return fileToBase64(file)
+    .then(function(base64) {
+
+      const payload = {
+        action: "simpanDokumentasiFoto",
+        batchId: batchId,
+        jenis: "PEMINJAMAN",
+        foto: {
+          namaFile: file.name,
+          tipe: file.type,
+          data: base64
+        },
+        petugas: "ADMIN",
+        catatan: "Dokumentasi peminjaman"
+      };
+
+      return fetch(API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload)
+      });
+
+    });
+
+}
+  
   
 function kirimPeminjamanMassal() {
 
