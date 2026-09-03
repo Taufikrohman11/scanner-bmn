@@ -4182,10 +4182,41 @@ function tampilPreviewFotoPeminjaman(input) {
 }
 
 
+// ==========================================
+// KONVERSI FILE KE BASE64
+// ==========================================
 
+function fileToBase64(file) {
+
+  return new Promise(function(resolve, reject) {
+
+    const reader =
+      new FileReader();
+
+    reader.onload = function() {
+
+      const hasil =
+        reader.result
+          .split(",")[1];
+
+      resolve(hasil);
+
+    };
+
+    reader.onerror = function(error) {
+
+      reject(error);
+
+    };
+
+    reader.readAsDataURL(file);
+
+  });
+
+}
 
   
-function kirimPeminjamanMassal() {
+async function kirimPeminjamanMassal() {
 
   console.log(
     "📤 Memproses peminjaman massal..."
@@ -4332,10 +4363,28 @@ console.log(
   semuaFoto.length
 );
 
+// ==========================================
+// UBAH FOTO MENJADI BASE64
+// ==========================================
 
-  alert(
-  "Foto yang terbaca: " +
-  semuaFoto.length
+const fotoBase64 = [];
+
+for (const file of semuaFoto) {
+
+  const base64 =
+    await fileToBase64(file);
+
+  fotoBase64.push({
+    namaFile: file.name,
+    tipe: file.type,
+    data: base64
+  });
+
+}
+
+console.log(
+  "📷 Foto Base64 siap:",
+  fotoBase64.length
 );
   // ==========================================
   // 4. BUAT DATA MASSAL
