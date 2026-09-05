@@ -4184,7 +4184,85 @@ function tampilPreviewFotoPeminjaman(input) {
   });
 }
 
+function tampilPreviewFotoPengembalian(input) {
 
+  const preview =
+    document.getElementById(
+      "previewFotoPengembalian"
+    );
+
+  if (!preview) {
+    return;
+  }
+
+  preview.innerHTML = "";
+
+  const files =
+    Array.from(
+      input.files || []
+    );
+
+  if (
+    files.length === 0
+  ) {
+    return;
+  }
+
+  files.forEach(
+    function(file) {
+
+      if (
+        !file.type.startsWith("image/")
+      ) {
+        return;
+      }
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        function(e) {
+
+          const img =
+            document.createElement(
+              "img"
+            );
+
+          img.src =
+            e.target.result;
+
+          img.style.width =
+            "120px";
+
+          img.style.height =
+            "120px";
+
+          img.style.objectFit =
+            "cover";
+
+          img.style.borderRadius =
+            "8px";
+
+          img.style.margin =
+            "5px";
+
+          img.style.border =
+            "1px solid #ccc";
+
+          preview.appendChild(
+            img
+          );
+
+        };
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
 // ==========================================
 // KONVERSI FILE KE BASE64
 // ==========================================
@@ -6889,7 +6967,48 @@ barangDipilih.forEach(
 
     "</div>";
 
+// ==========================================
+// 12. DOKUMENTASI FOTO PENGEMBALIAN
+// ==========================================
 
+html +=
+
+  "<div class='form-group'>" +
+
+  "<strong>📷 DOKUMENTASI PENGEMBALIAN</strong>" +
+
+  "<div style='margin:10px 0;'>" +
+
+  "<label>Foto kondisi barang saat dikembalikan:</label>" +
+
+  "<div style='display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;'>" +
+
+  "<button type='button' class='btn-scan' onclick=\"document.getElementById('kameraPengembalian').click()\">" +
+
+  "📷 AMBIL FOTO" +
+
+  "</button>" +
+
+  "<button type='button' class='btn-scan' onclick=\"document.getElementById('galeriPengembalian').click()\">" +
+
+  "🖼️ PILIH DARI GALERI" +
+
+  "</button>" +
+
+  "</div>" +
+
+  "<input type='file' id='kameraPengembalian' accept='image/*' capture='environment' multiple style='display:none;'>" +
+
+  "<input type='file' id='galeriPengembalian' accept='image/*' multiple style='display:none;'>" +
+
+  "<div id='previewFotoPengembalian' style='margin-top:10px;'></div>" +
+
+  "<small>Foto menjadi bukti dokumentasi kondisi barang saat pengembalian.</small>" +
+
+  "</div>" +
+
+  "</div>";
+   
   // ==========================================
   // SIMPAN
   // ==========================================
