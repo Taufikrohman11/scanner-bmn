@@ -2846,42 +2846,6 @@ hasil.innerHTML =
   html;
 
 
-// ==========================================
-// EVENT LISTENER FOTO PENGEMBALIAN
-// ==========================================
-
-document.addEventListener("change", function(e) {
-
-  if (!e.target) return;
-
-  if (
-    e.target.id === "kameraPengembalian" ||
-    e.target.id === "galeriPengembalian"
-  ) {
-
-    console.log("📷 INPUT FOTO TERDETEKSI");
-    console.log("📷 ID:", e.target.id);
-    console.log("📷 FILE:", e.target.files);
-    console.log(
-      "📷 JUMLAH:",
-      e.target.files ? e.target.files.length : 0
-    );
-
-    if (
-      e.target.files &&
-      e.target.files.length > 0
-    ) {
-
-      tampilPreviewFotoPengembalian(
-        e.target
-      );
-
-    }
-
-  }
-
-});
-
 console.log(
   "🖥️ JUMLAH ELEMEN BARANG DI LAYAR:",
   hasil.querySelectorAll(
@@ -7149,9 +7113,8 @@ html +=
 
   "</div>" +
 
-  "<input type='file' id='kameraPengembalian' accept='image/*' capture='environment' multiple style='display:none;'>" +
-
-  "<input type='file' id='galeriPengembalian' accept='image/*' multiple style='display:none;'>" +
+  "<input type='file' id='kameraPengembalian' accept='image/*' capture='environment' multiple style='display:none;' onchange='tampilPreviewFotoPengembalian(this)'>" +
+"<input type='file' id='galeriPengembalian' accept='image/*' multiple style='display:none;' onchange='tampilPreviewFotoPengembalian(this)'>" +
 
   "<div id='previewFotoPengembalian' style='margin-top:10px;'></div>" +
 
