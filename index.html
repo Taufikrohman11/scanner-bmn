@@ -240,6 +240,7 @@
   </button>
 
   <button
+  id="btnPengembalianAwal"
   class="btn-kembali"
   type="button"
   onclick="bukaFormPengembalian(); return false;">
@@ -669,6 +670,25 @@ function qrBerhasil(decodedText, decodedResult) {
   getStatusBarang(
     decodedText
   );
+
+}
+
+
+  function tampilkanTombolPengembalian() {
+console.log(
+  "🔄 Fungsi tampilkanTombolPengembalian siap digunakan."
+);
+  const tombolPengembalian =
+    document.getElementById(
+      "btnPengembalianAwal"
+    );
+
+  if (tombolPengembalian) {
+
+    tombolPengembalian.style.display =
+      "block";
+
+  }
 
 }
 function formBarangNonBMN() {
@@ -5695,7 +5715,21 @@ function qrError(errorMessage) {
  */
 
 function mulaiScanner() {
+// ==========================================
+// SEMBUNYIKAN TOMBOL PENGEMBALIAN
+// ==========================================
 
+const tombolPengembalian =
+  document.getElementById(
+    "btnPengembalianAwal"
+  );
+
+if (tombolPengembalian) {
+
+  tombolPengembalian.style.display =
+    "none";
+
+}
   console.log(
     "📷 Memulai scanner..."
   );
