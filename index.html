@@ -53,33 +53,43 @@
       opacity: .8;
     }
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.08);
-    }
+   .card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
 
     #reader {
-      width: 100%;
-    }
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
 
-    #hasil {
-      margin-top: 20px;
-      padding: 18px;
-      background: white;
-      border-radius: 14px;
-      display: none;
-    }
+   #hasil {
+  margin-top: 22px;
+  padding: 22px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+  display: none;
+}
 
     #error {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fee2e2;
-      color: #991b1b;
-      border-radius: 10px;
-      display: none;
-    }
+  margin-top: 18px;
+  padding: 16px 18px;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+  display: none;
+  font-size: 14px;
+  font-weight: 500;
+}
 
     .status {
       padding: 14px;
@@ -105,16 +115,25 @@
       line-height: 1.5;
     }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+  button {
+  width: 100%;
+  padding: 15px 16px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:hover {
+  opacity: 0.94;
+}
 
     .btn-pinjam {
       background: #16a34a;
