@@ -5944,7 +5944,17 @@ window.onload =
 
 
   function bukaFormPengembalian() {
+const tombolPengembalian =
+    document.getElementById(
+      "btnPengembalianAwal"
+    );
 
+  if (tombolPengembalian) {
+
+    tombolPengembalian.style.display =
+      "none";
+
+  }
   console.log(
     "🔄 Membuka form pengembalian..."
   );
