@@ -2852,22 +2852,31 @@ hasil.innerHTML =
 
 document.addEventListener("change", function(e) {
 
+  if (!e.target) return;
+
   if (
-    e.target &&
-    (
-      e.target.id === "kameraPengembalian" ||
-      e.target.id === "galeriPengembalian"
-    )
+    e.target.id === "kameraPengembalian" ||
+    e.target.id === "galeriPengembalian"
   ) {
 
+    console.log("📷 INPUT FOTO TERDETEKSI");
+    console.log("📷 ID:", e.target.id);
+    console.log("📷 FILE:", e.target.files);
     console.log(
-      "📷 FOTO PENGEMBALIAN TERPILIH:",
-      e.target.files
+      "📷 JUMLAH:",
+      e.target.files ? e.target.files.length : 0
     );
 
-    tampilPreviewFotoPengembalian(
-      e.target
-    );
+    if (
+      e.target.files &&
+      e.target.files.length > 0
+    ) {
+
+      tampilPreviewFotoPengembalian(
+        e.target
+      );
+
+    }
 
   }
 
