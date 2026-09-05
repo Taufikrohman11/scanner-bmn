@@ -5792,7 +5792,7 @@ window.onload =
 function cariNamaPeminjamPengembalian(keyword) {
 
   console.log(
-    "🔎 Mencari peminjam untuk pengembalian:",
+    "🔎 Mencari peminjam aktif untuk pengembalian:",
     keyword
   );
 
@@ -5802,40 +5802,54 @@ function cariNamaPeminjamPengembalian(keyword) {
     );
 
   if (!hasil) {
+
     console.error(
       "❌ Elemen hasil peminjam tidak ditemukan."
     );
+
     return;
+
   }
 
-  keyword =
-    String(keyword || "").trim();
 
-  if (keyword.length < 2) {
+  keyword =
+    String(keyword || "")
+      .trim();
+
+
+  if (
+    keyword.length < 2
+  ) {
 
     hasil.innerHTML = "";
 
     return;
+
   }
+
 
   hasil.innerHTML =
     "<div class='info'>" +
-    "🔎 Mencari peminjam..." +
+    "🔎 Mencari peminjam aktif..." +
     "</div>";
 
+
   const callbackName =
-    "hasilCariPeminjamPengembalian_" +
+    "hasilCariPeminjamAktif_" +
     Date.now();
 
+
   window[callbackName] =
-      function(response) {
+    function(response) {
 
       console.log(
-        "📥 Hasil pencarian peminjam:",
+        "📥 Hasil pencarian peminjam aktif:",
         response
       );
 
+
       delete window[callbackName];
+
 
       if (
         !response ||
@@ -5848,7 +5862,9 @@ function cariNamaPeminjamPengembalian(keyword) {
           "</div>";
 
         return;
+
       }
+
 
       if (
         !response.pegawai ||
@@ -5857,14 +5873,16 @@ function cariNamaPeminjamPengembalian(keyword) {
 
         hasil.innerHTML =
           "<div class='info'>" +
-          "❌ Peminjam tidak ditemukan." +
+          "❌ Peminjam tidak ditemukan " +
+          "atau tidak memiliki barang yang sedang dipinjam." +
           "</div>";
 
         return;
+
       }
 
-      let html =
 
+      let html =
         "<div class='keranjang'>" +
 
         "<div class='keranjang-title'>" +
@@ -5872,6 +5890,7 @@ function cariNamaPeminjamPengembalian(keyword) {
         "👤 PILIH PEMINJAM" +
 
         "</div>";
+
 
       response.pegawai.forEach(
         function(pegawai) {
@@ -5887,40 +5906,25 @@ function cariNamaPeminjamPengembalian(keyword) {
             "onclick='pilihPeminjamPengembalian(" +
 
             JSON.stringify(pegawai)
-              .replace(/"/g, "&quot;") +
+              .replace(
+                /"/g,
+                "&quot;"
+              ) +
 
             ")'>" +
 
             "<b>" +
-
             (pegawai.nama || "-") +
-
             "</b>" +
 
-            "<br>" +
-
-            "<small>" +
-
-            "NIP/NIK: " +
-
-            (
-              pegawai.nip ||
-              "Tidak tersedia"
-            ) +
-
+            "<br><small>NIP/NIK: " +
+            (pegawai.nip ||
+              "Tidak tersedia") +
             "</small>" +
 
-            "<br>" +
-
-            "<small>" +
-
-            "Jabatan: " +
-
-            (
-              pegawai.jabatan ||
-              "Tidak tersedia"
-            ) +
-
+            "<br><small>Jabatan: " +
+            (pegawai.jabatan ||
+              "Tidak tersedia") +
             "</small>" +
 
             "</div>";
@@ -5928,47 +5932,60 @@ function cariNamaPeminjamPengembalian(keyword) {
         }
       );
 
-      html +=
 
+      html +=
         "</div>";
+
 
       hasil.innerHTML =
         html;
 
     };
 
+
   const url =
 
     API_URL +
 
-    "?action=cariPegawai" +
+    "?action=cariPeminjamAktif" +
 
     "&keyword=" +
 
-    encodeURIComponent(keyword) +
+    encodeURIComponent(
+      keyword
+    ) +
 
     "&callback=" +
 
     callbackName;
 
+
   console.log(
-    "🌐 URL pencarian peminjam:",
+    "🌐 URL pencarian peminjam aktif:",
     url
   );
 
-  const script =
-    document.createElement("script");
 
-  script.src = url;
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.src =
+    url;
+
 
   script.onerror =
     function() {
 
       console.error(
-        "❌ Gagal mencari peminjam."
+        "❌ Gagal mencari peminjam aktif."
       );
 
+
       delete window[callbackName];
+
 
       hasil.innerHTML =
         "<div class='info'>" +
@@ -5977,10 +5994,12 @@ function cariNamaPeminjamPengembalian(keyword) {
 
     };
 
-  document.body.appendChild(script);
+
+  document.body.appendChild(
+    script
+  );
 
 }
-
 
 function pilihPeminjamPengembalian(pegawai) {
 
