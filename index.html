@@ -2845,6 +2845,53 @@ console.log(
 hasil.innerHTML =
   html;
 
+
+  // ==========================================
+// EVENT LISTENER FOTO PENGEMBALIAN
+// ==========================================
+
+const kameraPengembalian =
+  document.getElementById(
+    "kameraPengembalian"
+  );
+
+const galeriPengembalian =
+  document.getElementById(
+    "galeriPengembalian"
+  );
+
+
+if (kameraPengembalian) {
+
+  kameraPengembalian.addEventListener(
+    "change",
+    function() {
+
+      tampilPreviewFotoPengembalian(
+        this
+      );
+
+    }
+  );
+
+}
+
+
+if (galeriPengembalian) {
+
+  galeriPengembalian.addEventListener(
+    "change",
+    function() {
+
+      tampilPreviewFotoPengembalian(
+        this
+      );
+
+    }
+  );
+
+}
+
 console.log(
   "🖥️ JUMLAH ELEMEN BARANG DI LAYAR:",
   hasil.querySelectorAll(
