@@ -60,6 +60,61 @@
   line-height: 1.4;
 }
 
+    /* Subtitle header */
+.header-subtitle {
+  display: block;
+  margin-top: 6px;
+  opacity: 0.65;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.15px;
+  line-height: 1.4;
+}
+
+    /* Pengantar halaman awal */
+.intro-text {
+  margin-bottom: 18px;
+}
+
+/* Aksi tambahan halaman awal */
+.secondary-actions {
+  margin-top: 26px;
+  margin-bottom: 2px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.secondary-actions strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.secondary-actions span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+    
+
+.intro-text strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.intro-text span {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
    .card {
   background: #ffffff;
   padding: 24px;
@@ -605,15 +660,17 @@ button:hover {
 
 <body>
 
-<div class="container">
+<div class="header">
 
-  <div class="header">
+  <h1>📦 PEMINJAMAN BARANG</h1>
 
-    <h1>📷 SCANNER BMN</h1>
+  <p>BPVP Lombok Timur</p>
 
-    <p>BPVP Lombok Timur</p>
+  <span class="header-subtitle">
+    Sistem Peminjaman & Pengembalian Barang
+  </span>
 
-  </div>
+</div>
 
 
   <div class="card">
@@ -622,6 +679,11 @@ button:hover {
 
   <div id="reader"></div>
 
+<div class="intro-text">
+  <strong>Mulai Peminjaman</strong>
+  <span>Scan QR Code barang untuk memulai proses peminjaman.</span>
+</div>
+     
 <button
   id="btnMulaiScan"
   class="btn-scan"
@@ -637,6 +699,12 @@ button:hover {
 
 <div class="card">
 
+<div class="secondary-actions">
+  <strong>Aksi Lainnya</strong>
+  <span>Gunakan pilihan berikut untuk barang Non-BMN atau pengembalian.</span>
+</div>
+
+  
   <button
     class="btn-pinjam"
     type="button"
