@@ -173,14 +173,16 @@
   font-weight: 500;
 }
 
-    .status {
-      padding: 14px;
-      border-radius: 10px;
-      margin: 15px 0;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-    }
+ .status {
+  padding: 16px 18px;
+  border-radius: 14px;
+  margin: 18px 0;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  border: 1px solid transparent;
+  line-height: 1.4;
+}
 
     .tersedia {
       background: #dcfce7;
@@ -201,6 +203,17 @@
   color: #64748b;
   font-size: 13px;
   line-height: 1.5;
+}
+
+    .info b {
+  color: #334155;
+  font-weight: 800;
+}
+
+    .info.error {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
 }
 
   button {
@@ -248,10 +261,13 @@ button:hover {
   opacity: 0.94;
 }
 
-    button:hover {
-  transform: translateY(-1px);
-  opacity: 0.94;
-}
+   button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+} 
+
+  
 
    .btn-pinjam {
   background: linear-gradient(135deg, #16a34a, #15803d);
@@ -328,10 +344,17 @@ button:hover {
 }
     
     .loading {
-      text-align: center;
-      padding: 15px;
-      font-weight: bold;
-    }
+  margin-top: 10px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #475569;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
 
 
 
@@ -656,6 +679,22 @@ button:hover {
 .btn-batal:hover {
   background: #f1f5f9;
   color: #475569;
+  opacity: 1;
+}
+
+    /* Tombol selesai transaksi */
+.btn-selesai {
+  margin-top: 16px;
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  box-shadow: none;
+  font-weight: 800;
+}
+
+.btn-selesai:hover {
+  background: #f1f5f9;
+  color: #0f172a;
   opacity: 1;
 }
 
@@ -5059,7 +5098,16 @@ const data = {
     document.getElementById(
       "hasil"
     );
+const tombolSimpan =
+  document.querySelector(
+    ".btn-pinjam"
+  );
 
+if (tombolSimpan) {
+  tombolSimpan.disabled = true;
+  tombolSimpan.style.opacity = "0.6";
+  tombolSimpan.style.cursor = "wait";
+}
 
   hasil.innerHTML =
 
@@ -5097,9 +5145,21 @@ const data = {
 
       if (!response.success) {
 
+const tombolSimpan =
+  document.querySelector(
+    ".btn-pinjam"
+  );
+
+if (tombolSimpan) {
+  tombolSimpan.disabled = false;
+  tombolSimpan.style.opacity = "1";
+  tombolSimpan.style.cursor = "pointer";
+}
+
+        
         hasil.innerHTML =
 
-          "<div class='info'>" +
+          "<div class='info error'>"
 
           "❌ " +
 
@@ -5160,7 +5220,11 @@ console.log(
 
         "<br><br>" +
 
-        "Semua barang berhasil diproses." +
+       "Semua barang berhasil diproses." +
+
+"<br><br>" +
+
+"Transaksi peminjaman telah berhasil dicatat." +
 
         "</div>";
 
@@ -5202,6 +5266,16 @@ if (semuaFoto.length > 0) {
   });
 
 }
+
+
+hasil.innerHTML +=
+
+  "<button " +
+  "class='btn-selesai' " +
+  "onclick='location.reload()'>" +
+  "🏠 SELESAI" +
+  "</button>";
+      
       console.log(
         "🎉 Peminjaman massal berhasil:",
         response
@@ -5252,6 +5326,17 @@ if (semuaFoto.length > 0) {
       console.error(
         "Gagal menghubungi Apps Script."
       );
+
+      const tombolSimpan =
+  document.querySelector(
+    ".btn-pinjam"
+  );
+
+if (tombolSimpan) {
+  tombolSimpan.disabled = false;
+  tombolSimpan.style.opacity = "1";
+  tombolSimpan.style.cursor = "pointer";
+}
 
 
       delete window[callbackName];
