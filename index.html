@@ -155,17 +155,48 @@
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
+
+    /* Tombol utama halaman awal */
+.card > .btn-scan,
+.card > .btn-pinjam,
+.card > .btn-kembali {
+  min-height: 50px;
+  letter-spacing: 0.1px;
+}
+
+
+    /* Jarak antar tombol pilihan utama */
+.card > .btn-scan + .btn-pinjam {
+  margin-top: 18px;
+}
+
+.card > .btn-pinjam + .btn-kembali {
+  margin-top: 12px;
+}
+
+    /* Pemisah aksi tambahan */
+.card > .btn-pinjam {
+  margin-top: 28px;
+}
+
 button:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
 }
 
 button:hover {
+  transform: translateY(-1px);
+  opacity: 0.94;
+}
+
+    button:hover {
+  transform: translateY(-1px);
   opacity: 0.94;
 }
 
    .btn-pinjam {
   background: linear-gradient(135deg, #16a34a, #15803d);
   color: white;
+  min-height: 50px;
   box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
 }
 
@@ -176,16 +207,19 @@ button:hover {
   letter-spacing: 0.1px;
 }
 
-   .btn-kembali {
+ .btn-kembali {
   background: linear-gradient(135deg, #dc2626, #b91c1c);
   color: white;
+  min-height: 50px;
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.16);
 }
 
-   .btn-scan {
+  .btn-scan {
   background: linear-gradient(135deg, #0f172a, #334155);
   color: white;
-  box-shadow: 0 5px 16px rgba(15, 23, 42, 0.18);
+  min-height: 54px;
+  font-size: 16px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.20);
 }
 
   .form-group {
