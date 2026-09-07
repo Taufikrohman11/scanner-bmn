@@ -163,6 +163,13 @@ button:hover {
   box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
 }
 
+    .btn-pinjam {
+  margin-top: 22px;
+  min-height: 50px;
+  font-size: 15px;
+  letter-spacing: 0.1px;
+}
+
    .btn-kembali {
   background: linear-gradient(135deg, #dc2626, #b91c1c);
   color: white;
@@ -399,6 +406,10 @@ button:hover {
   margin-top: 8px;
 }
 
+    #hasilPeminjamPengembalian {
+  margin-top: 8px;
+}
+
 .pegawai-item {
   padding: 13px 14px;
   margin-top: 8px;
@@ -429,15 +440,16 @@ button:hover {
   line-height: 1.6;
 }
 
-    .section-title {
-  margin-top: 24px;
-  margin-bottom: 14px;
+   .section-title {
+  margin-top: 20px;
+  margin-bottom: 16px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e2e8f0;
   color: #0f172a;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.2px;
+  line-height: 1.4;
 }
 
 /* ==========================================
@@ -483,6 +495,52 @@ button:hover {
   color: #475569;
   font-size: 13px;
   font-weight: 600;
+}
+
+.btn-foto {
+  flex: 1;
+  min-width: 160px;
+  margin-top: 0;
+  padding: 12px 14px;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.btn-foto:hover {
+  background: #e2e8f0;
+  opacity: 1;
+}
+
+
+.btn-batal {
+  margin-top: 12px;
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  box-shadow: none;
+  font-weight: 700;
+}
+
+.btn-batal:hover {
+  background: #f1f5f9;
+  color: #475569;
+  opacity: 1;
+}
+
+
+
+    /* ==========================================
+   CARD FORM PENGEMBALIAN
+   ========================================== */
+
+#hasil > .card {
+  margin-top: 0;
+  padding-top: 20px;
 }
     
   </style>
@@ -1208,7 +1266,7 @@ function formBarangNonBMN() {
 
     "<button " +
 
-    "class='btn-scan' " +
+   "class='btn-batal' " +
 
     "onclick='location.reload()'>" +
 
@@ -6286,7 +6344,7 @@ const tombolPengembalian =
 
     "<div class='card'>" +
 
-    "<strong>🔄 PENGEMBALIAN BARANG</strong>" +
+   "<div class='section-title'>🔄 PENGEMBALIAN BARANG</div>" +
 
     "<br><br>" +
 
@@ -6309,7 +6367,7 @@ const tombolPengembalian =
     "</div>" +
 
     "<button " +
-    "class='btn-scan' " +
+    "class='btn-batal' " +
     "onclick='location.reload()'>" +
 
     "❌ BATAL" +
