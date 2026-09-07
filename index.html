@@ -52,9 +52,13 @@
 }
 
     .header p {
-      margin: 8px 0 0;
-      opacity: .8;
-    }
+  margin: 9px 0 0;
+  opacity: 0.82;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1.4;
+}
 
    .card {
   background: #ffffff;
@@ -79,6 +83,12 @@
   border-radius: 16px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
+}
+
+    #reader video {
+  display: block;
+  width: 100% !important;
+  border-radius: 14px;
 }
 
    #hasil {
@@ -165,30 +175,78 @@ button:hover {
   box-shadow: 0 5px 16px rgba(15, 23, 42, 0.18);
 }
 
-    .form-group {
-      margin-top: 12px;
-    }
+  .form-group {
+  margin-top: 18px;
+}
 
-    .form-group label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+}
 
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
 
+.form-group input[type="date"] {
+  cursor: pointer;
+  color: #0f172a;
+}
+    
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #64748b;
+  box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.12);
+}
+
+.form-group textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.5;
+}
+    
     .loading {
       text-align: center;
       padding: 15px;
       font-weight: bold;
     }
+
+
+
+    .form-group select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group select:focus {
+  border-color: #64748b;
+  box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.12);
+}
 
    /* ==========================================
    RIWAYAT TRANSAKSI
@@ -227,6 +285,187 @@ button:hover {
   line-height: 1.5;
 }
 
+@media (max-width: 480px) {
+  .container {
+    padding: 18px 14px 32px;
+  }
+
+  .header {
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+
+  .card {
+    padding: 20px 16px;
+  }
+
+  button {
+    padding: 14px 15px;
+    font-size: 14px;
+  }
+}
+
+/* ==========================================
+   DESAIN KERANJANG PEMINJAMAN
+   ========================================== */
+
+.keranjang {
+  margin-top: 22px;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+}
+
+.keranjang-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 5px;
+}
+
+.keranjang-count {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.keranjang-item {
+  padding: 14px;
+  margin-top: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+    .keranjang-item {
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.keranjang-item:hover {
+  transform: translateY(-1px);
+  border-color: #cbd5e1;
+}
+
+.keranjang-item b {
+  display: block;
+  color: #0f172a;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+    .keranjang-item b {
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.keranjang-item small {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+    .keranjang-item small {
+  display: inline-block;
+  margin-top: 2px;
+  line-height: 1.7;
+}
+
+    .keranjang-item small:first-of-type {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.btn-lanjut {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  box-shadow: 0 5px 14px rgba(37, 99, 235, 0.18);
+}
+
+
+    .btn-lanjut {
+  margin-top: 18px;
+  font-weight: 800;
+  letter-spacing: 0.1px;
+}
+
+.hasil-pegawai {
+  margin-top: 8px;
+}
+
+.pegawai-item {
+  padding: 13px 14px;
+  margin-top: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.pegawai-item:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.pegawai-item b {
+  display: block;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 3px;
+}
+
+.pegawai-item small {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+    .section-title {
+  margin-top: 24px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.1px;
+}
+
+/* ==========================================
+   PREVIEW FOTO PEMINJAMAN
+   ========================================== */
+
+#previewFotoPeminjaman {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#previewFotoPeminjaman img {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+}
+
+    .auto-field {
+  background: #f8fafc !important;
+  color: #475569;
+  border-color: #e2e8f0 !important;
+  cursor: default;
+}
+    
   </style>
 
 </head>
@@ -3143,9 +3382,11 @@ function formPeminjaman(data) {
 
     "<input " +
 
-    "id='nipNik' " +
+"id='nipNik' " +
 
-    "placeholder='Otomatis dari database'>" +
+"class='auto-field' " +
+
+"placeholder='Otomatis dari database'>" +
 
     "</div>" +
 
@@ -3160,11 +3401,13 @@ function formPeminjaman(data) {
 
     "<label>Jabatan</label>" +
 
-    "<input " +
+   "<input " +
 
-    "id='jabatan' " +
+"id='jabatan' " +
 
-    "placeholder='Otomatis dari database'>" +
+"class='auto-field' " +
+
+"placeholder='Otomatis dari database'>" +
 
     "</div>" +
 
@@ -3181,9 +3424,11 @@ function formPeminjaman(data) {
 
     "<input " +
 
-    "id='noHp' " +
+"id='noHp' " +
 
-    "placeholder='Otomatis dari database'>" +
+"class='auto-field' " +
+
+"placeholder='Otomatis dari database'>" +
 
     "</div>" +
 
@@ -3867,7 +4112,7 @@ daftarBarang +=
 
     daftarBarang +
 
-    "<strong>📤 DATA PEMINJAM</strong>" +
+   "<div class='section-title'>📤 DATA PEMINJAM</div>" +
 
 
     /*
@@ -4056,7 +4301,7 @@ daftarBarang +=
      * TOMBOL SIMPAN
      * ==========================================
      */
-"<strong>📷 DOKUMENTASI PEMINJAMAN</strong>" +
+"<div class='section-title'>📷 DOKUMENTASI PEMINJAMAN</div>" +
 
 "<div style='margin:10px 0;'>" +
 
