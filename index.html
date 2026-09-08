@@ -5220,19 +5220,27 @@ console.log(
 
         "<br><br>" +
 
-        "<b>Batch ID:</b><br>" +
-
-        response.batchId +
-
-        "<br><br>" +
-
-       "Semua barang berhasil diproses." +
-
+       "<b>Batch ID:</b><br>" +
+response.batchId +
+"<br><br>" +
+"Semua barang berhasil diproses." +
 "<br><br>" +
 
-"Transaksi peminjaman telah berhasil dicatat." +
+(
+  response.pdfUrl
+    ? "<a " +
+      "href='" +
+      response.pdfUrl +
+      "' " +
+      "target='_blank' " +
+      "class='btn-selesai' " +
+      "style='display:block; text-align:center; text-decoration:none;'>" +
+      "📄 LIHAT BERITA ACARA (PDF)" +
+      "</a>"
+    : ""
+) +
 
-        "</div>";
+"</div>";
 
 // ==========================================
 // 📷 UPLOAD FOTO DOKUMENTASI
