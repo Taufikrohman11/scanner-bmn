@@ -5894,16 +5894,43 @@ function simpanPengembalian() {
   // 3. AMBIL KONDISI
   // ==========================================
 
-  const kondisiElement =
-    document.getElementById(
-      "kondisiKembali"
-    );
+    // ==========================================
+  // 3. AMBIL KONDISI SETIAP BARANG
+  // ==========================================
 
+  const dropdownKondisi =
+    document.querySelectorAll(".kondisi-barang");
 
-  const kondisi =
-    kondisiElement
-      ? kondisiElement.value.trim()
-      : "Baik";
+  barangDipilih.forEach(function(item) {
+
+    const dropdown =
+      Array.from(dropdownKondisi).find(
+        function(el) {
+          return (
+            el.dataset.kode ===
+            String(item.kodeRegister || "")
+          );
+        }
+      );
+
+    item.kondisiSaatKembali =
+      dropdown
+        ? dropdown.value
+        : "Baik";
+
+  });
+
+  console.log(
+    "📋 KONDISI SETIAP BARANG:",
+    barangDipilih.map(function(item) {
+      return {
+        kodeRegister: item.kodeRegister,
+        namaBarang: item.namaBarang,
+        kondisiSaatKembali:
+          item.kondisiSaatKembali
+      };
+    })
+  );
 
 
   // ==========================================
