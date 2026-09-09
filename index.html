@@ -786,6 +786,16 @@ button:hover {
 
 </button>
 
+
+  <button
+  class="btn-dashboard"
+  type="button"
+  onclick="bukaDashboard(); return false;">
+
+  📊 DASHBOARD
+
+</button>
+
   <div id="hasil"></div>
 
   <div id="error"></div>
@@ -6501,7 +6511,63 @@ window.onload =
   };
 
 
+function bukaDashboard() {
+  
+  const hasil = document.getElementById("hasil");
 
+  if (!hasil) {
+    console.error("❌ Elemen #hasil tidak ditemukan.");
+    return;
+  }
+
+  hasil.style.display = "block";
+
+  hasil.innerHTML =
+
+    "<div class='card'>" +
+
+      "<div class='section-title'>" +
+        "📊 DASHBOARD" +
+      "</div>" +
+
+      "<div class='intro-text'>" +
+        "<strong>Barang yang Sedang Dipinjam</strong>" +
+        "<span>" +
+          "Daftar barang yang saat ini sedang dipinjam oleh pegawai." +
+        "</span>" +
+      "</div>" +
+
+      "<div class='status'>" +
+        "🔴 <b>Barang Sedang Dipinjam</b>" +
+        "<br>" +
+        "<span id='jumlahBarangDipinjam'>Memuat data...</span>" +
+      "</div>" +
+
+      "<div class='form-group'>" +
+        "<input " +
+          "id='cariDashboard' " +
+          "type='text' " +
+          "placeholder='🔎 Cari barang atau nama peminjam...'>" +
+      "</div>" +
+
+      "<div id='daftarDashboard'>" +
+        "<div class='status'>" +
+          "Memuat daftar barang..." +
+        "</div>" +
+      "</div>" +
+
+      "<button " +
+        "class='btn-batal' " +
+        "onclick='location.reload()'>" +
+        "↩️ KEMBALI" +
+      "</button>" +
+
+    "</div>";
+ambilDataDashboard();
+}
+
+
+  
   function bukaFormPengembalian() {
 const tombolPengembalian =
     document.getElementById(
@@ -6565,6 +6631,283 @@ const tombolPengembalian =
     "</button>" +
 
     "</div>";
+
+}
+
+
+
+  function ambilDataDashboard() {
+
+  const callbackName =
+    "callbackDashboard_" +
+    Date.now();
+
+  window[callbackName] =
+    function(response) {
+
+      console.log(
+        "📊 RESPONSE DASHBOARD:",
+        response
+      );
+
+      if (
+        !response ||
+        !response.success
+      ) {
+
+        const daftar =
+          document.getElementById(
+            "daftarDashboard"
+          );
+
+        if (daftar) {
+
+          daftar.innerHTML =
+            "<div class='status'>" +
+            "❌ Gagal mengambil data dashboard." +
+            "</div>";
+
+        }
+
+        return;
+
+      }
+
+
+      // ==========================================
+      // JUMLAH BARANG
+      // ==========================================
+
+      const jumlah =
+        document.getElementById(
+          "jumlahBarangDipinjam"
+        );
+
+      if (jumlah) {
+
+        jumlah.innerHTML =
+          "<b>" +
+          response.jumlah +
+          "</b> barang sedang dipinjam.";
+
+      }
+
+
+      // ==========================================
+      // DAFTAR BARANG
+      // ==========================================
+
+      const daftar =
+        document.getElementById(
+          "daftarDashboard"
+        );
+
+      if (!daftar) {
+        return;
+      }
+
+
+      if (
+        !response.data ||
+        response.data.length === 0
+      ) {
+
+        daftar.innerHTML =
+          "<div class='status'>" +
+          "🟢 Tidak ada barang yang sedang dipinjam." +
+          "</div>";
+
+        return;
+
+      }
+
+
+      let html = "";
+
+
+      response.data.forEach(
+        function(item) {
+
+          html +=
+            "<div class='card'>" +
+
+              "<strong>" +
+              (item.namaBarang || "-") +
+              "</strong>" +
+
+              "<br>" +
+
+              "<small>" +
+              "Merk/Tipe: " +
+              (item.merkTipe || "-") +
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+              "Kode Register: " +
+              (item.kodeRegister || "-") +
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+              "NUP: " +
+              (item.nup || "-") +
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+              "👤 Peminjam: " +
+              (item.namaPeminjam || "-") +
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+              "🏢 Ruangan: " +
+              (item.ruanganAsal || "-") +
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+              "📅 Tanggal Pinjam: " +
+              (item.tanggalPinjam || "-") +
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+              "📅 Rencana Kembali: " +
+              (item.tanggalRencanaKembali || "-") +
+              "</small>" +
+
+              "<br>" +
+
+              "<small>" +
+              "🔴 Status: " +
+              (item.status || "DIPINJAM") +
+              "</small>" +
+
+            "</div>";
+
+        }
+      );
+
+
+      daftar.innerHTML =
+        html;
+
+
+      // ==========================================
+      // PENCARIAN DASHBOARD
+      // ==========================================
+
+      const input =
+        document.getElementById(
+          "cariDashboard"
+        );
+
+      if (input) {
+
+        input.oninput =
+          function() {
+
+            const keyword =
+              String(
+                this.value || ""
+              )
+              .toLowerCase()
+              .trim();
+
+
+            const cards =
+              daftar.querySelectorAll(
+                ".card"
+              );
+
+
+            cards.forEach(
+              function(card) {
+
+                const teks =
+                  card.textContent
+                    .toLowerCase();
+
+
+                card.style.display =
+                  teks.includes(keyword)
+                    ? ""
+                    : "none";
+
+              }
+            );
+
+          };
+
+      }
+
+    };
+
+
+  // ==========================================
+  // BUAT URL JSONP
+  // ==========================================
+
+  const url =
+    API_URL +
+    "?action=getDashboardPeminjaman" +
+    "&callback=" +
+    callbackName;
+
+
+  console.log(
+    "🌐 URL Dashboard:",
+    url
+  );
+
+
+  // ==========================================
+  // JALANKAN JSONP
+  // ==========================================
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+  script.src =
+    url;
+
+  script.onerror =
+    function() {
+
+      console.error(
+        "❌ Gagal menghubungi API Dashboard."
+      );
+
+      const daftar =
+        document.getElementById(
+          "daftarDashboard"
+        );
+
+      if (daftar) {
+
+        daftar.innerHTML =
+          "<div class='status'>" +
+          "❌ Tidak dapat terhubung ke server." +
+          "</div>";
+
+      }
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
 
 }
 
