@@ -6698,7 +6698,9 @@ const tombolPengembalian =
   (
     item.noHp
       ? "<a href='https://wa.me/" +
-        item.noHp.replace(/^0/, "62").replace(/\D/g, "") +
+       String(item.noHp)
+  .replace(/\D/g, "")
+  .replace(/^0/, "62") +
         "' target='_blank' style='color:#16a34a; font-weight:700; text-decoration:none;'>" +
         item.noHp +
         "</a>"
