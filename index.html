@@ -1483,6 +1483,16 @@ function formBarangNonBMN() {
   hasil.innerHTML =
     html;
 
+
+
+  // Scroll otomatis ke form Non-BMN
+setTimeout(function() {
+  hasil.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}, 100);
+
 }
 
 function tambahBarangNonBMN() {
@@ -6637,6 +6647,16 @@ const tombolPengembalian =
 
     "</div>";
 
+
+      // Scroll otomatis ke form pengembalian
+  setTimeout(function() {
+    hasil.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, 100);
+
+    
 }
 
 
