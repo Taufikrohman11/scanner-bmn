@@ -6670,14 +6670,7 @@ const tombolPengembalian =
                   (item.merkTipe || "-") +
                 "</small>" +
 
-                "<br>" +
-
-                "<small>" +
-                  "<b>Kode Register:</b> " +
-                  (item.kodeRegister || "-") +
-                "</small>" +
-
-                "<br>" +
+               
 
                 "<small>" +
                   "<b>NUP:</b> " +
@@ -6699,25 +6692,49 @@ const tombolPengembalian =
 
                 "<br>" +
 
+"<small>" +
+  "<b>📱 No. HP / WA:</b> " +
+
+  (
+    item.noHp
+      ? "<a href='https://wa.me/" +
+        item.noHp.replace(/^0/, "62").replace(/\D/g, "") +
+        "' target='_blank' style='color:#16a34a; font-weight:700; text-decoration:none;'>" +
+        item.noHp +
+        "</a>"
+      : "-"
+  ) +
+
+"</small>" +
+
+            
+                "<br>" +
+
                 "<small>" +
-                  "<b>Ruangan:</b> " +
+                  "<b>Ruangan Asal Barang:</b> " +
                   (item.ruanganAsal || "-") +
                 "</small>" +
+
+
+              "<small>" +
+              "<b>Tujuan Peminjaman:</b> " +
+                (item.keperluan || "-") +
+              "</small>"
 
               "</div>" +
 
               "<div style='padding:10px; background:#f7f7f7; border-radius:8px;'>" +
 
                 "<small>" +
-                  "📅 <b>Tanggal Pinjam:</b> " +
-                  (item.tanggalPinjam || "-") +
+                 "📅 <b>Tanggal Pinjam:</b> " +
+formatTanggal(item.tanggalPinjam)
                 "</small>" +
 
                 "<br>" +
 
                 "<small>" +
                   "🔄 <b>Rencana Kembali:</b> " +
-                  (item.tanggalRencanaKembali || "-") +
+formatTanggal(item.tanggalRencanaKembali)
                 "</small>" +
 
                 "<br>" +
