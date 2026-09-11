@@ -6450,12 +6450,33 @@ function bukaDashboard() {
   "</span>" +
 "</div>" +
 
-      "<div class='form-group'>" +
-        "<input " +
-          "id='cariDashboard' " +
-          "type='text' " +
-          "placeholder='🔎 Cari barang atau nama peminjam...'>" +
-      "</div>" +
+      "<div style='position:relative; margin-bottom:15px;'>" +
+
+  "<input " +
+    "id='cariDashboard' " +
+    "type='text' " +
+    "placeholder='🔎 Cari barang, peminjam, NUP, ruangan, atau nomor HP...' " +
+    "style='width:100%; box-sizing:border-box; padding:13px 45px 13px 14px;'>" +
+
+  "<button " +
+    "id='clearCariDashboard' " +
+    "type='button' " +
+    "style='" +
+      "position:absolute;" +
+      "right:8px;" +
+      "top:50%;" +
+      "transform:translateY(-50%);" +
+      "border:none;" +
+      "background:transparent;" +
+      "font-size:20px;" +
+      "cursor:pointer;" +
+      "display:none;" +
+      "padding:5px;" +
+    "'>" +
+    "✕" +
+  "</button>" +
+
+"</div>" +
 
       "<div id='daftarDashboard'>" +
         "<div class='status'>" +
@@ -6811,13 +6832,48 @@ response.data.forEach(function(item) {
 
         input.oninput =
           function() {
+          const tombolClear =
+  document.getElementById(
+    "clearCariDashboard"
+  );
 
-            const keyword =
-              String(
-                this.value || ""
-              )
-              .toLowerCase()
-              .trim();
+if (tombolClear) {
+
+  input.addEventListener(
+    "input",
+    function() {
+
+      tombolClear.style.display =
+        this.value
+          ? "block"
+          : "none";
+
+    }
+  );
+
+  tombolClear.onclick =
+    function() {
+
+      input.value = "";
+
+      tombolClear.style.display =
+        "none";
+
+      input.dispatchEvent(
+        new Event("input")
+      );
+
+      input.focus();
+
+    };
+
+}
+           const keyword =
+  String(
+    this.value || ""
+  )
+  .toLowerCase()
+  .trim();
 
 
             const cards =
