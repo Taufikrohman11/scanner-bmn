@@ -6579,6 +6579,16 @@ function bukaDashboard() {
 
     "</div>";
 ambilDataDashboard();
+
+
+  // Scroll otomatis ke dashboard
+  setTimeout(function() {
+    hasil.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, 100);
+  
 }
 
 
