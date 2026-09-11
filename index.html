@@ -4982,15 +4982,29 @@ const noHp =
   // 3. VALIDASI
   // ==========================================
 
-  if (!namaPeminjam) {
+if (!namaPeminjam) {
 
-    alert(
-      "Nama peminjam wajib diisi."
-    );
+  document
+    .getElementById("namaPeminjam")
+    .style.border = "2px solid red";
 
-    return;
+  document
+    .getElementById("namaPeminjam")
+    .focus();
 
-  }
+  alert(
+    "Nama peminjam wajib diisi."
+  );
+
+  return;
+
+} else {
+
+  document
+    .getElementById("namaPeminjam")
+    .style.border = "";
+
+}
 
 
 
