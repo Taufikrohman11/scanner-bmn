@@ -3606,46 +3606,8 @@ function formPeminjaman(data) {
     "</div>" +
 
 
-    /*
-     * ==========================================
-     * NIP / NIK
-     * ==========================================
-     */
 
-    "<div class='form-group'>" +
-
-    "<label>NIP / NIK</label>" +
-
-    "<input " +
-
-"id='nipNik' " +
-
-"class='auto-field' " +
-
-"placeholder='Otomatis dari database'>" +
-
-    "</div>" +
-
-
-    /*
-     * ==========================================
-     * JABATAN
-     * ==========================================
-     */
-
-    "<div class='form-group'>" +
-
-    "<label>Jabatan</label>" +
-
-   "<input " +
-
-"id='jabatan' " +
-
-"class='auto-field' " +
-
-"placeholder='Otomatis dari database'>" +
-
-    "</div>" +
+  
 
 
     /*
@@ -4113,42 +4075,6 @@ function pilihPegawai(pegawai) {
   }
 
 
-  /*
-   * ==========================================
-   * ISI NIP
-   * ==========================================
-   */
-
-  const nipNik =
-    document.getElementById(
-      "nipNik"
-    );
-
-  if (nipNik) {
-
-    nipNik.value =
-      pegawai.nip || "";
-
-  }
-
-
-  /*
-   * ==========================================
-   * ISI JABATAN
-   * ==========================================
-   */
-
-  const jabatan =
-    document.getElementById(
-      "jabatan"
-    );
-
-  if (jabatan) {
-
-    jabatan.value =
-      pegawai.jabatan || "";
-
-  }
 
 
   /*
@@ -4382,42 +4308,10 @@ daftarBarang +=
     "</div>" +
 
 
-    /*
-     * ==========================================
-     * NIP / NIK
-     * ==========================================
-     */
-
-    "<div class='form-group'>" +
-
-    "<label>NIP / NIK</label>" +
-
-    "<input " +
-
-    "id='nipNik' " +
-
-    "placeholder='Otomatis dari database'>" +
-
-    "</div>" +
 
 
-    /*
-     * ==========================================
-     * JABATAN
-     * ==========================================
-     */
 
-    "<div class='form-group'>" +
 
-    "<label>Jabatan</label>" +
-
-    "<input " +
-
-    "id='jabatan' " +
-
-    "placeholder='Otomatis dari database'>" +
-
-    "</div>" +
 
 
     /*
@@ -4439,23 +4333,6 @@ daftarBarang +=
     "</div>" +
 
 
-    /*
-     * ==========================================
-     * UNIT
-     * ==========================================
-     */
-
-    "<div class='form-group'>" +
-
-    "<label>Unit</label>" +
-
-    "<input " +
-
-    "id='unit' " +
-
-    "value='BPVP Lombok Timur'>" +
-
-    "</div>" +
 
 
     /*
@@ -4496,25 +4373,7 @@ daftarBarang +=
     "</div>" +
 
 
-    /*
-     * ==========================================
-     * KONDISI
-     * ==========================================
-     */
-
-    "<div class='form-group'>" +
-
-    "<label>Kondisi Barang</label>" +
-
-    "<input " +
-
-    "id='kondisi' " +
-
-    "value='Baik'>" +
-
-    "</div>" +
-
-
+    
     /*
      * ==========================================
      * CATATAN
@@ -4940,15 +4799,7 @@ function kirimPeminjamanMassal() {
     ).value.trim();
 
 
-  const nipNik =
-    document.getElementById(
-      "nipNik"
-    ).value.trim();
 
-const jabatan =
-  document.getElementById(
-    "jabatan"
-  ).value.trim();
 
 
 const noHp =
@@ -4958,12 +4809,7 @@ const noHp =
 
   
 
-  const unit =
-    document.getElementById(
-      "unit"
-    ).value.trim();
-
-
+  
   const keperluan =
     document.getElementById(
       "keperluan"
@@ -4975,11 +4821,6 @@ const noHp =
       "tanggalKembali"
     ).value;
 
-
-  const kondisiSaatPinjam =
-    document.getElementById(
-      "kondisi"
-    ).value.trim();
 
 
   const catatan =
@@ -5105,13 +4946,9 @@ console.log(
 const data = {
   barang: keranjangPeminjaman,
   namaPeminjam: namaPeminjam,
-  nipNik: nipNik,
-  jabatan: jabatan,
   noHp: noHp,
-  unit: unit,
   keperluan: keperluan,
   tanggalRencanaKembali: tanggalRencanaKembali,
-  kondisiSaatPinjam: kondisiSaatPinjam || "Baik",
   catatan: catatan,
   petugas: "ADMIN",
 
