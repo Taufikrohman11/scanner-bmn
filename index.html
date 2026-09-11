@@ -4897,18 +4897,7 @@ function uploadFotoDokumentasi(batchId, file) {
 }
   
 function kirimPeminjamanMassal() {
-  // Validasi Nama Peminjam
-  const namaPeminjam = document.getElementById("namaPeminjam");
-
-  if (!namaPeminjam || !namaPeminjam.value.trim()) {
-    namaPeminjam.style.border = "2px solid red";
-    namaPeminjam.focus();
-
-    alert("⚠️ Nama Peminjam wajib diisi.");
-    return;
-  }
-
-  namaPeminjam.style.border = "";
+ 
   console.log(
     "📤 Memproses peminjaman massal..."
   );
