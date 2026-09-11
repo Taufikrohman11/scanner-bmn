@@ -4466,7 +4466,7 @@ daftarBarang +=
 
     "<div class='form-group'>" +
 
-    "<label>Keperluan</label>" +
+    "<label>Keperluan <span class='wajib'>*</span></label>" +
 
     "<textarea " +
 
@@ -4485,7 +4485,7 @@ daftarBarang +=
 
     "<div class='form-group'>" +
 
-    "<label>Rencana Tanggal Kembali</label>" +
+    "<label>Rencana Tanggal Kembali <span class='wajib'>*</span></label>" +
 
     "<input " +
 
@@ -4897,7 +4897,18 @@ function uploadFotoDokumentasi(batchId, file) {
 }
   
 function kirimPeminjamanMassal() {
+  // Validasi Nama Peminjam
+  const namaPeminjam = document.getElementById("namaPeminjam");
 
+  if (!namaPeminjam || !namaPeminjam.value.trim()) {
+    namaPeminjam.style.border = "2px solid red";
+    namaPeminjam.focus();
+
+    alert("⚠️ Nama Peminjam wajib diisi.");
+    return;
+  }
+
+  namaPeminjam.style.border = "";
   console.log(
     "📤 Memproses peminjaman massal..."
   );
