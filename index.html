@@ -5008,24 +5008,54 @@ if (!namaPeminjam) {
 
 
 
-  if (!keperluan) {
+if (!keperluan) {
 
-    alert(
-      "Keperluan wajib diisi."
-    );
+  document
+    .getElementById("keperluan")
+    .style.border = "2px solid red";
 
-    return;
+  document
+    .getElementById("keperluan")
+    .focus();
 
-  }
+  alert(
+    "Keperluan wajib diisi."
+  );
+
+  return;
+
+} else {
+
+  document
+    .getElementById("keperluan")
+    .style.border = "";
+
+}
 
 
-  if (!tanggalRencanaKembali) {
+if (!tanggalRencanaKembali) {
 
-    alert(
-      "Tanggal rencana kembali wajib diisi."
-    );
+  document
+    .getElementById("tanggalKembali")
+    .style.border = "2px solid red";
 
-    return;
+  document
+    .getElementById("tanggalKembali")
+    .focus();
+
+  alert(
+    "Tanggal rencana kembali wajib diisi."
+  );
+
+  return;
+
+} else {
+
+  document
+    .getElementById("tanggalKembali")
+    .style.border = "";
+
+}
 
   }
 
