@@ -6649,107 +6649,151 @@ const tombolPengembalian =
       }
 
 
-      let html = "";
+     let html = "";
+
+response.data.forEach(function(item) {
+
+  html +=
+
+    "<div style='" +
+      "background:#ffffff;" +
+      "border:1px solid #e2e8f0;" +
+      "border-radius:16px;" +
+      "padding:18px;" +
+      "margin-bottom:16px;" +
+      "box-shadow:0 2px 8px rgba(0,0,0,0.05);" +
+    "'>" +
+
+      /* ==============================
+         NAMA BARANG
+         ============================== */
+
+      "<div style='" +
+        "font-size:18px;" +
+        "font-weight:700;" +
+        "margin-bottom:14px;" +
+      "'>" +
+
+        "📦 " +
+        (item.namaBarang || "-") +
+
+      "</div>" +
 
 
-      response.data.forEach(
-        function(item) {
+      /* ==============================
+         DATA BARANG
+         ============================== */
 
-          html +=
-            "<div class='card' style='margin-bottom:15px;'>" +
+      "<div style='" +
+        "background:#f7f7f7;" +
+        "border-radius:10px;" +
+        "padding:12px;" +
+        "margin-bottom:12px;" +
+        "line-height:1.7;" +
+      "'>" +
 
-              "<div style='font-size:17px; font-weight:700; margin-bottom:12px;'>" +
-                "📦 " +
-                (item.namaBarang || "-") +
-              "</div>" +
+        "<div>" +
+          "<b>Merk/Tipe:</b> " +
+          (item.merkTipe || "-") +
+        "</div>" +
 
-              "<div style='padding:10px; background:#f7f7f7; border-radius:8px; margin-bottom:10px;'>" +
+        "<div>" +
+          "<b>NUP:</b> " +
+          (item.nup || "-") +
+        "</div>" +
 
-                "<small>" +
-                  "<b>Merk/Tipe:</b> " +
-                  (item.merkTipe || "-") +
-                "</small>" +
-
-               "<br>" +
-
-                "<small>" +
-                  "<b>NUP:</b> " +
-                  (item.nup || "-") +
-                "</small>" +
-
-              "</div>" +
-
-              "<div style='padding:10px; background:#f7f7f7; border-radius:8px; margin-bottom:10px;'>" +
-
-      "<div style='font-weight:700; margin-bottom:8px;'>" +
-  "👤 PEMINJAM" +
-"</div>" +
-
-"<div style='line-height:1.7;'>" +
-
-  "<div>" +
-    "<b>Nama:</b> " +
-    (item.namaPeminjam || "-") +
-  "</div>" +
-
-  "<div>" +
-    "<b>📱 No. HP / WA:</b> " +
-
-    (
-      item.noHp
-        ? "<a href='https://wa.me/" +
-          String(item.noHp)
-            .replace(/\D/g, "")
-            .replace(/^0/, "62") +
-          "' target='_blank' style='color:#16a34a; font-weight:700; text-decoration:none;'>" +
-          item.noHp +
-          "</a>"
-        : "-"
-    ) +
-
-  "</div>" +
-
-  "<div>" +
-    "<b>Ruangan Asal Barang:</b> " +
-    (item.ruanganAsal || "-") +
-  "</div>" +
+      "</div>" +
 
 
-    "<b>Tujuan Peminjaman:</b> " +
-    (item.keperluan || "-") +
-  "</div>" +
+      /* ==============================
+         DATA PEMINJAM
+         ============================== */
 
-"</div>" +
+      "<div style='" +
+        "background:#f7f7f7;" +
+        "border-radius:10px;" +
+        "padding:12px;" +
+        "margin-bottom:12px;" +
+        "line-height:1.7;" +
+      "'>" +
 
-              "<div style='padding:10px; background:#f7f7f7; border-radius:8px;'>" +
+        "<div style='" +
+          "font-weight:700;" +
+          "font-size:17px;" +
+          "margin-bottom:8px;" +
+        "'>" +
 
-                "<small>" +
-                 "📅 <b>Tanggal Pinjam:</b> " +
-formatTanggal(item.tanggalPinjam)
-                "</small>" +
+          "👤 PEMINJAM" +
 
-                "<br>" +
+        "</div>" +
 
-                "<small>" +
-                  "🔄 <b>Rencana Kembali:</b> " +
-formatTanggal(item.tanggalRencanaKembali)
-                "</small>" +
+        "<div>" +
+          "<b>Nama:</b> " +
+          (item.namaPeminjam || "-") +
+        "</div>" +
 
-                "<br>" +
+        "<div>" +
+          "<b>📱 No. HP / WA:</b> " +
 
-                "<small>" +
-                  "🔴 <b>Status:</b> " +
-                  (item.status || "DIPINJAM") +
-                "</small>" +
+          (
+            item.noHp
+              ? "<a href='https://wa.me/" +
+                String(item.noHp)
+                  .replace(/\D/g, "")
+                  .replace(/^0/, "62") +
+                "' target='_blank' " +
+                "style='color:#16a34a; font-weight:700; text-decoration:none;'>" +
+                item.noHp +
+                "</a>"
+              : "-"
+          ) +
 
-              "</div>" +
+        "</div>" +
 
-            "</div>";
+        "<div>" +
+          "<b>Ruangan Asal Barang:</b> " +
+          (item.ruanganAsal || "-") +
+        "</div>" +
 
-        }
-      );
+        "<div>" +
+          "<b>Tujuan Peminjaman:</b> " +
+          (item.keperluan || "-") +
+        "</div>" +
+
+      "</div>" +
 
 
+      /* ==============================
+         TANGGAL & STATUS
+         ============================== */
+
+      "<div style='" +
+        "background:#f7f7f7;" +
+        "border-radius:10px;" +
+        "padding:12px;" +
+        "line-height:1.7;" +
+      "'>" +
+
+        "<div>" +
+          "📅 <b>Tanggal Pinjam:</b> " +
+          formatTanggal(item.tanggalPinjam) +
+        "</div>" +
+
+        "<div>" +
+          "🔄 <b>Rencana Kembali:</b> " +
+          formatTanggal(item.tanggalRencanaKembali) +
+        "</div>" +
+
+        "<div>" +
+          "🔴 <b>Status:</b> " +
+          (item.status || "DIPINJAM") +
+        "</div>" +
+
+      "</div>" +
+
+    "</div>";
+
+});
       daftar.innerHTML =
         html;
 
