@@ -6824,87 +6824,85 @@ response.data.forEach(function(item) {
       // ==========================================
 
       const input =
-        document.getElementById(
-          "cariDashboard"
+  document.getElementById(
+    "cariDashboard"
+  );
+
+if (input) {
+
+  const tombolClear =
+    document.getElementById(
+      "clearCariDashboard"
+    );
+
+
+  input.oninput =
+    function() {
+
+      const keyword =
+        String(
+          this.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+      const cards =
+        daftar.querySelectorAll(
+          ".card"
         );
 
-      if (input) {
 
-        input.oninput =
-          function() {
-          const tombolClear =
-  document.getElementById(
-    "clearCariDashboard"
-  );
+      cards.forEach(
+        function(card) {
 
-if (tombolClear) {
+          const teks =
+            card.textContent
+              .toLowerCase();
 
-  input.addEventListener(
-    "input",
-    function() {
 
-      tombolClear.style.display =
-        this.value
-          ? "block"
-          : "none";
+          card.style.display =
+            teks.includes(keyword)
+              ? ""
+              : "none";
 
-    }
-  );
-
-  tombolClear.onclick =
-    function() {
-
-      input.value = "";
-
-      tombolClear.style.display =
-        "none";
-
-      input.dispatchEvent(
-        new Event("input")
+        }
       );
 
-      input.focus();
 
-    };
+      if (tombolClear) {
 
-}
-           const keyword =
-  String(
-    this.value || ""
-  )
-  .toLowerCase()
-  .trim();
-
-
-            const cards =
-              daftar.querySelectorAll(
-                ".card"
-              );
-
-
-            cards.forEach(
-              function(card) {
-
-                const teks =
-                  card.textContent
-                    .toLowerCase();
-
-
-                card.style.display =
-                  teks.includes(keyword)
-                    ? ""
-                    : "none";
-
-              }
-            );
-
-          };
+        tombolClear.style.display =
+          this.value
+            ? "block"
+            : "none";
 
       }
 
     };
 
 
+  if (tombolClear) {
+
+    tombolClear.onclick =
+      function() {
+
+        input.value = "";
+
+        tombolClear.style.display =
+          "none";
+
+        input.dispatchEvent(
+          new Event("input")
+        );
+
+        input.focus();
+
+      };
+
+  }
+
+}
   // ==========================================
   // BUAT URL JSONP
   // ==========================================
