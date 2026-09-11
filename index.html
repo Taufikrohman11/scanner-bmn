@@ -6681,49 +6681,45 @@ const tombolPengembalian =
 
               "<div style='padding:10px; background:#f7f7f7; border-radius:8px; margin-bottom:10px;'>" +
 
-                "<div style='font-weight:700; margin-bottom:6px;'>" +
-                  "👤 PEMINJAM" +
-                "</div>" +
+      "<div style='font-weight:700; margin-bottom:8px;'>" +
+  "👤 PEMINJAM" +
+"</div>" +
 
-                "<small>" +
-                  "<b>Nama:</b> " +
-                  (item.namaPeminjam || "-") +
-                "</small>" +
+"<div style='line-height:1.7;'>" +
 
-                "<br>" +
+  "<div>" +
+    "<b>Nama:</b> " +
+    (item.namaPeminjam || "-") +
+  "</div>" +
 
-"<small>" +
-  "<b>📱 No. HP / WA:</b> " +
+  "<div>" +
+    "<b>📱 No. HP / WA:</b> " +
 
-  (
-    item.noHp
-      ? "<a href='https://wa.me/" +
-       String(item.noHp)
-  .replace(/\D/g, "")
-  .replace(/^0/, "62") +
-        "' target='_blank' style='color:#16a34a; font-weight:700; text-decoration:none;'>" +
-        item.noHp +
-        "</a>"
-      : "-"
-  ) +
+    (
+      item.noHp
+        ? "<a href='https://wa.me/" +
+          String(item.noHp)
+            .replace(/\D/g, "")
+            .replace(/^0/, "62") +
+          "' target='_blank' style='color:#16a34a; font-weight:700; text-decoration:none;'>" +
+          item.noHp +
+          "</a>"
+        : "-"
+    ) +
 
-"</small>" +
+  "</div>" +
 
-            
-                "<br>" +
+  "<div>" +
+    "<b>Ruangan Asal Barang:</b> " +
+    (item.ruanganAsal || "-") +
+  "</div>" +
 
-                "<small>" +
-                  "<b>Ruangan Asal Barang:</b> " +
-                  (item.ruanganAsal || "-") +
-                "</small>" +
+  "<div>" +
+    "<b>Tujuan Peminjaman:</b> " +
+    (item.keperluan || "-") +
+  "</div>" +
 
-
-              "<small>" +
-              "<b>Tujuan Peminjaman:</b> " +
-                (item.keperluan || "-") +
-              "</small>"
-
-              "</div>" +
+"</div>" +
 
               "<div style='padding:10px; background:#f7f7f7; border-radius:8px;'>" +
 
