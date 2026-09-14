@@ -6824,9 +6824,56 @@ html +=
     "</div>";
 
 });
-      daftar.innerHTML =
-        html;
-  };
+    daftar.innerHTML =
+  html;
+
+};
+
+
+// ==========================================
+// PENCARIAN DASHBOARD
+// ==========================================
+
+const input =
+  document.getElementById(
+    "cariDashboard"
+  );
+
+if (input) {
+
+  input.oninput =
+    function() {
+
+      const keyword =
+        String(
+          this.value || ""
+        )
+        .toLowerCase()
+        .trim();
+
+      const cards =
+        daftar.querySelectorAll(
+          ".card"
+        );
+
+      cards.forEach(
+        function(card) {
+
+          const teks =
+            card.textContent
+              .toLowerCase();
+
+          card.style.display =
+            teks.includes(keyword)
+              ? ""
+              : "none";
+
+        }
+      );
+
+    };
+
+}
 
   // ==========================================
   // BUAT URL JSONP
