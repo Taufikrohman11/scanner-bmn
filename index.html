@@ -6841,6 +6841,12 @@ const input =
 
 if (input) {
 
+  const tombolClear =
+    document.getElementById(
+      "clearCariDashboard"
+    );
+
+
   input.oninput =
     function() {
 
@@ -6851,16 +6857,18 @@ if (input) {
         .toLowerCase()
         .trim();
 
-    const daftar =
-  document.getElementById(
-    "daftarDashboard"
-  );
 
-      
+      const daftar =
+        document.getElementById(
+          "daftarDashboard"
+        );
+
+
       const cards =
         daftar.querySelectorAll(
           ".card"
         );
+
 
       cards.forEach(
         function(card) {
@@ -6868,6 +6876,7 @@ if (input) {
           const teks =
             card.textContent
               .toLowerCase();
+
 
           card.style.display =
             teks.includes(keyword)
@@ -6877,10 +6886,40 @@ if (input) {
         }
       );
 
+
+      if (tombolClear) {
+
+        tombolClear.style.display =
+          this.value
+            ? "block"
+            : "none";
+
+      }
+
     };
 
-}
 
+  if (tombolClear) {
+
+    tombolClear.onclick =
+      function() {
+
+        input.value = "";
+
+        tombolClear.style.display =
+          "none";
+
+        input.dispatchEvent(
+          new Event("input")
+        );
+
+        input.focus();
+
+      };
+
+  }
+
+}
   // ==========================================
   // BUAT URL JSONP
   // ==========================================
