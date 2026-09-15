@@ -4055,6 +4055,8 @@ function pilihPegawai(pegawai) {
     pegawai
   );
 
+  // Simpan data pegawai secara internal
+window.pegawaiTerpilih = pegawai;
 
   /*
    * ==========================================
@@ -4945,15 +4947,35 @@ console.log(
 
 const data = {
   barang: keranjangPeminjaman,
+
   namaPeminjam: namaPeminjam,
+
+  nipNik:
+    window.pegawaiTerpilih
+      ? window.pegawaiTerpilih.nip || ""
+      : "",
+
+  jabatan:
+    window.pegawaiTerpilih
+      ? window.pegawaiTerpilih.jabatan || ""
+      : "",
+
+  unit:
+    window.pegawaiTerpilih
+      ? window.pegawaiTerpilih.unit || ""
+      : "",
+
   noHp: noHp,
+
   keperluan: keperluan,
-  tanggalRencanaKembali: tanggalRencanaKembali,
+
+  tanggalRencanaKembali:
+    tanggalRencanaKembali,
+
   catatan: catatan,
-  petugas: "ADMIN",
 
+  petugas: "ADMIN"
 };
-
 
   console.log(
     "📦 DATA PEMINJAMAN MASSAL:",
